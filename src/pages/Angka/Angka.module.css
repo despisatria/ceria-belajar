@@ -1,0 +1,210 @@
+.gameContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.gameHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid rgba(16, 185, 129, 0.2);
+}
+
+.gameTitle {
+    flex: 1;
+    text-align: center;
+    font-size: 2.2rem;
+    color: var(--cat-green);
+    margin: 0;
+}
+
+.gameBoard {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.numberCard {
+    background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+    width: 90%;
+    max-width: 600px;
+    padding: 40px 20px;
+    border-radius: 32px;
+    border: 2px solid rgba(16, 185, 129, 0.2);
+    box-shadow: 0 12px 40px rgba(16, 185, 129, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.bigNumber {
+    font-size: 10rem;
+    font-weight: 700;
+    color: var(--cat-green);
+    line-height: 1;
+    text-shadow: 2px 4px 10px rgba(16, 185, 129, 0.3);
+    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.numberText {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 6px 24px;
+    border-radius: 16px;
+}
+
+.itemsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    min-height: 60px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    width: 100%;
+}
+
+.itemEmoji {
+    font-size: 2.5rem;
+    animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+}
+
+.numberSpell {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.digitBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 90px;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--cat-green);
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    border: 2px solid rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+    animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+}
+
+.progress {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--cat-green);
+    opacity: 0.7;
+}
+
+.numberSelector {
+    display: flex;
+    gap: 8px;
+    max-width: 90%;
+    overflow-x: auto;
+    padding: 10px 5px;
+    /* Hide scrollbar for a cleaner look but keep functionality */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+}
+
+.numberSelector::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari and Opera */
+}
+
+.selectorBtn {
+    flex: 0 0 auto;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    border: 2px solid rgba(16, 185, 129, 0.3);
+    background: white;
+    color: var(--cat-green);
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(16, 185, 129, 0.1);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selectorBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.2);
+}
+
+.selectorBtnActive {
+    background: var(--cat-green);
+    color: white;
+    border-color: var(--cat-green);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+}
+
+.controls {
+    display: flex;
+    gap: 16px;
+}
+
+.controlBtn {
+    padding: 14px 28px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: inherit;
+    background: linear-gradient(135deg, var(--cat-green), #059669);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    transition: all 0.2s ease;
+}
+
+.controlBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.controlBtn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    80% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

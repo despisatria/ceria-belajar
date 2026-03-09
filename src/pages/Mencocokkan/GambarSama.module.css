@@ -1,0 +1,305 @@
+.gameContainer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.gameHeader {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 4px dashed var(--cat-red);
+}
+
+.headerTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.statsPanel {
+    display: flex;
+    gap: 20px;
+}
+
+.statBox {
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 4px solid var(--text-color);
+    box-shadow: 4px 4px 0px var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 120px;
+}
+
+.statLabel {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--quaternary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.statValue {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--cat-red);
+}
+
+.gameTitle {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--cat-red);
+    margin: 0;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+    animation: float 3s ease-in-out infinite;
+}
+
+.gameBoard {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.cardsGrid {
+    display: grid;
+    gap: 15px;
+    width: 100%;
+    max-width: 800px;
+    justify-content: center;
+}
+
+/* 3D Flip Card Styles */
+.card {
+    aspect-ratio: 1;
+    background-color: transparent;
+    perspective: 1000px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.cardInner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transform-style: preserve-3d;
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+}
+
+.card.flipped .cardInner,
+.card.matched .cardInner {
+    transform: rotateY(180deg);
+}
+
+.cardInnerFaceUp {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 20px;
+    border: 4px solid var(--text-color);
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.15);
+    font-size: 4rem;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Selected state — visual feedback when a card is clicked */
+.card.selected .cardInnerFaceUp {
+    transform: scale(1.08);
+    border-color: var(--cat-yellow);
+    box-shadow: 0 0 20px var(--cat-yellow), 6px 6px 0px rgba(0, 0, 0, 0.15);
+    background-color: #fffde7;
+}
+
+/* Matched state for face-up cards */
+.card.matched .cardInnerFaceUp {
+    border-color: var(--cat-green);
+    box-shadow: 0 0 15px var(--cat-green), 6px 6px 0px rgba(0, 0, 0, 0.15);
+    background-color: #e8f5e9;
+    opacity: 0.7;
+}
+
+.card.matched {
+    animation: tada 1s ease;
+    pointer-events: none;
+}
+
+.card.matched .cardInner {
+    box-shadow: 0 0 15px var(--cat-green);
+}
+
+.cardFront,
+.cardBack {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    /* Safari */
+    backface-visibility: hidden;
+    border-radius: 20px;
+    border: 4px solid var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardFront {
+    background-color: var(--cat-blue);
+    background-image: repeating-linear-gradient(45deg,
+            transparent,
+            transparent 10px,
+            rgba(255, 255, 255, 0.1) 10px,
+            rgba(255, 255, 255, 0.1) 20px);
+}
+
+.cardPattern {
+    font-size: 3rem;
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.2));
+    color: white;
+}
+
+.cardBack {
+    background-color: white;
+    transform: rotateY(180deg);
+    font-size: 4rem;
+    /* For emojis */
+}
+
+/* Game Over and Overlays */
+.gameOverPanel,
+.roundWinnerPanel {
+    background-color: white;
+    padding: 50px;
+    border-radius: 30px;
+    border: 6px solid var(--text-color);
+    box-shadow: 15px 15px 0px var(--cat-yellow);
+    text-align: center;
+    max-width: 500px;
+    animation: bounceIn 0.8s;
+    z-index: 20;
+}
+
+.gameOverPanel h2,
+.roundWinnerPanel h2 {
+    font-size: 3rem;
+    color: var(--cat-green);
+    margin-bottom: 20px;
+}
+
+.gameOverPanel p,
+.roundWinnerPanel p {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.finalScore {
+    font-size: 2.5rem !important;
+    color: var(--cat-red);
+    background: var(--tertiary);
+    padding: 10px 30px;
+    border-radius: 20px;
+    border: 3px solid var(--text-color);
+    display: inline-block;
+    transform: rotate(-2deg);
+}
+
+.roundWinnerOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    backdrop-filter: blur(5px);
+    border-radius: 30px;
+}
+
+/* Animations */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes tada {
+    0% {
+        transform: scale3d(1, 1, 1);
+    }
+
+    10%,
+    20% {
+        transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+    }
+
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    }
+
+    40%,
+    60%,
+    80% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    }
+
+    100% {
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+/* Responsiveness */
+@media (max-width: 600px) {
+    .cardsGrid {
+        gap: 10px;
+    }
+
+    .cardBack {
+        font-size: 2.5rem;
+    }
+
+    .cardPattern {
+        font-size: 2rem;
+    }
+
+    .statsPanel {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .headerTop {
+        align-items: flex-start;
+    }
+}

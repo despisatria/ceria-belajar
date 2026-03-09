@@ -1,0 +1,228 @@
+.header {
+    text-align: center;
+    padding: 60px 20px 70px;
+    /* Soft colorful animated gradient */
+    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 50%, #a1c4fd 100%);
+    background-size: 200% 200%;
+    animation: bgAnimate 6s ease infinite;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0 0 50px 50px;
+    margin-bottom: 50px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes bgAnimate {
+    0% {
+        background-position: 0% 50%
+    }
+
+    50% {
+        background-position: 100% 50%
+    }
+
+    100% {
+        background-position: 0% 50%
+    }
+}
+
+/* Wave divider at bottom */
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background: var(--bg-color);
+    clip-path: ellipse(55% 100% at 50% 100%);
+    z-index: 10;
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 5;
+}
+
+.logoIcon {
+    font-size: 4.5rem;
+    animation: float 2.5s ease-in-out infinite, pulse 2s infinite;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+.logoText {
+    font-size: 5.5rem;
+    font-family: 'Fredoka One', 'Quicksand', cursive;
+    font-weight: 400;
+    /* Fredoka One is naturally bold */
+    margin: 0;
+    letter-spacing: 2px;
+    /* Animated Gradient Text */
+    background: linear-gradient(90deg, #ff512f, #f09819, #eecda3, #ef629f, #ff512f);
+    background-size: 300% 100%;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    /* Stroke to make it pop */
+    -webkit-text-stroke: 3px white;
+    filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.2));
+    animation: textGradientMove 4s linear infinite, bounceIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes textGradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    color: var(--text-color);
+    font-weight: 800;
+    margin: 0;
+    background: white;
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 50px;
+    border: 4px solid var(--text-color);
+    box-shadow: 4px 4px 0px var(--text-color);
+    position: relative;
+    z-index: 5;
+    animation: float 4s ease-in-out infinite reverse;
+}
+
+/* Moving Clouds */
+.cloud {
+    position: absolute;
+    font-size: 4rem;
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 2;
+    filter: drop-shadow(2px 2px 5px rgba(255, 255, 255, 0.8));
+}
+
+.cloud1 {
+    top: 20px;
+    animation: moveClouds 25s linear infinite;
+}
+
+.cloud2 {
+    top: 90px;
+    font-size: 3rem;
+    animation: moveClouds 18s linear infinite;
+    animation-delay: -5s;
+}
+
+.cloud3 {
+    top: 50px;
+    font-size: 5rem;
+    animation: moveClouds 35s linear infinite;
+    animation-delay: -15s;
+    opacity: 0.6;
+}
+
+@keyframes moveClouds {
+    0% {
+        left: -15%;
+        transform: translateX(0);
+    }
+
+    100% {
+        left: 110%;
+        transform: translateX(0);
+    }
+}
+
+/* Spinning Sun */
+.sun {
+    position: absolute;
+    top: -30px;
+    right: 5%;
+    font-size: 8rem;
+    animation: spinSlow 30s linear infinite;
+    z-index: 1;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 20px rgba(255, 223, 0, 0.6));
+}
+
+@keyframes spinSlow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Floating decorations */
+.deco {
+    position: absolute;
+    pointer-events: none;
+    z-index: 3;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+.deco1 {
+    top: 25px;
+    left: 8%;
+    font-size: 3rem;
+    animation: float 4s ease-in-out infinite;
+    animation-delay: 0s;
+}
+
+.deco2 {
+    top: 70px;
+    right: 15%;
+    font-size: 2.5rem;
+    animation: float 3.5s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+.deco3 {
+    bottom: 45px;
+    left: 20%;
+    font-size: 2.2rem;
+    animation: float 5s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+.deco4 {
+    top: 35px;
+    right: 35%;
+    font-size: 2.8rem;
+    animation: float 4.5s ease-in-out infinite;
+    animation-delay: 1.5s;
+}
+
+.deco5 {
+    bottom: 50px;
+    right: 25%;
+    font-size: 2.5rem;
+    animation: float 3s ease-in-out infinite;
+    animation-delay: 0.8s;
+}
+
+/* Base animations that might be missing locally */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
