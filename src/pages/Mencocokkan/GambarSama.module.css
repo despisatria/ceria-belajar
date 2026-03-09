@@ -282,8 +282,24 @@
 
 /* Responsiveness */
 @media (max-width: 600px) {
+    .gameTitle {
+        font-size: 1.5rem;
+    }
+
     .cardsGrid {
-        gap: 10px;
+        gap: 8px;
+    }
+
+    .cardInnerFaceUp {
+        font-size: 2.5rem;
+        border-width: 2px;
+        border-radius: 12px;
+    }
+
+    .cardFront,
+    .cardBack {
+        border-width: 2px;
+        border-radius: 12px;
     }
 
     .cardBack {
@@ -291,7 +307,7 @@
     }
 
     .cardPattern {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
 
     .statsPanel {
@@ -301,5 +317,14 @@
 
     .headerTop {
         align-items: flex-start;
+    }
+
+    .statBox {
+        min-width: 80px;
+        padding: 5px 10px;
+    }
+
+    .statValue {
+        font-size: 1.3rem;
     }
 }

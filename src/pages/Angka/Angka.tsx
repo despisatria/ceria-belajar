@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Angka.module.css';
+import { audioPlayer } from '../../utils/audioPlayer';
 
 // Helper: generate emoji items for a number
 function generateItems(num: number): string {
@@ -39,18 +40,10 @@ const Angka: React.FC<AngkaProps> = ({ rangeStart, rangeEnd, title }) => {
     }
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const audioRef = useRef<HTMLAudioElement | null>(null);
     const currentItem = numbers[currentIndex];
 
     const playNumberAudio = useCallback((num: number) => {
-        // Stop previous audio
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-        }
-        const audio = new Audio(`/audio/angka/${num}.mp3`);
-        audioRef.current = audio;
-        audio.play().catch(() => { });
+        audioPlayer.play(`/audio/angka/${num}.mp3`);
     }, []);
 
     // Play audio when number changes

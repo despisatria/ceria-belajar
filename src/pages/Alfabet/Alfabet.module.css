@@ -261,3 +261,42 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
 }
+
+/* Responsiveness */
+@media (max-width: 600px) {
+    .gameTitle {
+        font-size: 1.8rem;
+    }
+
+    .letterCard {
+        width: 100%;
+        max-width: 320px;
+        height: 350px;
+        border-width: 4px;
+        box-shadow: 8px 8px 0px var(--text-color);
+    }
+
+    .bigLetter {
+        font-size: 10rem;
+        margin-top: -20px;
+    }
+
+    .wordIcon {
+        font-size: 4rem;
+    }
+
+    .wordText {
+        font-size: 2rem;
+    }
+
+    .controlBtn {
+        padding: 12px 20px;
+        font-size: 1.2rem;
+    }
+
+    .selectorBtn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+}

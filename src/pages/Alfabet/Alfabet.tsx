@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Alfabet.module.css';
+import { audioPlayer } from '../../utils/audioPlayer';
 
 const ALPHABETS = [
     { letter: 'A', word: 'Apel', icon: '🍎' },
@@ -38,39 +39,22 @@ interface AlfabetProps {
 const Alfabet: React.FC<AlfabetProps> = ({ isLowercase = false }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [showWord, setShowWord] = useState(false);
-    const audioRef = useRef<HTMLAudioElement | null>(null);
 
     const currentItem = ALPHABETS[currentIndex];
 
-    // Play pre-generated Edge TTS audio file
+    // Play pre-generated Edge TTS audio file via optimized player
     const playAudio = (type: 'letter' | 'word', letterKey: string, onEnd?: () => void) => {
-        // Stop any currently playing audio
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-        }
-
         const filename = type === 'letter'
             ? `letter_${letterKey.toLowerCase()}.mp3`
             : `word_${letterKey.toLowerCase()}.mp3`;
 
-        const audio = new Audio(`/audio/alfabet/${filename}`);
-        audioRef.current = audio;
-
-        if (onEnd) {
-            audio.onended = onEnd;
-        }
-
-        audio.play().catch((err) => {
-            console.warn('Audio playback failed:', err);
-        });
+        audioPlayer.play(`/audio/alfabet/${filename}`, onEnd);
     };
 
     const handleNext = () => {
         setShowWord(false);
         const nextIndex = (currentIndex + 1) % ALPHABETS.length;
         setCurrentIndex(nextIndex);
-        // Play the letter sound for the new letter
         playAudio('letter', ALPHABETS[nextIndex].letter);
     };
 
@@ -78,7 +62,6 @@ const Alfabet: React.FC<AlfabetProps> = ({ isLowercase = false }) => {
         setShowWord(false);
         const prevIndex = (currentIndex - 1 + ALPHABETS.length) % ALPHABETS.length;
         setCurrentIndex(prevIndex);
-        // Play the letter sound for the new letter
         playAudio('letter', ALPHABETS[prevIndex].letter);
     };
 
@@ -87,10 +70,8 @@ const Alfabet: React.FC<AlfabetProps> = ({ isLowercase = false }) => {
         setShowWord(isRevealing);
 
         if (isRevealing) {
-            // Directly play the word audio
             playAudio('word', currentItem.letter);
         } else {
-            // Play the letter sound when hiding
             playAudio('letter', currentItem.letter);
         }
     };
