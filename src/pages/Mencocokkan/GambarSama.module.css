@@ -213,7 +213,7 @@
 
 .finalScore {
     font-size: 2.5rem !important;
-    color: var(--cat-red);
+    color: white;
     background: var(--tertiary);
     padding: 10px 30px;
     border-radius: 20px;

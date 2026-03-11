@@ -146,12 +146,12 @@
 .finalScore {
     font-size: 2.5rem;
     font-weight: 800;
-    color: var(--cat-orange);
+    color: white;
     margin: 20px 0;
     padding: 15px;
-    background: var(--bg-color);
+    background: var(--cat-orange);
     border-radius: 20px;
-    border: 3px dashed var(--cat-orange);
+    border: 3px dashed var(--text-color);
 }
 
 @keyframes shake {

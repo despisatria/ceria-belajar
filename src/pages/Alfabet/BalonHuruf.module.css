@@ -1,0 +1,361 @@
+.gameContainer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.gameHeader {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 4px dashed var(--cat-green);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.headerTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.statsPanel {
+    display: flex;
+    gap: 15px;
+}
+
+.statBox {
+    background-color: white;
+    padding: 8px 15px;
+    border-radius: 15px;
+    border: 3px solid var(--text-color);
+    box-shadow: 3px 3px 0px var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 90px;
+}
+
+.statLabel {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--quaternary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.statValue {
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+.instructionPanel {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    padding: 15px 30px;
+    border-radius: 20px;
+    border: 3px solid var(--cat-blue);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.instructionPanel h2 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.8rem;
+}
+
+.targetLetter {
+    font-size: 2.5rem;
+    color: var(--cat-red);
+    background: white;
+    padding: 0 15px;
+    border-radius: 10px;
+    border: 2px solid var(--cat-red);
+    display: inline-block;
+    animation: pulse 1.5s infinite;
+}
+
+.speakBtn {
+    background: var(--tertiary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(236, 72, 153, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.speakBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(236, 72, 153, 0.5);
+}
+
+.speakBtn:active {
+    transform: translateY(1px);
+}
+
+.gameBoard {
+    flex: 1;
+    position: relative;
+    border-radius: 30px;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%);
+    /* Sky background */
+    border: 5px solid white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    min-height: 500px;
+}
+
+.skyArea {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Balloon Styles */
+.balloon {
+    position: absolute;
+    bottom: -150px;
+    /* Start below the container */
+    width: 80px;
+    height: 100px;
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    animation-name: floatUp;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    z-index: 10;
+    transition: transform 0.1s;
+    box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.15), 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.balloon:active {
+    transform: scale(0.9);
+}
+
+/* Base tail of balloon */
+.balloon::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid inherit;
+    /* Inherits base color */
+    z-index: -1;
+}
+
+.balloonString {
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    width: 2px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.6);
+    transform-origin: top;
+    animation: sway 3s ease-in-out infinite alternate;
+}
+
+.balloonLetter {
+    font-size: 4rem;
+    font-family: inherit;
+    font-weight: 900;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Colors */
+.red {
+    background-color: var(--cat-red);
+    border-bottom-color: var(--cat-red);
+}
+
+.blue {
+    background-color: var(--cat-blue);
+    border-bottom-color: var(--cat-blue);
+}
+
+.green {
+    background-color: var(--cat-green);
+    border-bottom-color: var(--cat-green);
+}
+
+.yellow {
+    background-color: var(--cat-yellow);
+    border-bottom-color: var(--cat-yellow);
+}
+
+.purple {
+    background-color: var(--cat-purple);
+    border-bottom-color: var(--cat-purple);
+}
+
+.orange {
+    background-color: var(--cat-orange);
+    border-bottom-color: var(--cat-orange);
+}
+
+.pink {
+    background-color: var(--cat-pink);
+    border-bottom-color: var(--cat-pink);
+}
+
+.cyan {
+    background-color: var(--cat-cyan);
+    border-bottom-color: var(--cat-cyan);
+}
+
+/* Animations */
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    33% {
+        transform: translateY(-400px) rotate(5deg);
+    }
+
+    66% {
+        transform: translateY(-800px) rotate(-5deg);
+    }
+
+    100% {
+        transform: translateY(-1200px) rotate(0deg);
+    }
+}
+
+@keyframes sway {
+    0% {
+        transform: rotate(-10deg);
+    }
+
+    100% {
+        transform: rotate(10deg);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Game Over styling matches other games */
+.gameOverPanel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 50px;
+    border-radius: 30px;
+    border: 6px solid var(--text-color);
+    box-shadow: 15px 15px 0px var(--cat-yellow);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    animation: bounceIn 0.8s;
+    z-index: 20;
+}
+
+.gameOverPanel h2 {
+    font-size: 3rem;
+    color: var(--cat-green);
+    margin-bottom: 20px;
+}
+
+.gameOverPanel p {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.finalScore {
+    font-size: 2.5rem !important;
+    color: white;
+    background: var(--tertiary);
+    padding: 10px 30px;
+    border-radius: 20px;
+    border: 3px solid var(--text-color);
+    display: inline-block;
+    transform: rotate(-2deg);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .instructionPanel {
+        flex-direction: column;
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .instructionPanel h2 {
+        font-size: 1.4rem;
+    }
+
+    .targetLetter {
+        font-size: 2rem;
+    }
+
+    .balloon {
+        width: 60px;
+        height: 75px;
+    }
+
+    .balloonLetter {
+        font-size: 2.8rem;
+    }
+
+    .gameBoard {
+        min-height: 400px;
+    }
+
+    .headerTop {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .statsPanel {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .statBox {
+        min-width: 80px;
+        padding: 5px 10px;
+    }
+
+    .statValue {
+        font-size: 1.3rem;
+    }
+}

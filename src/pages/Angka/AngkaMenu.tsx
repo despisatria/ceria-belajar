@@ -54,6 +54,27 @@ const AngkaMenu: React.FC = () => {
                             link="/angka/hitung-benda"
                             description="Berapa jumlah benda di layar? Yuk kita hitung bersama!"
                         />
+                        <CategoryCard
+                            title="Balon Angka"
+                            icon="🎈"
+                            colorClass="blue"
+                            link="/angka/balon-angka"
+                            description="Pecahkan balon dengan angka yang tepat!"
+                        />
+                        <CategoryCard
+                            title="Hitung Jari"
+                            icon="🖐️"
+                            colorClass="purple"
+                            link="/angka/hitung-jari"
+                            description="Tebak berapa jumlah jari yang ada di layar!"
+                        />
+                        <CategoryCard
+                            title="Menara Balok"
+                            icon="🧱"
+                            colorClass="green"
+                            link="/angka/menara-balok"
+                            description="Susun balok sesuai dengan angka yang diminta!"
+                        />
                     </div>
                 </div>
 

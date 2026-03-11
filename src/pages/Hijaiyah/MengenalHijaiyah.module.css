@@ -1,0 +1,206 @@
+.gameContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.gameHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid rgba(16, 185, 129, 0.2);
+}
+
+.gameTitle {
+    flex: 1;
+    text-align: center;
+    font-size: 2.2rem;
+    color: var(--cat-green);
+    margin: 0;
+}
+
+.gameBoard {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+    align-items: center;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.numberCard {
+    background-color: white;
+    border: 8px solid var(--cat-green);
+    border-radius: 30px;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 15px 0 var(--cat-green);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 30px;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.numberCard:active {
+    transform: scale(0.95);
+    box-shadow: 0 5px 0 var(--cat-green);
+}
+
+.bigNumber {
+    font-size: 12rem;
+    font-weight: 900;
+    color: var(--cat-green);
+    line-height: 1;
+    font-family: 'Lateef', 'Amiri', 'Traditional Arabic', 'Arial', sans-serif;
+}
+
+.numberText {
+    font-size: 2.5rem;
+    font-family: 'Fredoka', sans-serif;
+    color: var(--text-color);
+    margin-top: 10px;
+}
+
+.progress {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--cat-green);
+    margin-bottom: 20px;
+    background-color: white;
+    padding: 5px 20px;
+    border-radius: 20px;
+    border: 3px solid var(--cat-green);
+}
+
+.numberSelector {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 10px;
+    /* Style scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--cat-green) transparent;
+}
+
+.numberSelector::-webkit-scrollbar {
+    width: 8px;
+}
+
+.numberSelector::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.numberSelector::-webkit-scrollbar-thumb {
+    background-color: var(--cat-green);
+    border-radius: 10px;
+}
+
+.selectorBtn {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    border: 3px solid var(--cat-green);
+    background-color: white;
+    color: var(--cat-green);
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Lateef', 'Amiri', 'Traditional Arabic', 'Arial', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.selectorBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 0 var(--cat-green);
+}
+
+.selectorBtnActive {
+    background-color: var(--cat-green);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 0 rgba(16, 185, 129, 0.5);
+}
+
+.controls {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    justify-content: center;
+}
+
+.controlBtn {
+    padding: 15px 30px;
+    font-size: 1.3rem;
+    font-family: 'Fredoka', sans-serif;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: bold;
+}
+
+.prevBtn {
+    background-color: var(--cat-blue);
+    box-shadow: 0 8px 0 #2563eb;
+}
+
+.prevBtn:active {
+    transform: translateY(4px);
+    box-shadow: 0 4px 0 #2563eb;
+}
+
+.nextBtn {
+    background-color: var(--cat-orange);
+    box-shadow: 0 8px 0 #ea580c;
+}
+
+.nextBtn:active {
+    transform: translateY(4px);
+    box-shadow: 0 4px 0 #ea580c;
+}
+
+@media (max-width: 768px) {
+    .gameHeader {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .bigNumber {
+        font-size: 8rem;
+    }
+
+    .numberCard {
+        max-width: 250px;
+    }
+
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .controlBtn {
+        width: 100%;
+        max-width: 300px;
+    }
+}

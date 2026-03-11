@@ -1,0 +1,358 @@
+.gameContainer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.gameHeader {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 4px dashed var(--cat-green);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.headerTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.statsPanel {
+    display: flex;
+    gap: 15px;
+}
+
+.statBox {
+    background-color: white;
+    padding: 8px 15px;
+    border-radius: 15px;
+    border: 3px solid var(--text-color);
+    box-shadow: 3px 3px 0px var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 90px;
+}
+
+.statLabel {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--quaternary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.statValue {
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+.instructionPanel {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    padding: 15px 30px;
+    border-radius: 20px;
+    border: 3px solid var(--cat-orange);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.instructionPanel h2 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.8rem;
+}
+
+.speakBtn {
+    background: var(--cat-orange);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.speakBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(245, 158, 11, 0.5);
+}
+
+.speakBtn:active {
+    transform: translateY(1px);
+}
+
+.gameBoard {
+    flex: 1;
+    position: relative;
+    border-radius: 30px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+    border: 5px solid white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.playArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.visualContainer {
+    background-color: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border: 4px dashed var(--cat-orange);
+    min-height: 250px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fingerDisplay {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.fingerIcon {
+    font-size: 6rem;
+    animation: wiggle 2s infinite ease-in-out alternate;
+    line-height: 1;
+}
+
+@keyframes wiggle {
+    0% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+
+    33% {
+        transform: translateY(-10px) rotate(5deg) scale(1.05);
+    }
+
+    66% {
+        transform: translateY(-5px) rotate(-5deg) scale(1.05);
+    }
+
+    100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+}
+
+.optionsContainer {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.optionBtn {
+    width: 120px;
+    height: 120px;
+    font-size: 4rem;
+    font-weight: 900;
+    color: white;
+    background: var(--cat-blue);
+    border: 5px solid white;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.optionBtn:hover:not(:disabled) {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 15px 25px rgba(59, 130, 246, 0.5);
+    background: var(--cat-purple);
+}
+
+.optionBtn:active:not(:disabled) {
+    transform: translateY(0) scale(0.95);
+    box-shadow: 0 5px 10px rgba(59, 130, 246, 0.4);
+}
+
+.optionBtn:disabled {
+    cursor: default;
+    opacity: 0.7;
+}
+
+.optionBtn.correct {
+    background: var(--cat-green) !important;
+    animation: bouncePop 0.8s;
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.8);
+    opacity: 1;
+    z-index: 10;
+}
+
+.optionBtn.wrong {
+    background: var(--cat-red) !important;
+    animation: shake 0.5s;
+    opacity: 1;
+}
+
+@keyframes bouncePop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    70% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-10px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(10px);
+    }
+}
+
+/* Game Over styling matches other games */
+.gameOverPanel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 50px;
+    border-radius: 30px;
+    border: 6px solid var(--text-color);
+    box-shadow: 15px 15px 0px var(--cat-yellow);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    animation: bounceIn 0.8s;
+    z-index: 20;
+}
+
+.gameOverPanel h2 {
+    font-size: 3rem;
+    color: var(--cat-green);
+    margin-bottom: 20px;
+}
+
+.gameOverPanel p {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.finalScore {
+    font-size: 2.5rem !important;
+    color: white;
+    background: var(--quaternary);
+    padding: 10px 30px;
+    border-radius: 20px;
+    border: 3px solid var(--text-color);
+    display: inline-block;
+    transform: rotate(-2deg);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .instructionPanel {
+        flex-direction: column;
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .instructionPanel h2 {
+        font-size: 1.4rem;
+    }
+
+    .gameBoard {
+        padding: 20px;
+        min-height: 400px;
+    }
+
+    .visualContainer {
+        padding: 20px;
+        min-height: 180px;
+    }
+
+    .fingerIcon {
+        font-size: 4rem;
+    }
+
+    .optionBtn {
+        width: 80px;
+        height: 80px;
+        font-size: 2.5rem;
+        border-radius: 15px;
+    }
+
+    .optionsContainer {
+        gap: 15px;
+    }
+
+    .headerTop {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .statsPanel {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .statBox {
+        min-width: 80px;
+        padding: 5px 10px;
+    }
+
+    .statValue {
+        font-size: 1.3rem;
+    }
+}

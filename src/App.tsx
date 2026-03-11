@@ -9,13 +9,20 @@ const Alfabet = lazy(() => import('./pages/Alfabet/Alfabet'));
 const AlfabetMenu = lazy(() => import('./pages/Alfabet/AlfabetMenu'));
 const AlfabetCocokkan = lazy(() => import('./pages/Alfabet/AlfabetCocokkan'));
 const AlfabetBesarKecil = lazy(() => import('./pages/Alfabet/AlfabetBesarKecil'));
+const BalonHuruf = lazy(() => import('./pages/Alfabet/BalonHuruf'));
 const Angka = lazy(() => import('./pages/Angka/Angka'));
 const AngkaMenu = lazy(() => import('./pages/Angka/AngkaMenu'));
 const HitungBenda = lazy(() => import('./pages/Angka/HitungBenda'));
+const HitungJari = lazy(() => import('./pages/Angka/HitungJari'));
+const MenaraBalok = lazy(() => import('./pages/Angka/MenaraBalok'));
+const BalonAngka = lazy(() => import('./pages/Angka/BalonAngka'));
 const MencocokkanMenu = lazy(() => import('./pages/Mencocokkan/Mencocokkan'));
 const GambarSama = lazy(() => import('./pages/Mencocokkan/GambarSama'));
 const GambarBerpasangan = lazy(() => import('./pages/Mencocokkan/GambarBerpasangan'));
 const CocokkanWarna = lazy(() => import('./pages/Mencocokkan/CocokkanWarna'));
+const HijaiyahMenu = lazy(() => import('./pages/Hijaiyah/HijaiyahMenu'));
+const MengenalHijaiyah = lazy(() => import('./pages/Hijaiyah/MengenalHijaiyah'));
+const AngkaHijaiyah = lazy(() => import('./pages/Hijaiyah/AngkaHijaiyah'));
 
 const LoadingFallback = () => (
   <div style={{
@@ -67,15 +74,22 @@ function App() {
             <Route path="/alfabet/cocokkan" element={<AlfabetCocokkan />} />
             <Route path="/alfabet/cocokkan-kecil" element={<AlfabetCocokkan isLowercase={true} />} />
             <Route path="/alfabet/besar-kecil" element={<AlfabetBesarKecil />} />
+            <Route path="/alfabet/balon-huruf" element={<BalonHuruf />} />
             <Route path="/angka" element={<AngkaMenu />} />
             <Route path="/angka/0-20" element={<Angka rangeStart={0} rangeEnd={20} title="Angka 0 - 20" />} />
             <Route path="/angka/21-50" element={<Angka rangeStart={21} rangeEnd={50} title="Angka 21 - 50" />} />
             <Route path="/angka/51-100" element={<Angka rangeStart={51} rangeEnd={100} title="Angka 51 - 100" />} />
             <Route path="/angka/hitung-benda" element={<HitungBenda />} />
+            <Route path="/angka/hitung-jari" element={<HitungJari />} />
+            <Route path="/angka/menara-balok" element={<MenaraBalok />} />
+            <Route path="/angka/balon-angka" element={<BalonAngka />} />
             <Route path="/mencocokkan" element={<MencocokkanMenu />} />
             <Route path="/mencocokkan/gambar-sama" element={<GambarSama />} />
             <Route path="/mencocokkan/gambar-berpasangan" element={<GambarBerpasangan />} />
             <Route path="/mencocokkan/cocokkan-warna" element={<CocokkanWarna />} />
+            <Route path="/hijaiyah" element={<HijaiyahMenu />} />
+            <Route path="/hijaiyah/mengenal" element={<MengenalHijaiyah />} />
+            <Route path="/hijaiyah/angka" element={<AngkaHijaiyah />} />
             <Route path="/nama" element={<Placeholder title="Nama-nama" />} />
             <Route path="/membaca" element={<Placeholder title="Membaca" />} />
             <Route path="/matematika" element={<Placeholder title="Matematika" />} />

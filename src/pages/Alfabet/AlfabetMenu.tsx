@@ -63,6 +63,13 @@ const AlfabetMenu: React.FC = () => {
                                 description={game.description}
                             />
                         ))}
+                        <CategoryCard
+                            title="Balon Huruf"
+                            icon="🎈"
+                            colorClass="cyan"
+                            link="/alfabet/balon-huruf"
+                            description="Pecahkan balon dengan huruf yang tepat!"
+                        />
                     </div>
                 </div>
 
