@@ -85,7 +85,7 @@ const Alfabet: React.FC<AlfabetProps> = ({ isLowercase = false }) => {
                     fontSize: '1rem',
                     padding: '8px 16px'
                 }}>
-                    ⬅️ Kembali ke Menu Alfabet
+                    ⬅️ Kembali
                 </Link>
                 <h2 className={styles.gameTitle}>Belajar Huruf {isLowercase ? 'Kecil' : 'Besar'}</h2>
             </header>

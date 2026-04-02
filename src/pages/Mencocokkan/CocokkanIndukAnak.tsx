@@ -1,46 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import styles from '../Mencocokkan/GambarSama.module.css';
+import styles from './GambarSama.module.css';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
 import LivesDisplay from '../../components/LivesDisplay';
 
-// All alphabet pairs: letter -> word + icon
-const ALPHABET_PAIRS = [
-    { id: 1, letter: 'A', word: 'Apel', icon: '🍎' },
-    { id: 2, letter: 'B', word: 'Buku', icon: '📚' },
-    { id: 3, letter: 'C', word: 'Cicak', icon: '🦎' },
-    { id: 4, letter: 'D', word: 'Domba', icon: '🐑' },
-    { id: 5, letter: 'E', word: 'Ember', icon: '🪣' },
-    { id: 6, letter: 'F', word: 'Foto', icon: '📷' },
-    { id: 7, letter: 'G', word: 'Gajah', icon: '🐘' },
-    { id: 8, letter: 'H', word: 'Harimau', icon: '🐅' },
-    { id: 9, letter: 'I', word: 'Ikan', icon: '🐟' },
-    { id: 10, letter: 'J', word: 'Jeruk', icon: '🍊' },
-    { id: 11, letter: 'K', word: 'Kucing', icon: '🐈' },
-    { id: 12, letter: 'L', word: 'Lampu', icon: '💡' },
-    { id: 13, letter: 'M', word: 'Mobil', icon: '🚗' },
-    { id: 14, letter: 'N', word: 'Nanas', icon: '🍍' },
-    { id: 15, letter: 'O', word: 'Obat', icon: '💊' },
-    { id: 16, letter: 'P', word: 'Pisang', icon: '🍌' },
-    { id: 17, letter: 'Q', word: 'Quran', icon: '📖' },
-    { id: 18, letter: 'R', word: 'Rumah', icon: '🏠' },
-    { id: 19, letter: 'S', word: 'Sapi', icon: '🐄' },
-    { id: 20, letter: 'T', word: 'Topi', icon: '🧢' },
-    { id: 21, letter: 'U', word: 'Ular', icon: '🐍' },
-    { id: 22, letter: 'V', word: 'Vila', icon: '🏡' },
-    { id: 23, letter: 'W', word: 'Wortel', icon: '🥕' },
-    { id: 24, letter: 'X', word: 'Xilofon', icon: '🎹' },
-    { id: 25, letter: 'Y', word: 'Yoyo', icon: '🪀' },
-    { id: 26, letter: 'Z', word: 'Zebra', icon: '🦓' },
+const ANIMAL_PAIRS = [
+    { id: 1, parent: '🐔', child: '🐥' }, // Chicken -> Chick
+    { id: 2, parent: '🐈', child: '🐱' }, // Cat -> Kitten
+    { id: 3, parent: '🐕', child: '🐶' }, // Dog -> Puppy
+    { id: 4, parent: '🐄', child: '🐮' }, // Cow -> Calf
+    { id: 5, parent: '🐖', child: '🐷' }, // Pig -> Piglet
+    { id: 6, parent: '🐅', child: '🐯' }, // Tiger -> Cub
+    { id: 7, parent: '🐎', child: '🐴' }, // Horse -> Foal
+    { id: 8, parent: '🦍', child: '🐒' }, // Gorilla -> Monkey
+    { id: 9, parent: '🦅', child: '🐣' }, // Eagle -> Hatching Bird
+    { id: 10, parent: '🐻', child: '🧸' }, // Bear -> Teddy/Cub
+    { id: 11, parent: '🦕', child: '🦎' }, // Dino -> Lizard
+    { id: 12, parent: '🐉', child: '🐲' }, // Dragon -> Dragon Face
 ];
 
-// 5 rounds with progressively more pairs
 const ROUND_CONFIGS = [
     4, // Round 1: 4 pairs (8 cards)
     6, // Round 2: 6 pairs (12 cards)
     8, // Round 3: 8 pairs (16 cards)
     10, // Round 4: 10 pairs (20 cards)
-    12, // Round 5: 12 pairs (24 cards)
+    12 // Round 5: 12 pairs (24 cards)
 ];
 
 interface CardProps {
@@ -48,60 +32,34 @@ interface CardProps {
     content: string;
     isSelected: boolean;
     isMatched: boolean;
-    isLetter?: boolean;
     onClick: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ content, isSelected, isMatched, isLetter, onClick }) => {
+const Card: React.FC<CardProps> = ({ content, isSelected, isMatched, onClick }) => {
     return (
         <div
             className={`${styles.card} ${isSelected ? styles.selected : ''} ${isMatched ? styles.matched : ''}`}
             onClick={!isSelected && !isMatched ? onClick : undefined}
         >
-            <div className={styles.cardInnerFaceUp} style={isLetter ? { fontWeight: 900, fontSize: '5rem', color: 'var(--cat-blue)' } : {}}>
-                {content}
+            <div className={styles.cardInnerFaceUp}>
+                <span style={{ fontSize: '4.5rem' }}>
+                    {content}
+                </span>
             </div>
         </div>
     );
 };
-interface AlfabetCocokkanProps {
-    isLowercase?: boolean;
-}
 
-const AlfabetCocokkan: React.FC<AlfabetCocokkanProps> = ({ isLowercase = false }) => {
+const CocokkanIndukAnak: React.FC = () => {
     const [round, setRound] = useState(1);
     const [score, setScore] = useState(0);
-    const [cards, setCards] = useState<{ uniqueId: string; pairId: number; content: string; isLetter: boolean }[]>([]);
+    const [cards, setCards] = useState<{ uniqueId: string; pairId: number; content: string }[]>([]);
     const [flippedIndices, setFlippedIndices] = useState<number[]>([]);
     const [matchedIndices, setMatchedIndices] = useState<number[]>([]);
     const [isLocked, setIsLocked] = useState(false);
     const [gameOver, setGameOver] = useState(false);
     const [roundWinner, setRoundWinner] = useState(false);
     const [lives, setLives] = useState(5);
-
-    const initRound = (r: number) => {
-        const pairCount = ROUND_CONFIGS[r - 1];
-
-        // Select random alphabet pairs for this round
-        const shuffledPairs = [...ALPHABET_PAIRS].sort(() => Math.random() - 0.5).slice(0, pairCount);
-
-        // Create the deck: one card shows the letter, the other shows icon + word
-        const deck: { uniqueId: string; pairId: number; content: string; isLetter: boolean }[] = [];
-        shuffledPairs.forEach((pair) => {
-            const displayLetter = isLowercase ? pair.letter.toLowerCase() : pair.letter;
-            deck.push({ uniqueId: `${pair.id}-letter`, pairId: pair.id, content: displayLetter, isLetter: true });
-            deck.push({ uniqueId: `${pair.id}-word`, pairId: pair.id, content: pair.icon, isLetter: false });
-        });
-
-        // Shuffle the deck
-        deck.sort(() => Math.random() - 0.5);
-
-        setCards(deck);
-        setFlippedIndices([]);
-        setMatchedIndices([]);
-        setRoundWinner(false);
-        setIsLocked(false);
-    };
 
     useEffect(() => {
         initRound(round);
@@ -111,13 +69,31 @@ const AlfabetCocokkan: React.FC<AlfabetCocokkanProps> = ({ isLowercase = false }
     useEffect(() => {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
-            const text = isLowercase ? "Cocokkan Huruf Kecil dengan Gambar!" : "Cocokkan Huruf Besar dengan Gambar!";
-            const utterance = new SpeechSynthesisUtterance(text);
+            const utterance = new SpeechSynthesisUtterance("Cocokkan Hewan yang mirip!");
             utterance.lang = 'id-ID';
             utterance.rate = 0.9;
             window.speechSynthesis.speak(utterance);
         }
-    }, [isLowercase]);
+    }, []);
+
+    const initRound = (r: number) => {
+        const pairCount = ROUND_CONFIGS[r - 1];
+        const shuffledPairs = [...ANIMAL_PAIRS].sort(() => Math.random() - 0.5).slice(0, pairCount);
+
+        const deck: { uniqueId: string; pairId: number; content: string }[] = [];
+        shuffledPairs.forEach((pair) => {
+            deck.push({ uniqueId: `${pair.id}-parent`, pairId: pair.id, content: pair.parent });
+            deck.push({ uniqueId: `${pair.id}-child`, pairId: pair.id, content: pair.child });
+        });
+
+        deck.sort(() => Math.random() - 0.5);
+
+        setCards(deck);
+        setFlippedIndices([]);
+        setMatchedIndices([]);
+        setRoundWinner(false);
+        setIsLocked(false);
+    };
 
     const handleCardClick = (index: number) => {
         if (isLocked) return;
@@ -134,9 +110,7 @@ const AlfabetCocokkan: React.FC<AlfabetCocokkanProps> = ({ isLowercase = false }
             const firstCard = cards[firstIndex];
             const secondCard = cards[secondIndex];
 
-            // Check if they are a pair (same pairId)
             if (firstCard.pairId === secondCard.pairId) {
-                // Match!
                 playCorrectSound();
                 setTimeout(() => {
                     setMatchedIndices(prev => [...prev, firstIndex, secondIndex]);
@@ -145,7 +119,6 @@ const AlfabetCocokkan: React.FC<AlfabetCocokkanProps> = ({ isLowercase = false }
                     setIsLocked(false);
                 }, 800);
             } else {
-                // No match
                 playWrongSound();
                 setLives(prev => {
                     const newLives = prev - 1;
@@ -167,13 +140,13 @@ const AlfabetCocokkan: React.FC<AlfabetCocokkanProps> = ({ isLowercase = false }
             setRoundWinner(true);
             playWinSound();
             const nextRound = round + 1;
-            if (round < 5) {
+            if (round <= 5) {
                 setTimeout(() => {
-                    setRound(nextRound);
-                }, 2000);
-            } else {
-                setTimeout(() => {
-                    setGameOver(true);
+                    if (nextRound > 5) {
+                        setGameOver(true);
+                    } else {
+                        setRound(nextRound);
+                    }
                 }, 2000);
             }
         }
@@ -192,10 +165,10 @@ const AlfabetCocokkan: React.FC<AlfabetCocokkanProps> = ({ isLowercase = false }
 
     return (
         <div className={styles.gameContainer}>
-            <header className={styles.gameHeader} style={{ borderBottomColor: 'var(--cat-blue)' }}>
+            <header className={styles.gameHeader} style={{ borderBottomColor: 'var(--cat-orange)' }}>
                 <div className={styles.headerTop}>
-                    <Link to="/alfabet" className="btn" style={{
-                        backgroundColor: 'var(--cat-blue)',
+                    <Link to="/mencocokkan" className="btn" style={{
+                        backgroundColor: 'var(--cat-orange)',
                         textTransform: 'none',
                         fontSize: '1rem',
                         padding: '8px 16px'
@@ -209,17 +182,17 @@ const AlfabetCocokkan: React.FC<AlfabetCocokkanProps> = ({ isLowercase = false }
                         </div>
                         <div className={styles.statBox}>
                             <span className={styles.statLabel}>Nilai</span>
-                            <span className={styles.statValue} style={{ color: 'var(--cat-blue)' }}>{score}</span>
+                            <span className={styles.statValue} style={{ color: 'var(--cat-orange)' }}>{score}</span>
                         </div>
                         <div className={styles.statBox}>
                             <span className={styles.statLabel}>Putaran</span>
-                            <span className={styles.statValue} style={{ color: 'var(--cat-blue)' }}>{round}/5</span>
+                            <span className={styles.statValue} style={{ color: 'var(--cat-orange)' }}>{round}/5</span>
                         </div>
                     </div>
                 </div>
-                <h2 className={styles.gameTitle} style={{ color: 'var(--cat-blue)' }}>Cocokkan Huruf {isLowercase ? 'Kecil' : 'Besar'} dengan Gambar! 🔤</h2>
+                <h2 className={styles.gameTitle} style={{ color: 'var(--cat-orange)' }}>Cocokkan Hewan yang mirip! 🐣</h2>
                 <p style={{ textAlign: 'center', color: 'var(--quaternary)', marginTop: '10px', fontWeight: 'bold' }}>
-                    Contoh: Huruf {isLowercase ? 'a' : 'A'} dipasangkan dengan 🍎
+                    Pasangkan hewan dengan hewan lain yang mirip!
                 </p>
             </header>
 
@@ -239,10 +212,10 @@ const AlfabetCocokkan: React.FC<AlfabetCocokkanProps> = ({ isLowercase = false }
                         )}
                         <div className={styles.finalScore}>Skor Akhir: {score}</div>
                         <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-blue)' }}>
+                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-orange)' }}>
                                 🔄 Main Lagi
                             </button>
-                            <Link to="/alfabet" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
+                            <Link to="/mencocokkan" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
                                 ⬅️ Menu Utama
                             </Link>
                         </div>
@@ -252,15 +225,15 @@ const AlfabetCocokkan: React.FC<AlfabetCocokkanProps> = ({ isLowercase = false }
                         {roundWinner && (
                             <div className={styles.roundWinnerOverlay}>
                                 <div className={styles.roundWinnerPanel}>
-                                    <h2 style={{ color: 'var(--cat-blue)' }}>Hebat! 🌟</h2>
-                                    <p>Huruf dan gambar cocok semua!</p>
+                                    <h2 style={{ color: 'var(--cat-orange)' }}>Bagus! 🌟</h2>
+                                    <p>Pasangan hewan bertemu!</p>
                                 </div>
                             </div>
                         )}
                         <div
                             className={styles.cardsGrid}
                             style={{
-                                gridTemplateColumns: `repeat(${cards.length <= 12 ? 4 : cards.length <= 16 ? 4 : cards.length <= 20 ? 5 : 6}, 1fr)`
+                                gridTemplateColumns: `repeat(${cards.length <= 12 ? 4 : cards.length <= 16 ? 4 : 5}, 1fr)`
                             }}
                         >
                             {cards.map((card, index) => (
@@ -268,7 +241,6 @@ const AlfabetCocokkan: React.FC<AlfabetCocokkanProps> = ({ isLowercase = false }
                                     key={card.uniqueId}
                                     id={card.uniqueId}
                                     content={card.content}
-                                    isLetter={card.isLetter}
                                     isSelected={flippedIndices.includes(index)}
                                     isMatched={matchedIndices.includes(index)}
                                     onClick={() => handleCardClick(index)}
@@ -282,4 +254,4 @@ const AlfabetCocokkan: React.FC<AlfabetCocokkanProps> = ({ isLowercase = false }
     );
 };
 
-export default AlfabetCocokkan;
+export default CocokkanIndukAnak;

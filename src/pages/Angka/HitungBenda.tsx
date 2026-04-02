@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './HitungBenda.module.css';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
+import LivesDisplay from '../../components/LivesDisplay';
 import confetti from 'canvas-confetti';
 
 interface EmojiItem {
@@ -33,6 +34,7 @@ const HitungBenda: React.FC = () => {
     const [gameOver, setGameOver] = useState(false);
     const [selectedWrong, setSelectedWrong] = useState<number[]>([]);
     const [correctSelected, setCorrectSelected] = useState<number | null>(null);
+    const [lives, setLives] = useState(5);
     const questionAudioRef = useRef<HTMLAudioElement | null>(null);
 
     const TOTAL_ROUNDS = 10;
@@ -117,16 +119,28 @@ const HitungBenda: React.FC = () => {
             playWrongSound();
             setSelectedWrong([option]);
 
-            // Next round after a shorter delay with 0 score
+            setLives(prev => {
+                const newLives = prev - 1;
+                if (newLives <= 0) {
+                    setTimeout(() => setGameOver(true), 500);
+                }
+                return newLives;
+            });
+
             setTimeout(() => {
-                setRound(prev => prev + 1);
+                setSelectedWrong([]);
             }, 1000);
         }
     };
 
     const restartGame = () => {
+        if (round === 1) {
+            generateRound();
+        } else {
+            setRound(1);
+        }
         setScore(0);
-        setRound(1);
+        setLives(5);
         setGameOver(false);
     };
 
@@ -143,6 +157,9 @@ const HitungBenda: React.FC = () => {
                 </Link>
                 <div className={styles.statsContainer}>
                     <div className={styles.statBox}>
+                        Nyawa: <LivesDisplay lives={lives} />
+                    </div>
+                    <div className={styles.statBox}>
                         Ronde <span style={{ color: 'var(--primary)' }}>{Math.min(round, TOTAL_ROUNDS)}</span>/{TOTAL_ROUNDS}
                     </div>
                     <div className={styles.statBox}>
@@ -154,12 +171,26 @@ const HitungBenda: React.FC = () => {
             <main className={styles.gameBoard}>
                 {gameOver ? (
                     <div className={styles.gameOverCard}>
-                        <h2>🎉 Luar Biasa! 🎉</h2>
-                        <p>Kamu berhasil menyelesaikan game berhitung!</p>
+                        {lives > 0 ? (
+                            <>
+                                <h2>🎉 Luar Biasa! 🎉</h2>
+                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
+                            </>
+                        ) : (
+                            <>
+                                <h2>💔 Kesempatan Habis! 💔</h2>
+                                <p>Jangan menyerah, ayo coba lagi!</p>
+                            </>
+                        )}
                         <div className={styles.finalScore}>Skor Akhir: {score}</div>
-                        <button className="btn" onClick={restartGame} style={{ fontSize: '1.5rem', padding: '15px 40px', marginTop: '20px' }}>
-                            🔄 Main Lagi
-                        </button>
+                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <button className="btn" onClick={restartGame} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-orange)' }}>
+                                🔄 Main Lagi
+                            </button>
+                            <Link to="/angka" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
+                                ⬅️ Menu Utama
+                            </Link>
+                        </div>
                     </div>
                 ) : (
                     <>

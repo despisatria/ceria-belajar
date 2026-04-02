@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../Mencocokkan/GambarSama.module.css';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
+import LivesDisplay from '../../components/LivesDisplay';
 
 // All 26 letters
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((letter, i) => ({
@@ -56,6 +57,7 @@ const AlfabetBesarKecil: React.FC = () => {
     const [isLocked, setIsLocked] = useState(false);
     const [gameOver, setGameOver] = useState(false);
     const [roundWinner, setRoundWinner] = useState(false);
+    const [lives, setLives] = useState(5);
 
     const initRound = (r: number) => {
         const pairCount = ROUND_CONFIGS[r - 1];
@@ -84,6 +86,17 @@ const AlfabetBesarKecil: React.FC = () => {
         initRound(round);
     }, [round]);
 
+    // Speak title on mount
+    useEffect(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance("Cocokkan Huruf Besar dan Kecil!");
+            utterance.lang = 'id-ID';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+    }, []);
+
     const handleCardClick = (index: number) => {
         if (isLocked) return;
         if (flippedIndices.length === 2) return;
@@ -111,6 +124,13 @@ const AlfabetBesarKecil: React.FC = () => {
             } else {
                 // No match
                 playWrongSound();
+                setLives(prev => {
+                    const newLives = prev - 1;
+                    if (newLives <= 0) {
+                        setTimeout(() => setGameOver(true), 500);
+                    }
+                    return newLives;
+                });
                 setTimeout(() => {
                     setFlippedIndices([]);
                     setIsLocked(false);
@@ -137,8 +157,13 @@ const AlfabetBesarKecil: React.FC = () => {
     }, [matchedIndices, cards.length, round, roundWinner]);
 
     const handleRestart = () => {
-        setRound(1);
+        if (round === 1) {
+            initRound(1);
+        } else {
+            setRound(1);
+        }
         setScore(0);
+        setLives(5);
         setGameOver(false);
     };
 
@@ -155,6 +180,10 @@ const AlfabetBesarKecil: React.FC = () => {
                         ⬅️ Kembali
                     </Link>
                     <div className={styles.statsPanel}>
+                        <div className={styles.statBox}>
+                            <span className={styles.statLabel}>Nyawa</span>
+                            <LivesDisplay lives={lives} />
+                        </div>
                         <div className={styles.statBox}>
                             <span className={styles.statLabel}>Nilai</span>
                             <span className={styles.statValue} style={{ color: 'var(--cat-green)' }}>{score}</span>
@@ -174,13 +203,26 @@ const AlfabetBesarKecil: React.FC = () => {
             <main className={styles.gameBoard}>
                 {gameOver ? (
                     <div className={styles.gameOverPanel}>
-                        <h2>Game Selesai! 🎉</h2>
-                        <p>Pintar sekali! Kamu hafal huruf besar dan kecil!</p>
-                        <p className={styles.finalScore}>Total Nilai: {score}</p>
-                        <button className="btn" onClick={handleRestart} style={{ backgroundColor: 'var(--cat-green)' }}>Main Lagi 🔄</button>
-                        <Link to="/alfabet" className="btn" style={{ marginLeft: '15px', backgroundColor: 'var(--quaternary)' }}>
-                            Menu Alfabet 🔤
-                        </Link>
+                        {lives > 0 ? (
+                            <>
+                                <h2>🎉 Luar Biasa! 🎉</h2>
+                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
+                            </>
+                        ) : (
+                            <>
+                                <h2>💔 Kesempatan Habis! 💔</h2>
+                                <p>Jangan menyerah, ayo coba lagi!</p>
+                            </>
+                        )}
+                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
+                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-green)' }}>
+                                🔄 Main Lagi
+                            </button>
+                            <Link to="/alfabet" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
+                                ⬅️ Menu Utama
+                            </Link>
+                        </div>
                     </div>
                 ) : (
                     <>

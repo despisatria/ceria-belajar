@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styles from './BalonHuruf.module.css';
 import { audioPlayer } from '../../utils/audioPlayer';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
+import LivesDisplay from '../../components/LivesDisplay';
 import confetti from 'canvas-confetti';
 
 interface Balloon {
@@ -26,6 +27,7 @@ const BalonHuruf: React.FC = () => {
     const [balloons, setBalloons] = useState<Balloon[]>([]);
     const [gameOver, setGameOver] = useState(false);
     const [isPaused, setIsPaused] = useState(false); // To prevent multiple clicks while transitioning
+    const [lives, setLives] = useState(5);
 
     const triggerConfetti = useCallback(() => {
         confetti({
@@ -133,15 +135,27 @@ const BalonHuruf: React.FC = () => {
         } else {
             // Wrong
             playWrongSound();
+            setLives(prev => {
+                const newLives = prev - 1;
+                if (newLives <= 0) {
+                    setTimeout(() => setGameOver(true), 500);
+                }
+                return newLives;
+            });
             // Just pop the wrong one so it disappears
             setBalloons(prev => prev.filter(b => b.id !== balloonId));
         }
     };
 
     const handleRestart = () => {
-        setRound(1);
+        if (round === 1) {
+            initRound(1);
+        } else {
+            setRound(1);
+        }
         setScore(0);
         setPoppedCount(0);
+        setLives(5);
         setGameOver(false);
     };
 
@@ -160,6 +174,10 @@ const BalonHuruf: React.FC = () => {
                         ⬅️ Kembali
                     </Link>
                     <div className={styles.statsPanel}>
+                        <div className={styles.statBox}>
+                            <span className={styles.statLabel}>Nyawa</span>
+                            <LivesDisplay lives={lives} />
+                        </div>
                         <div className={styles.statBox}>
                             <span className={styles.statLabel}>Nilai</span>
                             <span className={styles.statValue} style={{ color: 'var(--cat-blue)' }}>{score}</span>
@@ -188,15 +206,24 @@ const BalonHuruf: React.FC = () => {
             <main className={styles.gameBoard}>
                 {gameOver ? (
                     <div className={styles.gameOverPanel}>
-                        <h2>Hebat Sekali! 🎉</h2>
-                        <p>Kamu pintar mencari huruf!</p>
-                        <p className={styles.finalScore}>Total Nilai: {score}</p>
-                        <div style={{ marginTop: '20px' }}>
-                            <button className="btn" onClick={handleRestart} style={{ backgroundColor: 'var(--cat-blue)', marginRight: '15px' }}>
-                                Main Lagi 🔄
+                        {lives > 0 ? (
+                            <>
+                                <h2>🎉 Luar Biasa! 🎉</h2>
+                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
+                            </>
+                        ) : (
+                            <>
+                                <h2>💔 Kesempatan Habis! 💔</h2>
+                                <p>Jangan menyerah, ayo coba lagi!</p>
+                            </>
+                        )}
+                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
+                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-blue)' }}>
+                                🔄 Main Lagi
                             </button>
-                            <Link to="/alfabet" className="btn" style={{ backgroundColor: 'var(--cat-green)' }}>
-                                Menu Alfabet 🔠
+                            <Link to="/alfabet" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
+                                ⬅️ Menu Utama
                             </Link>
                         </div>
                     </div>

@@ -39,6 +39,10 @@ const Home: React.FC = () => {
                     ))}
                 </div>
             </main>
+            <footer style={{ textAlign: 'center', padding: '40px 20px', marginTop: '20px', color: 'var(--quaternary)', fontWeight: 'bold' }}>
+                <p>© {new Date().getFullYear()} Ceria Belajar - Belajar Senang, Tumbuh Cemerlang.</p>
+                <p>Game edukasi interaktif untuk anak PAUD & TK.</p>
+            </footer>
         </>
     );
 };

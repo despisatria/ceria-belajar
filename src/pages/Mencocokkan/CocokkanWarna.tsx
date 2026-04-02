@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './GambarSama.module.css';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
+import LivesDisplay from '../../components/LivesDisplay';
 
 // Color pairs: colored circle -> emoji representing that color
 const COLOR_PAIRS = [
@@ -70,6 +71,7 @@ const CocokkanWarna: React.FC = () => {
     const [isLocked, setIsLocked] = useState(false);
     const [gameOver, setGameOver] = useState(false);
     const [roundWinner, setRoundWinner] = useState(false);
+    const [lives, setLives] = useState(5);
 
     const initRound = (r: number) => {
         const pairCount = ROUND_CONFIGS[r - 1];
@@ -98,6 +100,17 @@ const CocokkanWarna: React.FC = () => {
         initRound(round);
     }, [round]);
 
+    // Speak title on mount
+    useEffect(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance("Cocokkan Nama Warna!");
+            utterance.lang = 'id-ID';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+    }, []);
+
     const handleCardClick = (index: number) => {
         if (isLocked) return;
         if (flippedIndices.length === 2) return;
@@ -123,6 +136,13 @@ const CocokkanWarna: React.FC = () => {
                 }, 800);
             } else {
                 playWrongSound();
+                setLives(prev => {
+                    const newLives = prev - 1;
+                    if (newLives <= 0) {
+                        setTimeout(() => setGameOver(true), 500);
+                    }
+                    return newLives;
+                });
                 setTimeout(() => {
                     setFlippedIndices([]);
                     setIsLocked(false);
@@ -149,8 +169,13 @@ const CocokkanWarna: React.FC = () => {
     }, [matchedIndices, cards.length, round, roundWinner]);
 
     const handleRestart = () => {
-        setRound(1);
+        if (round === 1) {
+            initRound(1);
+        } else {
+            setRound(1);
+        }
         setScore(0);
+        setLives(5);
         setGameOver(false);
     };
 
@@ -167,6 +192,10 @@ const CocokkanWarna: React.FC = () => {
                         ⬅️ Kembali
                     </Link>
                     <div className={styles.statsPanel}>
+                        <div className={styles.statBox}>
+                            <span className={styles.statLabel}>Nyawa</span>
+                            <LivesDisplay lives={lives} />
+                        </div>
                         <div className={styles.statBox}>
                             <span className={styles.statLabel}>Nilai</span>
                             <span className={styles.statValue} style={{ color: 'var(--cat-orange)' }}>{score}</span>
@@ -186,13 +215,26 @@ const CocokkanWarna: React.FC = () => {
             <main className={styles.gameBoard}>
                 {gameOver ? (
                     <div className={styles.gameOverPanel}>
-                        <h2>Game Selesai! 🎉</h2>
-                        <p>Pintar sekali! Kamu sudah hafal semua warna!</p>
-                        <p className={styles.finalScore}>Total Nilai: {score}</p>
-                        <button className="btn" onClick={handleRestart} style={{ backgroundColor: 'var(--cat-orange)' }}>Main Lagi 🔄</button>
-                        <Link to="/mencocokkan" className="btn" style={{ marginLeft: '15px', backgroundColor: 'var(--quaternary)' }}>
-                            Mencocokkan Lainnya 🧩
-                        </Link>
+                        {lives > 0 ? (
+                            <>
+                                <h2>🎉 Luar Biasa! 🎉</h2>
+                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
+                            </>
+                        ) : (
+                            <>
+                                <h2>💔 Kesempatan Habis! 💔</h2>
+                                <p>Jangan menyerah, ayo coba lagi!</p>
+                            </>
+                        )}
+                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
+                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-orange)' }}>
+                                🔄 Main Lagi
+                            </button>
+                            <Link to="/mencocokkan" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
+                                ⬅️ Menu Utama
+                            </Link>
+                        </div>
                     </div>
                 ) : (
                     <>

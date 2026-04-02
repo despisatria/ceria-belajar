@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styles from './HitungJari.module.css';
 import { audioPlayer } from '../../utils/audioPlayer';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
+import LivesDisplay from '../../components/LivesDisplay';
 import confetti from 'canvas-confetti';
 
 const TOTAL_ROUNDS = 10;
@@ -15,6 +16,7 @@ const HitungJari: React.FC = () => {
     const [gameOver, setGameOver] = useState(false);
     const [showCorrection, setShowCorrection] = useState(false);
     const [selectedWrongId, setSelectedWrongId] = useState<number | null>(null);
+    const [lives, setLives] = useState(5);
 
     const triggerConfetti = useCallback(() => {
         confetti({
@@ -83,6 +85,13 @@ const HitungJari: React.FC = () => {
             // Wrong
             playWrongSound();
             setSelectedWrongId(selectedNum);
+            setLives(prev => {
+                const newLives = prev - 1;
+                if (newLives <= 0) {
+                    setTimeout(() => setGameOver(true), 500);
+                }
+                return newLives;
+            });
             // Re-enable clicking after a short delay
             setTimeout(() => {
                 setSelectedWrongId(null);
@@ -91,8 +100,13 @@ const HitungJari: React.FC = () => {
     };
 
     const handleRestart = () => {
-        setRound(1);
+        if (round === 1) {
+            initRound();
+        } else {
+            setRound(1);
+        }
         setScore(0);
+        setLives(5);
         setGameOver(false);
     };
 
@@ -109,6 +123,10 @@ const HitungJari: React.FC = () => {
                         ⬅️ Kembali
                     </Link>
                     <div className={styles.statsPanel}>
+                        <div className={styles.statBox}>
+                            <span className={styles.statLabel}>Nyawa</span>
+                            <LivesDisplay lives={lives} />
+                        </div>
                         <div className={styles.statBox}>
                             <span className={styles.statLabel}>Nilai</span>
                             <span className={styles.statValue} style={{ color: 'var(--cat-orange)' }}>{score}</span>
@@ -137,15 +155,24 @@ const HitungJari: React.FC = () => {
             <main className={styles.gameBoard}>
                 {gameOver ? (
                     <div className={styles.gameOverPanel}>
-                        <h2>Luar Biasa! 🎉</h2>
-                        <p>Kamu pintar berhitung!</p>
-                        <p className={styles.finalScore}>Total Nilai: {score}</p>
-                        <div style={{ marginTop: '20px' }}>
-                            <button className="btn" onClick={handleRestart} style={{ backgroundColor: 'var(--cat-orange)', marginRight: '15px' }}>
-                                Main Lagi 🔄
+                        {lives > 0 ? (
+                            <>
+                                <h2>🎉 Luar Biasa! 🎉</h2>
+                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
+                            </>
+                        ) : (
+                            <>
+                                <h2>💔 Kesempatan Habis! 💔</h2>
+                                <p>Jangan menyerah, ayo coba lagi!</p>
+                            </>
+                        )}
+                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
+                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-orange)' }}>
+                                🔄 Main Lagi
                             </button>
-                            <Link to="/angka" className="btn" style={{ backgroundColor: 'var(--cat-green)' }}>
-                                Menu Angka 🔢
+                            <Link to="/angka" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
+                                ⬅️ Menu Utama
                             </Link>
                         </div>
                     </div>

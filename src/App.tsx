@@ -20,6 +20,9 @@ const MencocokkanMenu = lazy(() => import('./pages/Mencocokkan/Mencocokkan'));
 const GambarSama = lazy(() => import('./pages/Mencocokkan/GambarSama'));
 const GambarBerpasangan = lazy(() => import('./pages/Mencocokkan/GambarBerpasangan'));
 const CocokkanWarna = lazy(() => import('./pages/Mencocokkan/CocokkanWarna'));
+const CocokkanBayangan = lazy(() => import('./pages/Mencocokkan/CocokkanBayangan'));
+const CocokkanBentuk = lazy(() => import('./pages/Mencocokkan/CocokkanBentuk'));
+const CocokkanIndukAnak = lazy(() => import('./pages/Mencocokkan/CocokkanIndukAnak'));
 const HijaiyahMenu = lazy(() => import('./pages/Hijaiyah/HijaiyahMenu'));
 const MengenalHijaiyah = lazy(() => import('./pages/Hijaiyah/MengenalHijaiyah'));
 const AngkaHijaiyah = lazy(() => import('./pages/Hijaiyah/AngkaHijaiyah'));
@@ -87,6 +90,9 @@ function App() {
             <Route path="/mencocokkan/gambar-sama" element={<GambarSama />} />
             <Route path="/mencocokkan/gambar-berpasangan" element={<GambarBerpasangan />} />
             <Route path="/mencocokkan/cocokkan-warna" element={<CocokkanWarna />} />
+            <Route path="/mencocokkan/cocokkan-bayangan" element={<CocokkanBayangan />} />
+            <Route path="/mencocokkan/cocokkan-bentuk" element={<CocokkanBentuk />} />
+            <Route path="/mencocokkan/cocokkan-induk-anak" element={<CocokkanIndukAnak />} />
             <Route path="/hijaiyah" element={<HijaiyahMenu />} />
             <Route path="/hijaiyah/mengenal" element={<MengenalHijaiyah />} />
             <Route path="/hijaiyah/angka" element={<AngkaHijaiyah />} />
@@ -98,10 +104,6 @@ function App() {
           </Routes>
         </Suspense>
 
-        <footer style={{ textAlign: 'center', padding: '40px 20px', marginTop: '20px', color: 'var(--quaternary)', fontWeight: 'bold' }}>
-          <p>© {new Date().getFullYear()} Ceria Belajar - Belajar Senang, Tumbuh Cemerlang.</p>
-          <p>Game edukasi interaktif untuk anak PAUD & TK.</p>
-        </footer>
         <MusicToggle />
       </div>
     </Router>

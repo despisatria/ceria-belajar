@@ -162,7 +162,7 @@
 }
 
 .cardFront {
-    background-color: var(--cat-blue);
+    background-color: var(--cat-green);
     background-image: repeating-linear-gradient(45deg,
             transparent,
             transparent 10px,
@@ -192,7 +192,7 @@
     border: 6px solid var(--text-color);
     box-shadow: 15px 15px 0px var(--cat-yellow);
     text-align: center;
-    max-width: 500px;
+    max-width: 650px;
     animation: bounceIn 0.8s;
     z-index: 20;
 }
