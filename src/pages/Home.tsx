@@ -18,7 +18,7 @@ const CATEGORIES: CategoryData[] = [
     { id: 'mencocokkan', title: 'Tebak & Cocok', icon: '🧩', colorClass: 'red', link: '/mencocokkan', description: 'Latih ingatan dengan mencocokkan' },
     { id: 'membaca', title: 'Ayo Membaca', icon: '📚', colorClass: 'purple', link: '/membaca', description: 'Berlatih membaca kata dan kalimat' },
     { id: 'matematika', title: 'Hitung Yuk!', icon: '🧮', colorClass: 'orange', link: '/matematika', description: 'Penjumlahan dan pengurangan seru' },
-    { id: 'sains', title: 'Jelajah Alam', icon: '🌍', colorClass: 'cyan', link: '/sains', description: 'Mengenal alam sekitar dan sains dasar' },
+    // { id: 'sains', title: 'Jelajah Alam', icon: '🌍', colorClass: 'cyan', link: '/sains', description: 'Mengenal alam sekitar dan sains dasar' },
 ];
 
 const Home: React.FC = () => {

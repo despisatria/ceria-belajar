@@ -1,0 +1,72 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Header from '../../components/Header';
+import CategoryCard from '../../components/CategoryCard';
+
+const MEMBACA_LEARNING = [
+    {
+        id: 'dasar',
+        title: 'Suku Kata Dasar',
+        icon: '🔤',
+        colorClass: 'blue',
+        link: '/membaca/dasar',
+        description: 'Vokal (A,I,U,E,O) & Konsonan: Ba, Bi, Bu...'
+    },
+    {
+        id: 'khusus',
+        title: 'Suku Kata Khusus',
+        icon: '🌈',
+        colorClass: 'green',
+        link: '/membaca/khusus',
+        description: 'Bunyi NG (Nga, Ngi...) & NY (Nya, Nyi...)'
+    },
+];
+
+const MembacaMenu: React.FC = () => {
+    return (
+        <>
+            <Header />
+            <main className="app-container" style={{ textAlign: 'center' }}>
+                <div style={{ marginBottom: '30px', textAlign: 'left', padding: '0 20px' }}>
+                    <Link to="/" className="btn" style={{
+                        backgroundColor: 'var(--text-color)',
+                        textTransform: 'none',
+                        fontSize: '1.2rem',
+                        padding: '12px 24px'
+                    }}>
+                        ⬅️ Kembali ke Beranda
+                    </Link>
+                </div>
+
+                <h2 style={{ fontSize: '2.5rem', color: 'var(--cat-purple)', marginBottom: '10px', textShadow: '2px 2px 0px rgba(0,0,0,0.1)' }}>
+                    Ayo Membaca 📚
+                </h2>
+                <p style={{ fontSize: '1.2rem', color: 'var(--quaternary)', marginBottom: '40px', fontWeight: 600 }}>
+                    Mulai perjalanan membacamu dari sini!
+                </p>
+
+                <div style={{ padding: '10px 0', borderTop: '3px dashed rgba(139, 92, 246, 0.3)' }}>
+                    <h2 style={{ fontSize: '2rem', color: 'var(--cat-purple)', marginBottom: '30px' }}>
+                        Belajar Suku Kata 🔤
+                    </h2>
+
+                    <div className="category-grid" style={{ justifyContent: 'center', display: 'flex', gap: '30px', flexWrap: 'wrap' }}>
+                        {MEMBACA_LEARNING.map((item) => (
+                            <CategoryCard
+                                key={item.id}
+                                title={item.title}
+                                icon={item.icon}
+                                colorClass={item.colorClass as any}
+                                link={item.link}
+                                description={item.description}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+            </main>
+        </>
+    );
+};
+
+export default MembacaMenu;
