@@ -40,7 +40,7 @@ const POOL_3: WordEntry[] = [
     { word: 'bunga', emoji: '🌸' },
     { word: 'singa', emoji: '🦁' },
     { word: 'payung', emoji: '☂️' },
-    { word: 'penyu', emoji: '🐢' },
+    // { word: 'penyu', emoji: '𓆉' },
 ];
 
 // Pool 4: 3 suku kata terbuka (KV+KV+KV)

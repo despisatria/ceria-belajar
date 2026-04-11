@@ -58,7 +58,7 @@ const LEVEL3: WordEntry[] = [
     { word: 'nyanyi', syllables: ['nya', 'nyi'], emoji: '🎤' },
     { word: 'pisang', syllables: ['pi', 'sang'], emoji: '🍌' },
     { word: 'nyamuk', syllables: ['nya', 'muk'], emoji: '🦟' },
-    { word: 'penyu', syllables: ['pe', 'nyu'], emoji: '🐢' },
+    // { word: 'penyu', syllables: ['pe', 'nyu'], emoji: '𓆉' },
 ];
 
 const LEVELS = [

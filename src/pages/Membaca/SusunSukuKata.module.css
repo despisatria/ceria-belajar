@@ -1,0 +1,311 @@
+.gameContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.gameHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid rgba(139, 92, 246, 0.2);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.statsContainer {
+    display: flex;
+    gap: 20px;
+}
+
+.statBox {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 2px solid rgba(255, 255, 255, 1);
+}
+
+.gameBoard {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    background: linear-gradient(135deg, #F5F3FF, #EDE9FE);
+    border-radius: 40px;
+    padding: 40px 20px;
+    border: 2px solid rgba(139, 92, 246, 0.15);
+    box-shadow: 0 16px 50px rgba(139, 92, 246, 0.1);
+}
+
+/* === Question === */
+.questionText {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--quaternary);
+    text-align: center;
+    margin: 0;
+}
+
+.emojiCard {
+    background: white;
+    border-radius: 28px;
+    border: 5px solid var(--cat-purple);
+    box-shadow: 8px 8px 0px rgba(139, 92, 246, 0.25);
+    padding: 25px 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emojiLarge {
+    font-size: 7rem;
+    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.15));
+}
+
+/* === Answer Slots === */
+.slotsSection {
+    width: 100%;
+    max-width: 500px;
+}
+
+.slotsLabel {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--quaternary);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.slotsRow {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.slot {
+    min-width: 100px;
+    min-height: 70px;
+    border: 4px dashed rgba(139, 92, 246, 0.4);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.slotFilled {
+    border-style: solid;
+    border-color: var(--cat-purple);
+    background: white;
+    box-shadow: 4px 4px 0px rgba(139, 92, 246, 0.2);
+}
+
+.slotText {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--cat-purple);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* === Syllable Options === */
+.optionsSection {
+    width: 100%;
+    max-width: 500px;
+}
+
+.optionsLabel {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--quaternary);
+    margin-bottom: 10px;
+}
+
+.optionsRow {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.syllableBtn {
+    min-width: 100px;
+    padding: 16px 24px;
+    font-size: 1.8rem;
+    font-weight: 900;
+    font-family: inherit;
+    color: white;
+    background: linear-gradient(135deg, var(--cat-blue), #2563EB);
+    border: 4px solid var(--text-color);
+    border-radius: 18px;
+    box-shadow: 6px 6px 0px var(--text-color);
+    cursor: pointer;
+    transition: all 0.1s;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.syllableBtn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 8px 8px 0px var(--text-color);
+}
+
+.syllableBtn:active:not(:disabled) {
+    transform: translate(6px, 6px);
+    box-shadow: 0px 0px 0px var(--text-color);
+}
+
+.syllableBtnUsed {
+    opacity: 0.3;
+    cursor: default;
+    transform: scale(0.95);
+    box-shadow: 2px 2px 0px var(--text-color);
+}
+
+.syllableBtnColor2 {
+    background: linear-gradient(135deg, var(--cat-red), #DC2626);
+}
+
+.syllableBtnColor3 {
+    background: linear-gradient(135deg, var(--cat-green), #059669);
+}
+
+/* === Reset Button === */
+.resetBtn {
+    padding: 10px 24px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    font-family: inherit;
+    color: var(--quaternary);
+    background: white;
+    border: 3px solid rgba(139, 92, 246, 0.3);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.resetBtn:hover {
+    background: #F5F3FF;
+    border-color: var(--cat-purple);
+}
+
+/* === Result Feedback === */
+.resultCorrect .slotsRow .slot {
+    border-color: var(--cat-green) !important;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+.resultWrong .slotsRow .slot {
+    border-color: var(--cat-red) !important;
+    animation: shake 0.4s ease-in-out;
+}
+
+/* === Game Over === */
+.gameOverCard {
+    text-align: center;
+    background: white;
+    padding: 50px 40px;
+    border-radius: 32px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+.gameOverCard h2 {
+    font-size: 3rem;
+    color: var(--cat-green);
+    margin-bottom: 10px;
+}
+
+.gameOverCard p {
+    font-size: 1.5rem;
+    color: var(--quaternary);
+}
+
+.finalScore {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    margin: 20px 0;
+    padding: 15px;
+    background: var(--cat-purple);
+    border-radius: 20px;
+    border: 3px dashed var(--text-color);
+}
+
+/* === Animations === */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-10px); }
+    40%, 80% { transform: translateX(10px); }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+/* === Responsive === */
+@media (max-width: 600px) {
+    .gameHeader {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .statsContainer {
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .statBox {
+        padding: 8px 14px;
+        font-size: 1rem;
+    }
+
+    .emojiCard {
+        padding: 20px 30px;
+    }
+
+    .emojiLarge {
+        font-size: 5rem;
+    }
+
+    .slot {
+        min-width: 70px;
+        min-height: 55px;
+    }
+
+    .slotText {
+        font-size: 1.3rem;
+    }
+
+    .syllableBtn {
+        min-width: 70px;
+        padding: 12px 18px;
+        font-size: 1.3rem;
+        letter-spacing: 1px;
+    }
+
+    .gameOverCard h2 {
+        font-size: 2.2rem;
+    }
+
+    .finalScore {
+        font-size: 1.8rem;
+    }
+}
