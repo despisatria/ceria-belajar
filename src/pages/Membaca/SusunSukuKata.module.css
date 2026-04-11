@@ -186,6 +186,10 @@
     background: linear-gradient(135deg, var(--cat-green), #059669);
 }
 
+.syllableBtnColor4 {
+    background: linear-gradient(135deg, #F59E0B, #B45309);
+}
+
 /* === Reset Button === */
 .resetBtn {
     padding: 10px 24px;

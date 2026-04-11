@@ -81,7 +81,7 @@ const ROUND_POOL_MAP: WordEntry[][] = [
 ];
 
 const TOTAL_ROUNDS = 10;
-const SYLLABLE_COLORS = ['', styles.syllableBtnColor2, styles.syllableBtnColor3];
+const SYLLABLE_COLORS = ['', styles.syllableBtnColor2, styles.syllableBtnColor3, styles.syllableBtnColor4];
 
 function shuffleArray<T>(arr: T[]): T[] {
     const shuffled = [...arr];
@@ -124,8 +124,24 @@ const SusunSukuKata: React.FC = () => {
         setCurrentWord(word);
         setUsedWords(prev => new Set(prev).add(word.word));
 
-        // Shuffle syllables
-        setShuffledSyllables(shuffleArray(word.syllables));
+        // We want exactly 4 options total
+        const correctSyllables = word.syllables;
+        const neededDistractors = 4 - correctSyllables.length;
+        
+        // Get distractors from other words in the same pool
+        const otherWords = pool.filter(w => w.word !== word.word);
+        const distractorPool = otherWords.flatMap(w => w.syllables);
+        
+        let selectedDistractors: string[] = [];
+        if (neededDistractors > 0) {
+            // Filter to get unique syllables not already in the correct word
+            const uniqueDistractors = Array.from(new Set(distractorPool)).filter(syl => !correctSyllables.includes(syl));
+            selectedDistractors = shuffleArray(uniqueDistractors).slice(0, neededDistractors);
+        }
+
+        // Combine and shuffle
+        const allOptions = [...correctSyllables, ...selectedDistractors];
+        setShuffledSyllables(shuffleArray(allOptions));
     }, [round, usedWords]);
 
     useEffect(() => {
