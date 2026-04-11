@@ -163,50 +163,59 @@ const SusunSukuKata: React.FC = () => {
 
     const handleSyllableTap = (shuffledIndex: number) => {
         if (resultState !== 'none') return;
-        if (selectedIndices.includes(shuffledIndex)) return;
+        
+        // Allow unclicking
+        if (selectedIndices.includes(shuffledIndex)) {
+            setSelectedIndices(selectedIndices.filter(i => i !== shuffledIndex));
+            return;
+        }
+
+        // Limit selection to the required word length
+        if (selectedIndices.length >= currentWord.syllables.length) return;
 
         const newSelected = [...selectedIndices, shuffledIndex];
         setSelectedIndices(newSelected);
+    };
 
-        // Check if all syllables have been placed
-        if (newSelected.length === currentWord.syllables.length) {
-            // Build the answer from the order selected
-            const answer = newSelected.map(i => shuffledSyllables[i]);
-            const isCorrect = answer.every((syl, idx) => syl === currentWord.syllables[idx]);
+    const handleSubmit = () => {
+        if (selectedIndices.length !== currentWord.syllables.length || resultState !== 'none') return;
 
-            if (isCorrect) {
-                setResultState('correct');
-                playCorrectSound();
-                triggerConfetti();
-                setScore(prev => prev + 10);
+        // Build the answer from the order selected
+        const answer = selectedIndices.map(i => shuffledSyllables[i]);
+        const isCorrect = answer.every((syl, idx) => syl === currentWord.syllables[idx]);
 
-                setTimeout(() => {
-                    const nextRound = round + 1;
-                    if (nextRound > TOTAL_ROUNDS) {
-                        playWinSound();
-                        setGameOver(true);
-                    } else {
-                        setRound(nextRound);
-                    }
-                }, 1500);
-            } else {
-                setResultState('wrong');
-                playWrongSound();
+        if (isCorrect) {
+            setResultState('correct');
+            playCorrectSound();
+            triggerConfetti();
+            setScore(prev => prev + 10);
 
-                setLives(prev => {
-                    const newLives = prev - 1;
-                    if (newLives <= 0) {
-                        setTimeout(() => setGameOver(true), 500);
-                    }
-                    return newLives;
-                });
+            setTimeout(() => {
+                const nextRound = round + 1;
+                if (nextRound > TOTAL_ROUNDS) {
+                    playWinSound();
+                    setGameOver(true);
+                } else {
+                    setRound(nextRound);
+                }
+            }, 1500);
+        } else {
+            setResultState('wrong');
+            playWrongSound();
 
-                // Reset after shake animation
-                setTimeout(() => {
-                    setSelectedIndices([]);
-                    setResultState('none');
-                }, 1000);
-            }
+            setLives(prev => {
+                const newLives = prev - 1;
+                if (newLives <= 0) {
+                    setTimeout(() => setGameOver(true), 500);
+                }
+                return newLives;
+            });
+
+            // Reset after shake animation
+            setTimeout(() => {
+                setSelectedIndices([]);
+                setResultState('none');
+            }, 1000);
         }
     };
 
@@ -312,7 +321,7 @@ const SusunSukuKata: React.FC = () => {
                                             key={idx}
                                             className={`${styles.syllableBtn} ${colorClass} ${isUsed ? styles.syllableBtnUsed : ''}`}
                                             onClick={() => handleSyllableTap(idx)}
-                                            disabled={isUsed || resultState !== 'none'}
+                                            disabled={resultState !== 'none'}
                                         >
                                             {syl}
                                         </button>
@@ -321,12 +330,23 @@ const SusunSukuKata: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Reset Button */}
-                        {selectedIndices.length > 0 && resultState === 'none' && (
-                            <button className={styles.resetBtn} onClick={handleReset}>
-                                ↩️ Ulang
-                            </button>
-                        )}
+                        {/* Action Buttons */}
+                        <div style={{ display: 'flex', gap: '15px' }}>
+                            {selectedIndices.length > 0 && resultState === 'none' && (
+                                <button className={styles.resetBtn} onClick={handleReset}>
+                                    ↩️ Ulang
+                                </button>
+                            )}
+                            {selectedIndices.length === currentWord.syllables.length && resultState === 'none' && (
+                                <button 
+                                    className="btn" 
+                                    onClick={handleSubmit}
+                                    style={{ backgroundColor: 'var(--cat-green)', padding: '10px 24px', fontSize: '1.2rem', margin: 0, textTransform: 'none' }}
+                                >
+                                    ✅ Cek Jawaban
+                                </button>
+                            )}
+                        </div>
                     </>
                 )}
             </main>
