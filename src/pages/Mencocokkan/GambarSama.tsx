@@ -123,6 +123,7 @@ const GambarSama: React.FC = () => {
             const nextRound = round + 1;
             if (round < 5) {
                 setTimeout(() => {
+                    setLives(5);
                     setRound(nextRound);
                 }, 2000);
             } else {

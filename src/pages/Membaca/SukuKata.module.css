@@ -43,12 +43,12 @@
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: 3px 3px 0px rgba(0,0,0,0.08);
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.08);
 }
 
 .tabBtn:hover {
     transform: translateY(-2px);
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.12);
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.12);
 }
 
 .tabBtnActive {
@@ -152,7 +152,7 @@
     padding: 20px 10px;
     gap: 6px;
     transition: all 0.1s;
-    min-height: 130px;
+    min-height: 180px;
     position: relative;
     overflow: hidden;
 }
@@ -172,11 +172,25 @@
     border-radius: 20px 20px 0 0;
 }
 
-.syllableCard.color0::before { background: var(--cat-red); }
-.syllableCard.color1::before { background: var(--cat-blue); }
-.syllableCard.color2::before { background: var(--cat-green); }
-.syllableCard.color3::before { background: var(--cat-orange); }
-.syllableCard.color4::before { background: var(--cat-purple); }
+.syllableCard.color0::before {
+    background: var(--cat-red);
+}
+
+.syllableCard.color1::before {
+    background: var(--cat-blue);
+}
+
+.syllableCard.color2::before {
+    background: var(--cat-green);
+}
+
+.syllableCard.color3::before {
+    background: var(--cat-orange);
+}
+
+.syllableCard.color4::before {
+    background: var(--cat-purple);
+}
 
 .syllableText {
     font-size: 3.5rem;
@@ -185,11 +199,25 @@
     color: var(--text-color);
 }
 
-.syllableCard.color0 .syllableText { color: var(--cat-red); }
-.syllableCard.color1 .syllableText { color: var(--cat-blue); }
-.syllableCard.color2 .syllableText { color: var(--cat-green); }
-.syllableCard.color3 .syllableText { color: var(--cat-orange); }
-.syllableCard.color4 .syllableText { color: var(--cat-purple); }
+.syllableCard.color0 .syllableText {
+    color: var(--cat-red);
+}
+
+.syllableCard.color1 .syllableText {
+    color: var(--cat-blue);
+}
+
+.syllableCard.color2 .syllableText {
+    color: var(--cat-green);
+}
+
+.syllableCard.color3 .syllableText {
+    color: var(--cat-orange);
+}
+
+.syllableCard.color4 .syllableText {
+    color: var(--cat-purple);
+}
 
 .vowelTag {
     font-size: 0.85rem;
@@ -201,11 +229,25 @@
     text-transform: uppercase;
 }
 
-.syllableCard.color0 .vowelTag { background: var(--cat-red); }
-.syllableCard.color1 .vowelTag { background: var(--cat-blue); }
-.syllableCard.color2 .vowelTag { background: var(--cat-green); }
-.syllableCard.color3 .vowelTag { background: var(--cat-orange); }
-.syllableCard.color4 .vowelTag { background: var(--cat-purple); }
+.syllableCard.color0 .vowelTag {
+    background: var(--cat-red);
+}
+
+.syllableCard.color1 .vowelTag {
+    background: var(--cat-blue);
+}
+
+.syllableCard.color2 .vowelTag {
+    background: var(--cat-green);
+}
+
+.syllableCard.color3 .vowelTag {
+    background: var(--cat-orange);
+}
+
+.syllableCard.color4 .vowelTag {
+    background: var(--cat-purple);
+}
 
 .playingIndicator {
     position: absolute;
@@ -221,7 +263,6 @@
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     width: 100%;
-    max-width: 750px;
     margin: 0 auto;
 }
 
@@ -252,11 +293,25 @@
     line-height: 1;
 }
 
-.vokalCard:nth-child(1) .vokalLetter { color: var(--cat-red); }
-.vokalCard:nth-child(2) .vokalLetter { color: var(--cat-blue); }
-.vokalCard:nth-child(3) .vokalLetter { color: var(--cat-green); }
-.vokalCard:nth-child(4) .vokalLetter { color: var(--cat-orange); }
-.vokalCard:nth-child(5) .vokalLetter { color: var(--cat-purple); }
+.vokalCard:nth-child(1) .vokalLetter {
+    color: var(--cat-red);
+}
+
+.vokalCard:nth-child(2) .vokalLetter {
+    color: var(--cat-blue);
+}
+
+.vokalCard:nth-child(3) .vokalLetter {
+    color: var(--cat-green);
+}
+
+.vokalCard:nth-child(4) .vokalLetter {
+    color: var(--cat-orange);
+}
+
+.vokalCard:nth-child(5) .vokalLetter {
+    color: var(--cat-purple);
+}
 
 .vokalExample {
     font-size: 0.95rem;
@@ -298,20 +353,37 @@
     grid-template-columns: repeat(5, 1fr);
     gap: 16px;
     width: 100%;
-    max-width: 750px;
 }
 
 /* === Animations === */
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 @keyframes bounceIn {
-    0% { transform: scale(0.5); opacity: 0; }
-    70% { transform: scale(1.1); }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* === Responsive === */

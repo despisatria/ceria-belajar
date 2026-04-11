@@ -64,6 +64,22 @@ const MembacaMenu: React.FC = () => {
                     </div>
                 </div>
 
+                <div style={{ padding: '40px 0', borderTop: '3px dashed rgba(249, 115, 22, 0.3)' }}>
+                    <h2 style={{ fontSize: '2rem', color: 'var(--cat-orange)', marginBottom: '30px' }}>
+                        Membaca Kata 📝
+                    </h2>
+
+                    <div className="category-grid" style={{ justifyContent: 'center', display: 'flex', gap: '30px', flexWrap: 'wrap' }}>
+                        <CategoryCard
+                            title="Membaca Kata"
+                            icon="📝"
+                            colorClass="orange"
+                            link="/membaca/kata"
+                            description="Gabungkan suku kata menjadi kata: BA + TU = BATU"
+                        />
+                    </div>
+                </div>
+
             </main>
         </>
     );

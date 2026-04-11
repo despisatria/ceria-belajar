@@ -5,17 +5,17 @@ import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soun
 import LivesDisplay from '../../components/LivesDisplay';
 
 const ANIMAL_PAIRS = [
-    { id: 1, parent: '🐔', child: '🐥' }, // Chicken -> Chick
+    { id: 1, parent: '🐓', child: '🐥' }, // Chicken -> Chick
     { id: 2, parent: '🐈', child: '🐱' }, // Cat -> Kitten
     { id: 3, parent: '🐕', child: '🐶' }, // Dog -> Puppy
     { id: 4, parent: '🐄', child: '🐮' }, // Cow -> Calf
     { id: 5, parent: '🐖', child: '🐷' }, // Pig -> Piglet
     { id: 6, parent: '🐅', child: '🐯' }, // Tiger -> Cub
     { id: 7, parent: '🐎', child: '🐴' }, // Horse -> Foal
-    { id: 8, parent: '🦍', child: '🐒' }, // Gorilla -> Monkey
-    { id: 9, parent: '🦅', child: '🐣' }, // Eagle -> Hatching Bird
+    { id: 8, parent: '🐒', child: '🐵' }, // Gorilla -> Monkey
+    { id: 9, parent: '🦅', child: '🐦' }, // Eagle -> Hatching Bird
     { id: 10, parent: '🐻', child: '🧸' }, // Bear -> Teddy/Cub
-    { id: 11, parent: '🦕', child: '🦎' }, // Dino -> Lizard
+    { id: 11, parent: '🐁', child: '🐭' }, // Dino -> Lizard
     { id: 12, parent: '🐉', child: '🐲' }, // Dragon -> Dragon Face
 ];
 
