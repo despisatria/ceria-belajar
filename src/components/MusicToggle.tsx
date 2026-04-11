@@ -21,7 +21,7 @@ const floatingBtnStyle: React.CSSProperties = {
 };
 
 // Define menu paths where music should play
-const MENU_PATHS = ['/', '/alfabet', '/angka', '/mencocokkan'];
+const MENU_PATHS = ['/', '/alfabet', '/angka', '/mencocokkan', '/hijaiyah', '/membaca'];
 
 const MusicToggle: React.FC = () => {
     const [playing, setPlaying] = useState(true);

@@ -127,11 +127,11 @@ const SusunSukuKata: React.FC = () => {
         // We want exactly 4 options total
         const correctSyllables = word.syllables;
         const neededDistractors = 4 - correctSyllables.length;
-        
+
         // Get distractors from other words in the same pool
         const otherWords = pool.filter(w => w.word !== word.word);
         const distractorPool = otherWords.flatMap(w => w.syllables);
-        
+
         let selectedDistractors: string[] = [];
         if (neededDistractors > 0) {
             // Filter to get unique syllables not already in the correct word
@@ -163,7 +163,7 @@ const SusunSukuKata: React.FC = () => {
 
     const handleSyllableTap = (shuffledIndex: number) => {
         if (resultState !== 'none') return;
-        
+
         // Allow unclicking
         if (selectedIndices.includes(shuffledIndex)) {
             setSelectedIndices(selectedIndices.filter(i => i !== shuffledIndex));
@@ -219,10 +219,7 @@ const SusunSukuKata: React.FC = () => {
         }
     };
 
-    const handleReset = () => {
-        if (resultState !== 'none') return;
-        setSelectedIndices([]);
-    };
+
 
     const handleRestart = () => {
         setRound(1);
@@ -332,14 +329,9 @@ const SusunSukuKata: React.FC = () => {
 
                         {/* Action Buttons */}
                         <div style={{ display: 'flex', gap: '15px' }}>
-                            {selectedIndices.length > 0 && resultState === 'none' && (
-                                <button className={styles.resetBtn} onClick={handleReset}>
-                                    ↩️ Ulang
-                                </button>
-                            )}
                             {selectedIndices.length === currentWord.syllables.length && resultState === 'none' && (
-                                <button 
-                                    className="btn" 
+                                <button
+                                    className="btn"
                                     onClick={handleSubmit}
                                     style={{ backgroundColor: 'var(--cat-green)', padding: '10px 24px', fontSize: '1.2rem', margin: 0, textTransform: 'none' }}
                                 >
