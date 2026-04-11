@@ -86,6 +86,13 @@ const MembacaMenu: React.FC = () => {
                             link="/membaca/tebak-kata"
                             description="Lihat gambar, pilih kata yang benar!"
                         />
+                        <CategoryCard
+                            title="Pasangkan Kata & Gambar"
+                            icon="🔗"
+                            colorClass="green"
+                            link="/membaca/pasangkan-kata"
+                            description="Cocokkan kata dengan gambar yang tepat!"
+                        />
                     </div>
                 </div>
 

@@ -10,9 +10,10 @@ interface WordEntry {
     emoji: string;
 }
 
-// Word bank from MembacaKata + MembacaKata3 — only words with clear, unambiguous emojis
-const WORD_BANK: WordEntry[] = [
-    // 2 suku kata (KV+KV)
+// === WORD POOLS BY DIFFICULTY (matching materi Membaca Kata) ===
+
+// Pool 1: 2 suku kata KV+KV (Level 1 - paling mudah)
+const POOL_1: WordEntry[] = [
     { word: 'baju', emoji: '👕' },
     { word: 'bola', emoji: '⚽' },
     { word: 'buku', emoji: '📚' },
@@ -22,19 +23,28 @@ const WORD_BANK: WordEntry[] = [
     { word: 'sapi', emoji: '🐮' },
     { word: 'susu', emoji: '🥛' },
     { word: 'topi', emoji: '🧢' },
-    // 2 suku kata (5 huruf)
+];
+
+// Pool 2: 2 suku kata 5 huruf (Level 2)
+const POOL_2: WordEntry[] = [
     { word: 'ayam', emoji: '🐔' },
     { word: 'balon', emoji: '🎈' },
     { word: 'ikan', emoji: '🐟' },
     { word: 'kapal', emoji: '🚢' },
     { word: 'rumah', emoji: '🏠' },
     { word: 'telur', emoji: '🥚' },
-    // 2 suku kata (NG/NY)
+];
+
+// Pool 3: 2 suku kata NG/NY (Level 3)
+const POOL_3: WordEntry[] = [
     { word: 'bunga', emoji: '🌸' },
     { word: 'singa', emoji: '🦁' },
     { word: 'payung', emoji: '☂️' },
     { word: 'penyu', emoji: '🐢' },
-    // 3 suku kata
+];
+
+// Pool 4: 3 suku kata terbuka (KV+KV+KV)
+const POOL_4: WordEntry[] = [
     { word: 'sepatu', emoji: '👟' },
     { word: 'celana', emoji: '👖' },
     { word: 'boneka', emoji: '🧸' },
@@ -43,11 +53,30 @@ const WORD_BANK: WordEntry[] = [
     { word: 'kelapa', emoji: '🥥' },
     { word: 'kamera', emoji: '📷' },
     { word: 'kereta', emoji: '🚂' },
+];
+
+// Pool 5: 3 suku kata campuran (paling sulit)
+const POOL_5: WordEntry[] = [
     { word: 'jerapah', emoji: '🦒' },
     { word: 'kelinci', emoji: '🐰' },
     { word: 'pesawat', emoji: '✈️' },
     { word: 'harimau', emoji: '🐯' },
     { word: 'semangka', emoji: '🍉' },
+];
+
+// Round → pool mapping (10 rounds, progressively harder)
+// Rounds 1-2: Pool 1 (kata mudah), Rounds 3-4: Pool 2, etc.
+const ROUND_POOL_MAP: { pool: WordEntry[]; allPools: WordEntry[][] }[] = [
+    { pool: POOL_1, allPools: [POOL_1] },                                    // Round 1
+    { pool: POOL_1, allPools: [POOL_1] },                                    // Round 2
+    { pool: POOL_2, allPools: [POOL_2, POOL_1] },                            // Round 3
+    { pool: POOL_2, allPools: [POOL_2, POOL_1] },                            // Round 4
+    { pool: POOL_3, allPools: [POOL_3, POOL_1, POOL_2] },                    // Round 5
+    { pool: POOL_3, allPools: [POOL_3, POOL_1, POOL_2] },                    // Round 6
+    { pool: POOL_4, allPools: [POOL_4, POOL_1, POOL_2, POOL_3] },            // Round 7
+    { pool: POOL_4, allPools: [POOL_4, POOL_1, POOL_2, POOL_3] },            // Round 8
+    { pool: POOL_5, allPools: [POOL_5, POOL_1, POOL_2, POOL_3, POOL_4] },    // Round 9
+    { pool: POOL_5, allPools: [POOL_5, POOL_1, POOL_2, POOL_3, POOL_4] },    // Round 10
 ];
 
 const TOTAL_ROUNDS = 10;
@@ -66,7 +95,7 @@ const TebakKata: React.FC = () => {
     const [score, setScore] = useState(0);
     const [lives, setLives] = useState(5);
     const [gameOver, setGameOver] = useState(false);
-    const [currentWord, setCurrentWord] = useState<WordEntry>(WORD_BANK[0]);
+    const [currentWord, setCurrentWord] = useState<WordEntry>(POOL_1[0]);
     const [options, setOptions] = useState<string[]>([]);
     const [selectedCorrect, setSelectedCorrect] = useState<string | null>(null);
     const [selectedWrong, setSelectedWrong] = useState<string | null>(null);
@@ -85,24 +114,28 @@ const TebakKata: React.FC = () => {
         setSelectedCorrect(null);
         setSelectedWrong(null);
 
-        // Pick a word not yet used in this game session
-        const available = WORD_BANK.filter(w => !usedWords.has(w.word));
-        const pool = available.length >= 4 ? available : WORD_BANK;
+        // Get pool config for current round
+        const config = ROUND_POOL_MAP[round - 1];
+        const { pool, allPools } = config;
+
+        // Pick a word from the primary pool, not yet used
+        const available = pool.filter(w => !usedWords.has(w.word));
+        const primaryPool = available.length > 0 ? available : pool;
 
         // Pick random correct word
-        const shuffled = shuffleArray(pool);
-        const correct = shuffled[0];
+        const correct = shuffleArray(primaryPool)[0];
         setCurrentWord(correct);
         setUsedWords(prev => new Set(prev).add(correct.word));
 
-        // Pick 3 wrong options (different words)
-        const wrongPool = WORD_BANK.filter(w => w.word !== correct.word);
+        // Pick 3 wrong options from all available pools (same difficulty range)
+        const allWords = allPools.flat();
+        const wrongPool = allWords.filter(w => w.word !== correct.word);
         const wrongOptions = shuffleArray(wrongPool).slice(0, 3).map(w => w.word);
 
         // Combine and shuffle
         const allOptions = shuffleArray([correct.word, ...wrongOptions]);
         setOptions(allOptions);
-    }, [usedWords]);
+    }, [round, usedWords]);
 
     useEffect(() => {
         if (!gameOver && round <= TOTAL_ROUNDS) {
