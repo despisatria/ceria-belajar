@@ -124,6 +124,15 @@
     box-shadow: 0px 0px 0px var(--cat-red);
 }
 
+.syllableCard3 {
+    border-color: var(--cat-green);
+    box-shadow: 8px 8px 0px var(--cat-green);
+}
+
+.syllableCard3:active {
+    box-shadow: 0px 0px 0px var(--cat-green);
+}
+
 .syllableCardText {
     font-size: 3.5rem;
     font-weight: 900;
@@ -136,6 +145,10 @@
 
 .syllableCard2 .syllableCardText {
     color: var(--cat-red);
+}
+
+.syllableCard3 .syllableCardText {
+    color: var(--cat-green);
 }
 
 .plusSign {
@@ -302,6 +315,10 @@
 
     .syllableCard2 {
         box-shadow: 6px 6px 0px var(--cat-red);
+    }
+
+    .syllableCard3 {
+        box-shadow: 6px 6px 0px var(--cat-green);
     }
 
     .syllableCardText {

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './MembacaKata.module.css';
 import { audioPlayer } from '../../utils/audioPlayer';
+import { getSyllableAudioPath } from '../../utils/syllableAudio';
 
 interface WordEntry {
     word: string;
@@ -9,67 +10,42 @@ interface WordEntry {
     emoji: string;
 }
 
-// === LEVEL 1: KV + KV (4 huruf) ===
+// === LEVEL 1: KV+KV+KV (suku kata terbuka) ===
 const LEVEL1: WordEntry[] = [
-    { word: 'baju', syllables: ['ba', 'ju'], emoji: '👕' },
-    { word: 'batu', syllables: ['ba', 'tu'], emoji: '🪨' },
-    { word: 'bola', syllables: ['bo', 'la'], emoji: '⚽' },
-    { word: 'buku', syllables: ['bu', 'ku'], emoji: '📚' },
-    { word: 'gigi', syllables: ['gi', 'gi'], emoji: '🦷' },
-    { word: 'guru', syllables: ['gu', 'ru'], emoji: '👩‍🏫' },
-    { word: 'kaki', syllables: ['ka', 'ki'], emoji: '🦶' },
-    { word: 'kuda', syllables: ['ku', 'da'], emoji: '🐴' },
-    { word: 'mata', syllables: ['ma', 'ta'], emoji: '👁️' },
-    { word: 'nasi', syllables: ['na', 'si'], emoji: '🍚' },
-    { word: 'pipi', syllables: ['pi', 'pi'], emoji: '😊' },
-    { word: 'roti', syllables: ['ro', 'ti'], emoji: '🍞' },
-    { word: 'sapi', syllables: ['sa', 'pi'], emoji: '🐮' },
-    { word: 'susu', syllables: ['su', 'su'], emoji: '🥛' },
-    { word: 'topi', syllables: ['to', 'pi'], emoji: '🧢' },
+    { word: 'sepatu', syllables: ['se', 'pa', 'tu'], emoji: '👟' },
+    { word: 'celana', syllables: ['ce', 'la', 'na'], emoji: '👖' },
+    { word: 'kepala', syllables: ['ke', 'pa', 'la'], emoji: '🗣️' },
+    { word: 'boneka', syllables: ['bo', 'ne', 'ka'], emoji: '🧸' },
+    { word: 'gurita', syllables: ['gu', 'ri', 'ta'], emoji: '🐙' },
+    { word: 'sepeda', syllables: ['se', 'pe', 'da'], emoji: '🚲' },
+    { word: 'kelapa', syllables: ['ke', 'la', 'pa'], emoji: '🥥' },
+    { word: 'kamera', syllables: ['ka', 'me', 'ra'], emoji: '📷' },
+    { word: 'kereta', syllables: ['ke', 're', 'ta'], emoji: '🚂' },
+    { word: 'medali', syllables: ['me', 'da', 'li'], emoji: '🏅' },
 ];
 
-// === LEVEL 2: KV+KVK / KVK+KV (5 huruf) ===
+// === LEVEL 2: Campuran (tertutup, NG, NY) ===
 const LEVEL2: WordEntry[] = [
-    { word: 'ayam', syllables: ['a', 'yam'], emoji: '🐔' },
-    { word: 'balon', syllables: ['ba', 'lon'], emoji: '🎈' },
-    { word: 'bulan', syllables: ['bu', 'lan'], emoji: '🌙' },
-    { word: 'hujan', syllables: ['hu', 'jan'], emoji: '🌧️' },
-    { word: 'ikan', syllables: ['i', 'kan'], emoji: '🐟' },
-    { word: 'kapal', syllables: ['ka', 'pal'], emoji: '🚢' },
-    { word: 'makan', syllables: ['ma', 'kan'], emoji: '🍽️' },
-    { word: 'mandi', syllables: ['man', 'di'], emoji: '🚿' },
-    { word: 'mulut', syllables: ['mu', 'lut'], emoji: '👄' },
-    { word: 'pintu', syllables: ['pin', 'tu'], emoji: '🚪' },
-    { word: 'rumah', syllables: ['ru', 'mah'], emoji: '🏠' },
-    { word: 'sayur', syllables: ['sa', 'yur'], emoji: '🥬' },
-    { word: 'sikat', syllables: ['si', 'kat'], emoji: '🪥' },
-    { word: 'telur', syllables: ['te', 'lur'], emoji: '🥚' },
-    { word: 'tidur', syllables: ['ti', 'dur'], emoji: '😴' },
-];
-
-// === LEVEL 3: NG & NY ===
-const LEVEL3: WordEntry[] = [
-    { word: 'bunga', syllables: ['bu', 'nga'], emoji: '🌸' },
-    { word: 'singa', syllables: ['si', 'nga'], emoji: '🦁' },
-    { word: 'angsa', syllables: ['ang', 'sa'], emoji: '🦢' },
-    { word: 'tangan', syllables: ['ta', 'ngan'], emoji: '✋' },
-    { word: 'payung', syllables: ['pa', 'yung'], emoji: '☂️' },
-    { word: 'bunyi', syllables: ['bu', 'nyi'], emoji: '🔔' },
-    { word: 'nyanyi', syllables: ['nya', 'nyi'], emoji: '🎤' },
-    { word: 'pisang', syllables: ['pi', 'sang'], emoji: '🍌' },
-    { word: 'nyamuk', syllables: ['nya', 'muk'], emoji: '🦟' },
-    { word: 'penyu', syllables: ['pe', 'nyu'], emoji: '🐢' },
+    { word: 'jerapah', syllables: ['je', 'ra', 'pah'], emoji: '🦒' },
+    { word: 'merpati', syllables: ['mer', 'pa', 'ti'], emoji: '🕊️' },
+    { word: 'kelinci', syllables: ['ke', 'lin', 'ci'], emoji: '🐰' },
+    { word: 'membaca', syllables: ['mem', 'ba', 'ca'], emoji: '📖' },
+    { word: 'menulis', syllables: ['me', 'nu', 'lis'], emoji: '✏️' },
+    { word: 'pesawat', syllables: ['pe', 'sa', 'wat'], emoji: '✈️' },
+    { word: 'harimau', syllables: ['ha', 'ri', 'mau'], emoji: '🐯' },
+    { word: 'menyapu', syllables: ['me', 'nya', 'pu'], emoji: '🧹' },
+    { word: 'pelangi', syllables: ['pe', 'la', 'ngi'], emoji: '🌈' },
+    { word: 'semangka', syllables: ['se', 'mang', 'ka'], emoji: '🍉' },
 ];
 
 const LEVELS = [
     { key: 'level1', label: '⭐ Level 1', data: LEVEL1, color: 'var(--cat-blue)' },
     { key: 'level2', label: '⭐⭐ Level 2', data: LEVEL2, color: 'var(--cat-green)' },
-    { key: 'level3', label: '⭐⭐⭐ Level 3', data: LEVEL3, color: 'var(--cat-purple)' },
 ];
 
-import { getSyllableAudioPath } from '../../utils/syllableAudio';
+const CARD_COLORS = [styles.syllableCard1, styles.syllableCard2, styles.syllableCard3];
 
-const MembacaKata: React.FC = () => {
+const MembacaKata3: React.FC = () => {
     const [activeLevel, setActiveLevel] = useState(0);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [revealed, setRevealed] = useState(false);
@@ -115,7 +91,7 @@ const MembacaKata: React.FC = () => {
         <div className={styles.gameContainer}>
             <header className={styles.gameHeader}>
                 <Link to="/membaca" className="btn" style={{
-                    backgroundColor: 'var(--cat-orange)',
+                    backgroundColor: 'var(--cat-cyan)',
                     textTransform: 'none',
                     fontSize: '1rem',
                     padding: '8px 16px',
@@ -123,8 +99,8 @@ const MembacaKata: React.FC = () => {
                 }}>
                     ⬅️ Kembali
                 </Link>
-                <h2 className={styles.gameTitle}>
-                    Membaca Kata 2 Suku Kata 📝
+                <h2 className={styles.gameTitle} style={{ color: 'var(--cat-cyan)' }}>
+                    Membaca Kata 3 Suku Kata 📖
                 </h2>
             </header>
 
@@ -152,7 +128,7 @@ const MembacaKata: React.FC = () => {
                         <React.Fragment key={i}>
                             {i > 0 && <span className={styles.plusSign}>+</span>}
                             <div
-                                className={`${styles.syllableCard} ${i === 0 ? styles.syllableCard1 : styles.syllableCard2}`}
+                                className={`${styles.syllableCard} ${CARD_COLORS[i] || styles.syllableCard1}`}
                                 onClick={() => handleSyllableClick(syl, i)}
                             >
                                 <span className={styles.syllableCardText}>
@@ -194,4 +170,4 @@ const MembacaKata: React.FC = () => {
     );
 };
 
-export default MembacaKata;
+export default MembacaKata3;

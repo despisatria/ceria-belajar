@@ -1,0 +1,253 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
+import styles from './TebakKata.module.css';
+import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
+import LivesDisplay from '../../components/LivesDisplay';
+import confetti from 'canvas-confetti';
+
+interface WordEntry {
+    word: string;
+    emoji: string;
+}
+
+// Word bank from MembacaKata + MembacaKata3 — only words with clear, unambiguous emojis
+const WORD_BANK: WordEntry[] = [
+    // 2 suku kata (KV+KV)
+    { word: 'baju', emoji: '👕' },
+    { word: 'bola', emoji: '⚽' },
+    { word: 'buku', emoji: '📚' },
+    { word: 'kuda', emoji: '🐴' },
+    { word: 'nasi', emoji: '🍚' },
+    { word: 'roti', emoji: '🍞' },
+    { word: 'sapi', emoji: '🐮' },
+    { word: 'susu', emoji: '🥛' },
+    { word: 'topi', emoji: '🧢' },
+    // 2 suku kata (5 huruf)
+    { word: 'ayam', emoji: '🐔' },
+    { word: 'balon', emoji: '🎈' },
+    { word: 'ikan', emoji: '🐟' },
+    { word: 'kapal', emoji: '🚢' },
+    { word: 'rumah', emoji: '🏠' },
+    { word: 'telur', emoji: '🥚' },
+    // 2 suku kata (NG/NY)
+    { word: 'bunga', emoji: '🌸' },
+    { word: 'singa', emoji: '🦁' },
+    { word: 'payung', emoji: '☂️' },
+    { word: 'penyu', emoji: '🐢' },
+    // 3 suku kata
+    { word: 'sepatu', emoji: '👟' },
+    { word: 'celana', emoji: '👖' },
+    { word: 'boneka', emoji: '🧸' },
+    { word: 'gurita', emoji: '🐙' },
+    { word: 'sepeda', emoji: '🚲' },
+    { word: 'kelapa', emoji: '🥥' },
+    { word: 'kamera', emoji: '📷' },
+    { word: 'kereta', emoji: '🚂' },
+    { word: 'jerapah', emoji: '🦒' },
+    { word: 'kelinci', emoji: '🐰' },
+    { word: 'pesawat', emoji: '✈️' },
+    { word: 'harimau', emoji: '🐯' },
+    { word: 'semangka', emoji: '🍉' },
+];
+
+const TOTAL_ROUNDS = 10;
+
+function shuffleArray<T>(arr: T[]): T[] {
+    const shuffled = [...arr];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+const TebakKata: React.FC = () => {
+    const [round, setRound] = useState(1);
+    const [score, setScore] = useState(0);
+    const [lives, setLives] = useState(5);
+    const [gameOver, setGameOver] = useState(false);
+    const [currentWord, setCurrentWord] = useState<WordEntry>(WORD_BANK[0]);
+    const [options, setOptions] = useState<string[]>([]);
+    const [selectedCorrect, setSelectedCorrect] = useState<string | null>(null);
+    const [selectedWrong, setSelectedWrong] = useState<string | null>(null);
+    const [usedWords, setUsedWords] = useState<Set<string>>(new Set());
+
+    const triggerConfetti = useCallback(() => {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#EF4444', '#3B82F6', '#10B981', '#F59E0B', '#8B5CF6']
+        });
+    }, []);
+
+    const generateRound = useCallback(() => {
+        setSelectedCorrect(null);
+        setSelectedWrong(null);
+
+        // Pick a word not yet used in this game session
+        const available = WORD_BANK.filter(w => !usedWords.has(w.word));
+        const pool = available.length >= 4 ? available : WORD_BANK;
+
+        // Pick random correct word
+        const shuffled = shuffleArray(pool);
+        const correct = shuffled[0];
+        setCurrentWord(correct);
+        setUsedWords(prev => new Set(prev).add(correct.word));
+
+        // Pick 3 wrong options (different words)
+        const wrongPool = WORD_BANK.filter(w => w.word !== correct.word);
+        const wrongOptions = shuffleArray(wrongPool).slice(0, 3).map(w => w.word);
+
+        // Combine and shuffle
+        const allOptions = shuffleArray([correct.word, ...wrongOptions]);
+        setOptions(allOptions);
+    }, [usedWords]);
+
+    useEffect(() => {
+        if (!gameOver && round <= TOTAL_ROUNDS) {
+            generateRound();
+        }
+    }, [round, gameOver]);
+
+    // Speak instruction on mount
+    useEffect(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance("Gambar apa ini? Pilih kata yang benar!");
+            utterance.lang = 'id-ID';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+    }, []);
+
+    const handleOptionClick = (word: string) => {
+        if (selectedCorrect || selectedWrong) return;
+
+        if (word === currentWord.word) {
+            // Correct!
+            playCorrectSound();
+            triggerConfetti();
+            setSelectedCorrect(word);
+            setScore(prev => prev + 10);
+
+            setTimeout(() => {
+                const nextRound = round + 1;
+                if (nextRound > TOTAL_ROUNDS) {
+                    playWinSound();
+                    setGameOver(true);
+                } else {
+                    setRound(nextRound);
+                }
+            }, 1500);
+        } else {
+            // Wrong!
+            playWrongSound();
+            setSelectedWrong(word);
+
+            setLives(prev => {
+                const newLives = prev - 1;
+                if (newLives <= 0) {
+                    setTimeout(() => setGameOver(true), 500);
+                }
+                return newLives;
+            });
+
+            // Allow retry after shake animation
+            setTimeout(() => {
+                setSelectedWrong(null);
+            }, 800);
+        }
+    };
+
+    const handleRestart = () => {
+        setRound(1);
+        setScore(0);
+        setLives(5);
+        setGameOver(false);
+        setUsedWords(new Set());
+    };
+
+    return (
+        <div className={styles.gameContainer}>
+            <header className={styles.gameHeader}>
+                <Link to="/membaca" className="btn" style={{
+                    backgroundColor: 'var(--cat-orange)',
+                    textTransform: 'none',
+                    fontSize: '1rem',
+                    padding: '8px 16px',
+                    flexShrink: 0,
+                }}>
+                    ⬅️ Kembali
+                </Link>
+                <div className={styles.statsContainer}>
+                    <div className={styles.statBox}>
+                        Nyawa: <LivesDisplay lives={lives} />
+                    </div>
+                    <div className={styles.statBox}>
+                        Ronde <span style={{ color: 'var(--cat-orange)' }}>{Math.min(round, TOTAL_ROUNDS)}</span>/{TOTAL_ROUNDS}
+                    </div>
+                    <div className={styles.statBox}>
+                        Skor: <span style={{ color: 'var(--cat-orange)' }}>{score}</span>
+                    </div>
+                </div>
+            </header>
+
+            <main className={styles.gameBoard}>
+                {gameOver ? (
+                    <div className={styles.gameOverCard}>
+                        {lives > 0 ? (
+                            <>
+                                <h2>🎉 Luar Biasa! 🎉</h2>
+                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
+                            </>
+                        ) : (
+                            <>
+                                <h2>💔 Kesempatan Habis! 💔</h2>
+                                <p>Jangan menyerah, ayo coba lagi!</p>
+                            </>
+                        )}
+                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
+                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-orange)' }}>
+                                🔄 Main Lagi
+                            </button>
+                            <Link to="/membaca" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
+                                ⬅️ Menu Utama
+                            </Link>
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        <h2 className={styles.questionText}>Gambar apa ini? 🤔</h2>
+
+                        <div className={styles.emojiDisplay}>
+                            <span key={round} className={styles.emojiLarge}>{currentWord.emoji}</span>
+                        </div>
+
+                        <div className={styles.optionsGrid}>
+                            {options.map((word) => {
+                                let btnClass = styles.wordBtn;
+                                if (selectedCorrect === word) btnClass += ` ${styles.wordBtnCorrect}`;
+                                if (selectedWrong === word) btnClass += ` ${styles.wordBtnWrong}`;
+
+                                return (
+                                    <button
+                                        key={word}
+                                        className={btnClass}
+                                        onClick={() => handleOptionClick(word)}
+                                        disabled={selectedCorrect !== null}
+                                    >
+                                        {word}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </>
+                )}
+            </main>
+        </div>
+    );
+};
+
+export default TebakKata;
