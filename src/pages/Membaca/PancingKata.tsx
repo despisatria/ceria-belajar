@@ -106,12 +106,12 @@ const PancingKata: React.FC = () => {
         // Get distractors
         const allPossible = mapEntry.allPools.flat().filter(w => w.word !== correctWord.word);
         const distractors = shuffleArray(allPossible).slice(0, 4); // 4 distractors + 1 correct = 5 fishes
-        
+
         const allFishWords = shuffleArray([correctWord, ...distractors]);
 
         // Generate fish objects
         // Base swimming speed based on round (higher round = slightly faster/shorter duration)
-        const baseDuration = Math.max(12, 20 - round); 
+        const baseDuration = Math.max(12, 20 - round);
 
         const newFishes: FishData[] = allFishWords.map((wordData, idx) => {
             const isRightToLeft = Math.random() > 0.5;
@@ -133,7 +133,7 @@ const PancingKata: React.FC = () => {
         // Optional instruction audio
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(`Tolong tangkap ikan ${correctWord.word}!`);
+            const utterance = new SpeechSynthesisUtterance(`Tangkaplah ikan dengan kata ${correctWord.word}!`);
             utterance.lang = 'id-ID';
             utterance.rate = 0.9;
             window.speechSynthesis.speak(utterance);
@@ -253,7 +253,7 @@ const PancingKata: React.FC = () => {
                 ) : (
                     <>
                         <div className={styles.instructionArea}>
-                            <h2 className={styles.instructionText}>Tangkap ikan:</h2>
+                            <h2 className={styles.instructionText} style={{ marginBottom: '20px' }}>Tangkap ikan:</h2>
                             <div className={styles.targetEmojiWrapper}>
                                 <span className={styles.targetEmoji}>{currentWord.emoji}</span>
                             </div>

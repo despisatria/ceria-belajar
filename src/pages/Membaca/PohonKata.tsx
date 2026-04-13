@@ -84,10 +84,10 @@ const PohonKata: React.FC = () => {
 
         // Predefined positions so apples look naturally placed on the tree crown
         const positions = shuffleArray([
-            { top: 15, left: 30 },
-            { top: 20, left: 60 },
-            { top: 50, left: 20 },
-            { top: 60, left: 70 }
+            { top: 10, left: 30 },
+            { top: 15, left: 60 },
+            { top: 40, left: 20 },
+            { top: 45, left: 70 }
         ]);
 
         const newApples: AppleData[] = roundWords.map((wordData, idx) => ({
@@ -254,22 +254,19 @@ const PohonKata: React.FC = () => {
 
                         <div className={styles.playArea}>
                             <div className={styles.treeContainer}>
-                                <div className={styles.treeCrown}>
-                                    {apples.map(apple => (
-                                        apple.status !== 'harvested' && (
-                                            <button
-                                                key={apple.id}
-                                                className={`${styles.appleBtn} ${selectedAppleId === apple.id ? styles.selected : ''} ${apple.status === 'falling' ? styles.falling : ''}`}
-                                                style={{ left: `${apple.left}%`, top: `${apple.top}%` }}
-                                                onClick={() => handleAppleTap(apple.id)}
-                                            >
-                                                <span className={styles.appleIcon}>{apple.emoji}</span>
-                                                <span className={styles.appleLabel}>{apple.word}</span>
-                                            </button>
-                                        )
-                                    ))}
-                                </div>
-                                <div className={styles.treeTrunk}></div>
+                                {apples.map(apple => (
+                                    apple.status !== 'harvested' && (
+                                        <button
+                                            key={apple.id}
+                                            className={`${styles.appleBtn} ${selectedAppleId === apple.id ? styles.selected : ''} ${apple.status === 'falling' ? styles.falling : ''}`}
+                                            style={{ left: `${apple.left}%`, top: `${apple.top}%` }}
+                                            onClick={() => handleAppleTap(apple.id)}
+                                        >
+                                            <span className={styles.appleIcon}>{apple.emoji}</span>
+                                            <span className={styles.appleLabel}>{apple.word}</span>
+                                        </button>
+                                    )
+                                ))}
                             </div>
 
                             <div className={styles.basketArea}>
