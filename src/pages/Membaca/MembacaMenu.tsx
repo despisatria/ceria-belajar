@@ -100,6 +100,13 @@ const MembacaMenu: React.FC = () => {
                             link="/membaca/susun-suku-kata"
                             description="Susun suku kata menjadi kata yang benar!"
                         />
+                        <CategoryCard
+                            title="Pancing Kata"
+                            icon="🎣"
+                            colorClass="cyan"
+                            link="/membaca/pancing-kata"
+                            description="Tangkap ikan yang membawa kata yang benar!"
+                        />
                     </div>
                 </div>
 

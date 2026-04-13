@@ -33,6 +33,7 @@ const MembacaKata3 = lazy(() => import('./pages/Membaca/MembacaKata3'));
 const TebakKata = lazy(() => import('./pages/Membaca/TebakKata'));
 const PasangkanKata = lazy(() => import('./pages/Membaca/PasangkanKata'));
 const SusunSukuKata = lazy(() => import('./pages/Membaca/SusunSukuKata'));
+const PancingKata = lazy(() => import('./pages/Membaca/PancingKata'));
 
 const LoadingFallback = () => (
   <div style={{
@@ -112,6 +113,7 @@ function App() {
             <Route path="/membaca/tebak-kata" element={<TebakKata />} />
             <Route path="/membaca/pasangkan-kata" element={<PasangkanKata />} />
             <Route path="/membaca/susun-suku-kata" element={<SusunSukuKata />} />
+            <Route path="/membaca/pancing-kata" element={<PancingKata />} />
             <Route path="/matematika" element={<Placeholder title="Matematika" />} />
             <Route path="/sains" element={<Placeholder title="Sains & IPA" />} />
             <Route path="/english" element={<Placeholder title="English" />} />
