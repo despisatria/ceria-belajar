@@ -107,6 +107,13 @@ const MembacaMenu: React.FC = () => {
                             link="/membaca/pancing-kata"
                             description="Tangkap ikan yang membawa kata yang benar!"
                         />
+                        <CategoryCard
+                            title="Pohon Kata"
+                            icon="🍎"
+                            colorClass="red"
+                            link="/membaca/pohon-kata"
+                            description="Pisahkan buah kata ke keranjang yang benar!"
+                        />
                     </div>
                 </div>
 
