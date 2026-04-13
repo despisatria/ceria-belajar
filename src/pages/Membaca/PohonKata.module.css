@@ -63,8 +63,9 @@
 /* Tree Design */
 .treeContainer {
     position: relative;
-    width: 350px;
-    height: 350px;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1 / 1;
     margin-bottom: 20px;
     background-image: url('/images/pohon_kata_tree.png');
     background-size: contain;

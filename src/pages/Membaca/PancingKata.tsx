@@ -253,7 +253,7 @@ const PancingKata: React.FC = () => {
                 ) : (
                     <>
                         <div className={styles.instructionArea}>
-                            <h2 className={styles.instructionText} style={{ marginBottom: '20px' }}>Tangkap ikan:</h2>
+                            <h2 className={styles.instructionText} style={{ marginBottom: '20px' }}>Tangkaplah Ikan dengan kata:</h2>
                             <div className={styles.targetEmojiWrapper}>
                                 <span className={styles.targetEmoji}>{currentWord.emoji}</span>
                             </div>
