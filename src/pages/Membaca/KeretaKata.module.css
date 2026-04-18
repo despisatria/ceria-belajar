@@ -1,0 +1,782 @@
+/* ===================================================
+   KERETA KATA — Game Styles
+   =================================================== */
+
+.gameContainer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Header (unified with other games) ── */
+.gameHeader {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 4px dashed var(--cat-green);
+}
+
+.headerTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.statsPanel {
+    display: flex;
+    gap: 20px;
+}
+
+.statBox {
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 4px solid var(--text-color);
+    box-shadow: 4px 4px 0px var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 120px;
+}
+
+.statLabel {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--quaternary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.statValue {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--cat-green);
+}
+
+.gameTitle {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--cat-green);
+    margin: 0;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+    animation: float 3s ease-in-out infinite;
+}
+
+/* ── Play Area ── */
+.playArea {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background: linear-gradient(180deg, #E0F4FF 0%, #BAE6FD 30%, #86EFAC 70%, #4ADE80 100%);
+    border-radius: 32px;
+    padding: 30px 24px;
+    border: 3px solid rgba(74, 222, 128, 0.4);
+    box-shadow: 0 16px 50px rgba(74, 222, 128, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ── Sky & Clouds ── */
+.sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+/* ── Sun ── */
+.sun {
+    position: absolute;
+    top: -10px;
+    right: 30px;
+    font-size: 6rem;
+    animation: spinSun 30s linear infinite;
+    filter: drop-shadow(0 0 20px rgba(253, 224, 71, 0.6));
+    z-index: 1;
+    /* Behind clouds */
+}
+
+@keyframes spinSun {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ── Clouds ── */
+.cloud {
+    position: absolute;
+    color: white;
+    font-size: 3rem;
+    opacity: 0.6;
+    animation: scrollClouds linear infinite;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05));
+    white-space: nowrap;
+    z-index: 2;
+    /* In front of sun */
+}
+
+.cloud1 {
+    top: 10px;
+    right: -100px;
+    animation-duration: 40s;
+    animation-delay: 0s;
+}
+
+.cloud2 {
+    top: 50px;
+    right: -100px;
+    font-size: 2rem;
+    opacity: 0.4;
+    animation-duration: 55s;
+    animation-delay: 15s;
+}
+
+.cloud3 {
+    top: 20px;
+    right: -100px;
+    font-size: 4rem;
+    opacity: 0.8;
+    animation-duration: 35s;
+    animation-delay: 25s;
+}
+
+.cloud4 {
+    top: 70px;
+    right: -100px;
+    font-size: 2.5rem;
+    opacity: 0.5;
+    animation-duration: 48s;
+    animation-delay: 5s;
+}
+
+.cloud5 {
+    top: 5px;
+    right: -100px;
+    font-size: 3.5rem;
+    opacity: 0.7;
+    animation-duration: 65s;
+    animation-delay: 40s;
+}
+
+.cloud6 {
+    top: 40px;
+    right: -100px;
+    font-size: 1.8rem;
+    opacity: 0.3;
+    animation-duration: 42s;
+    animation-delay: -20s;
+}
+
+@keyframes scrollClouds {
+    0% {
+        transform: translateX(100px);
+    }
+
+    100% {
+        transform: translateX(-120vw);
+    }
+}
+
+/* ── Target Word Area ── */
+.targetArea {
+    text-align: center;
+}
+
+.targetLabel {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--cat-green);
+    margin: 0 0 8px;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.targetEmojiBox {
+    display: inline-block;
+    background: white;
+    border-radius: 24px;
+    border: 4px solid var(--cat-green);
+    box-shadow: 5px 5px 0px rgba(74, 222, 128, 0.4);
+    padding: 16px 40px;
+    font-size: 5rem;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.15));
+    animation: emojiPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+}
+
+/* ── Train Track ── */
+.trainTrack {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    padding-bottom: 20px;
+    /* A bit more space for wheels */
+    margin-top: 10px;
+    overflow: visible;
+    /* Prevent clipping */
+}
+
+/* Rail lines */
+.trainTrack::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    /* Move up slightly to match wheels */
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: repeating-linear-gradient(90deg,
+            #78350F 0px, #78350F 40px,
+            transparent 40px, transparent 52px);
+    border-top: 4px solid #374151;
+    z-index: 1;
+}
+
+/* ── Train Wrapper (for animation without moving the track) ── */
+.trainWrapper {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    z-index: 2;
+    padding-bottom: 3px;
+}
+
+/* ── Locomotive CSS Art ── */
+.locomotive {
+    position: relative;
+    flex-shrink: 0;
+    width: 130px;
+    height: 100px;
+    z-index: 2;
+    margin-right: 10px;
+    /* Overlap with the slot behind it */
+}
+
+/* Cab */
+.locoCab {
+    position: absolute;
+    right: 0;
+    bottom: 20px;
+    width: 55px;
+    height: 65px;
+    background: linear-gradient(135deg, #EF4444, #B91C1C);
+    border-radius: 12px 12px 0 0;
+    border: 3px solid #7F1D1D;
+    box-shadow: inset -2px -2px 0 rgba(0, 0, 0, 0.2);
+    z-index: 3;
+}
+
+.locoWindow {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 25px;
+    height: 25px;
+    background: #E0F2FE;
+    border: 3px solid #1F2937;
+    border-radius: 6px;
+}
+
+/* Boiler */
+.locoBoiler {
+    position: absolute;
+    right: 53px;
+    bottom: 20px;
+    width: 60px;
+    height: 45px;
+    background: linear-gradient(to bottom, #EF4444, #991B1B);
+    border: 3px solid #7F1D1D;
+    border-right: none;
+    border-radius: 20px 0 0 0;
+    box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+.locoBand {
+    position: absolute;
+    right: 25px;
+    top: -3px;
+    bottom: -3px;
+    width: 10px;
+    background: #FBBF24;
+    border: 3px solid #B45309;
+    border-bottom: none;
+}
+
+/* Funnel */
+.locoFunnel {
+    position: absolute;
+    right: 85px;
+    bottom: 60px;
+    width: 18px;
+    height: 25px;
+    background: #4B5563;
+    border-radius: 5px 5px 0 0;
+    clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+    z-index: 1;
+}
+
+.locoFunnelTop {
+    position: absolute;
+    right: 82px;
+    bottom: 82px;
+    width: 24px;
+    height: 8px;
+    background: #1F2937;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+/* Cowcatcher */
+.locoCowcatcher {
+    position: absolute;
+    right: 110px;
+    bottom: 15px;
+    width: 18px;
+    height: 18px;
+    background: #6B7280;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    z-index: 1;
+}
+
+/* Wheels */
+.locoWheel {
+    position: absolute;
+    bottom: 0;
+    background: #1F2937;
+    border-radius: 50%;
+    border: 4px solid #9CA3AF;
+    box-sizing: border-box;
+    z-index: 4;
+}
+
+.locoWheel1 {
+    right: 5px;
+    width: 40px;
+    height: 40px;
+    bottom: -5px;
+    border-width: 5px;
+}
+
+.locoWheel2 {
+    right: 55px;
+    width: 28px;
+    height: 28px;
+}
+
+.locoWheel3 {
+    right: 85px;
+    width: 28px;
+    height: 28px;
+}
+
+/* Connecting Rod */
+.locoRod {
+    position: absolute;
+    bottom: 12px;
+    right: 22px;
+    width: 75px;
+    height: 6px;
+    background: #D1D5DB;
+    border: 2px solid #6B7280;
+    border-radius: 3px;
+    z-index: 5;
+}
+
+
+/* ── Slot Zone (Drop Targets on track) ── */
+.slotZone {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+.slot {
+    position: relative;
+    width: 110px;
+    height: 90px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.slot:hover {
+    transform: translateY(-4px);
+}
+
+
+
+.slotText {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    padding-bottom: 25px;
+    /* Offset to center in wagon body */
+    z-index: 10;
+}
+
+.slotEmpty {
+    border: 3px dashed rgba(74, 222, 128, 0.6);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(74, 222, 128, 0.5);
+    font-size: 2rem;
+    margin-top: 20px;
+}
+
+/* Slot states */
+.slot.correct {
+    filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.8));
+}
+
+.slot.wrong {
+    animation: wagonShake 0.4s ease-in-out;
+    filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.8));
+}
+
+/* ── Departing Train animation ── */
+.trainWrapper.departing {
+    animation: trainDepart 1.2s ease-in forwards;
+}
+
+/* ── Wagon Pool ── */
+.wagonPool {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    min-height: 110px;
+}
+
+.wagon {
+    position: relative;
+    width: 110px;
+    height: 90px;
+    cursor: grab;
+    transition: transform 0.15s, opacity 0.2s;
+    animation: wagonBounceIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.wagon:hover {
+    transform: translateY(-6px) scale(1.05);
+}
+
+.wagon:active {
+    cursor: grabbing;
+    transform: scale(1.1);
+    opacity: 0.85;
+}
+
+.wagon.placed {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+.wagon.dragging {
+    opacity: 0.4;
+}
+
+
+
+.wagonText {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    padding-bottom: 25px;
+    /* Offset to center in wagon body */
+    z-index: 10;
+}
+
+/* ── Wagon CSS Art ── */
+.cssWagon {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.wagonBody {
+    position: absolute;
+    bottom: 20px;
+    left: 8px;
+    right: 8px;
+    top: 10px;
+    background: #4ADE80;
+    border: 4px solid #166534;
+    border-radius: 8px 8px 4px 4px;
+    overflow: hidden;
+    box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.15);
+    z-index: 2;
+}
+
+/* Wooden planks texture */
+.wagonBody::before,
+.wagonBody::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.wagonBody::before {
+    top: 33%;
+}
+
+.wagonBody::after {
+    top: 66%;
+}
+
+.wagonWheel {
+    position: absolute;
+    bottom: 3px;
+    width: 24px;
+    height: 24px;
+    background: #1F2937;
+    border: 4px solid #9CA3AF;
+    border-radius: 50%;
+    box-sizing: border-box;
+    z-index: 3;
+}
+
+.wagonWheelLeft {
+    left: 15px;
+}
+
+.wagonWheelRight {
+    right: 15px;
+}
+
+/* Connector to the next wagon */
+.wagonConnector {
+    position: absolute;
+    bottom: 25px;
+    left: -4px;
+    width: 14px;
+    height: 8px;
+    background: #4B5563;
+    border-radius: 4px;
+    z-index: 1;
+}
+
+/* Reset button */
+.resetBtn {
+    display: block;
+    margin: 0 auto;
+    background: white;
+    border: 3px solid var(--text-color);
+    box-shadow: 3px 3px 0 var(--text-color);
+    border-radius: 14px;
+    padding: 8px 24px;
+    font-size: 1rem;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.1s;
+    color: var(--text-color);
+}
+
+.resetBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0 var(--text-color);
+}
+
+.resetBtn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--text-color);
+}
+
+/* ── Game Over ── */
+.gameOverCard {
+    text-align: center;
+    background: white;
+    padding: 50px 40px;
+    border-radius: 32px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+}
+
+.gameOverCard h2 {
+    font-size: 3rem;
+    color: var(--cat-green);
+    margin-bottom: 10px;
+}
+
+.gameOverCard p {
+    font-size: 1.5rem;
+    color: var(--quaternary);
+}
+
+.finalScore {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    margin: 20px 0;
+    padding: 15px;
+    background: var(--cat-green);
+    border-radius: 20px;
+    border: 3px dashed var(--text-color);
+}
+
+/* ── Animations ── */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes emojiPop {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes wagonBounceIn {
+    0% {
+        transform: translateY(30px) scale(0.6);
+        opacity: 0;
+    }
+
+    70% {
+        transform: translateY(-8px) scale(1.1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes wagonShake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    60% {
+        transform: translateX(-10px);
+    }
+
+    40%,
+    80% {
+        transform: translateX(10px);
+    }
+}
+
+@keyframes trainDepart {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    80% {
+        transform: translateX(-60vw);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-100vw);
+        opacity: 0;
+    }
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .locomotive {
+        width: 90px;
+        height: 76px;
+    }
+
+    .slot {
+        width: 80px;
+        height: 66px;
+    }
+
+    .slotText {
+        font-size: 1.3rem;
+        padding-bottom: 12px;
+    }
+
+    .wagon {
+        width: 80px;
+        height: 66px;
+    }
+
+    .wagonText {
+        font-size: 1.3rem;
+        padding-bottom: 12px;
+    }
+
+    .targetEmojiBox {
+        font-size: 3.5rem;
+        padding: 12px 28px;
+    }
+
+    .statBox {
+        min-width: 90px;
+        padding: 8px 14px;
+    }
+
+    .statValue {
+        font-size: 1.4rem;
+    }
+
+    .gameTitle {
+        font-size: 1.5rem;
+    }
+}

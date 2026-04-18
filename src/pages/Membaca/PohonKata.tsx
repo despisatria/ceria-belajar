@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './PohonKata.module.css';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
@@ -73,18 +73,18 @@ function getDistractors(word: string, count: number): string[] {
 }
 
 // Predefined apple positions on the tree crown (percentage-based)
-// Crown center is ~(47%, 33%), oval shape: narrow at top/bottom, widest in middle
+// Crown center is ~(47%, 33%), spread wide to avoid clumping
 const APPLE_POSITIONS = [
-    { top: 12, left: 38 },
-    { top: 12, left: 52 },
-    { top: 24, left: 30 },
-    { top: 24, left: 45 },
-    { top: 24, left: 58 },
-    { top: 36, left: 28 },
-    { top: 36, left: 43 },
-    { top: 36, left: 57 },
-    { top: 46, left: 34 },
-    { top: 46, left: 50 },
+    { top: 12, left: 40 },
+    { top: 15, left: 55 },
+    { top: 22, left: 25 },
+    { top: 25, left: 47 },
+    { top: 27, left: 65 },
+    { top: 35, left: 22 },
+    { top: 38, left: 45 },
+    { top: 40, left: 65 },
+    { top: 48, left: 30 },
+    { top: 48, left: 55 },
 ];
 
 interface AppleData {
@@ -141,9 +141,14 @@ const PohonKata: React.FC = () => {
         }
     }, [round, gameOver, generateRound]);
 
+    const transitionRef = useRef(false);
+
     // Check if word is complete
     useEffect(() => {
-        if (currentWord && filledLetters.length === currentWord.length) {
+        if (currentWord && filledLetters.length > 0 && filledLetters.length === currentWord.length) {
+            if (transitionRef.current) return;
+            transitionRef.current = true;
+
             // Word complete!
             confetti({
                 particleCount: 120,
@@ -152,17 +157,23 @@ const PohonKata: React.FC = () => {
                 colors: ['#EF4444', '#10B981', '#F59E0B', '#3B82F6'],
             });
 
-            setTimeout(() => {
-                const nextRound = round + 1;
-                if (nextRound > TOTAL_ROUNDS) {
-                    playWinSound();
-                    setGameOver(true);
-                } else {
-                    setRound(nextRound);
-                }
+            const t = setTimeout(() => {
+                setRound(prev => {
+                    const nextRound = prev + 1;
+                    if (nextRound > TOTAL_ROUNDS) {
+                        playWinSound();
+                        setGameOver(true);
+                        return prev;
+                    }
+                    return nextRound;
+                });
             }, 1500);
+
+            return () => clearTimeout(t);
+        } else if (filledLetters.length === 0) {
+            transitionRef.current = false;
         }
-    }, [filledLetters, currentWord, round]);
+    }, [filledLetters.length, currentWord]);
 
     const handleAppleTap = (apple: AppleData) => {
         if (apple.status !== 'onTree') return;
@@ -208,6 +219,17 @@ const PohonKata: React.FC = () => {
         }
     };
 
+    // Speak instruction on mount
+    useEffect(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance("Petik buah apel secara berurutan untuk mengeja kata!");
+            utterance.lang = 'id-ID';
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+    }, []);
+
     const handleRestart = () => {
         setRound(1);
         setScore(0);
@@ -217,27 +239,35 @@ const PohonKata: React.FC = () => {
 
     return (
         <div className={styles.gameContainer}>
-            <header className={styles.gameHeader}>
-                <Link to="/membaca" className="btn" style={{
-                    backgroundColor: 'var(--cat-red)',
-                    textTransform: 'none',
-                    fontSize: '1rem',
-                    padding: '8px 16px',
-                    flexShrink: 0,
-                }}>
-                    ⬅️ Kembali
-                </Link>
-                <div className={styles.statsContainer}>
-                    <div className={styles.statBox}>
-                        Nyawa: <LivesDisplay lives={lives} />
-                    </div>
-                    <div className={styles.statBox}>
-                        Ronde <span style={{ color: 'var(--cat-red)' }}>{Math.min(round, TOTAL_ROUNDS)}</span>/{TOTAL_ROUNDS}
-                    </div>
-                    <div className={styles.statBox}>
-                        Skor: <span style={{ color: 'var(--cat-red)' }}>{score}</span>
+            <header className={styles.gameHeader} style={{ borderBottomColor: 'var(--cat-red)' }}>
+                <div className={styles.headerTop}>
+                    <Link to="/membaca" className="btn" style={{
+                        backgroundColor: 'var(--cat-red)',
+                        textTransform: 'none',
+                        fontSize: '1rem',
+                        padding: '8px 16px'
+                    }}>
+                        ⬅️ Kembali
+                    </Link>
+                    <div className={styles.statsPanel}>
+                        <div className={styles.statBox}>
+                            <span className={styles.statLabel}>Nyawa</span>
+                            <LivesDisplay lives={lives} />
+                        </div>
+                        <div className={styles.statBox}>
+                            <span className={styles.statLabel}>Nilai</span>
+                            <span className={styles.statValue} style={{ color: 'var(--cat-red)' }}>{score}</span>
+                        </div>
+                        <div className={styles.statBox}>
+                            <span className={styles.statLabel}>Putaran</span>
+                            <span className={styles.statValue} style={{ color: 'var(--cat-red)' }}>{Math.min(round, TOTAL_ROUNDS)}/5</span>
+                        </div>
                     </div>
                 </div>
+                <h2 className={styles.gameTitle} style={{ color: 'var(--cat-red)' }}>Petik Huruf! 🍎</h2>
+                <p style={{ textAlign: 'center', color: 'var(--quaternary)', marginTop: '10px', fontWeight: 'bold' }}>
+                    Petik buah apel berhuruf secara berurutan untuk mengeja kata!
+                </p>
             </header>
 
             <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>

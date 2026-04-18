@@ -78,7 +78,7 @@ const MembacaMenu: React.FC = () => {
                         Game Membaca 📖
                     </h2>
 
-                    <div className="category-grid" style={{ justifyContent: 'center', display: 'flex', gap: '30px', flexWrap: 'wrap' }}>
+                    <div className="category-grid" style={{ justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
                         <CategoryCard
                             title="Tebak Kata dari Gambar"
                             icon="🖼️"
@@ -108,11 +108,18 @@ const MembacaMenu: React.FC = () => {
                             description="Tangkap ikan yang membawa kata yang benar!"
                         />
                         <CategoryCard
-                            title="Pohon Kata"
+                            title="Petik Huruf"
                             icon="🍎"
                             colorClass="red"
                             link="/membaca/pohon-kata"
-                            description="Pisahkan buah kata ke keranjang yang benar!"
+                            description="Petik apel berhuruf secara berurutan untuk mengeja kata!"
+                        />
+                        <CategoryCard
+                            title="Kereta Kata"
+                            icon="🚂"
+                            colorClass="green"
+                            link="/membaca/kereta-kata"
+                            description="Susun gerbong suku kata agar membentuk kata yang benar!"
                         />
                     </div>
                 </div>

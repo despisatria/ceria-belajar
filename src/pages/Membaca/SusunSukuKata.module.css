@@ -8,30 +8,56 @@
 }
 
 .gameHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     margin-bottom: 30px;
     padding-bottom: 20px;
-    border-bottom: 3px solid rgba(139, 92, 246, 0.2);
-    flex-wrap: wrap;
-    gap: 10px;
+    border-bottom: 4px dashed var(--cat-purple);
 }
 
-.statsContainer {
+.headerTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.statsPanel {
     display: flex;
     gap: 20px;
 }
 
 .statBox {
-    background: rgba(255, 255, 255, 0.8);
+    background-color: white;
     padding: 10px 20px;
-    border-radius: 16px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--text-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    border: 2px solid rgba(255, 255, 255, 1);
+    border-radius: 20px;
+    border: 4px solid var(--text-color);
+    box-shadow: 4px 4px 0px var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 120px;
+}
+
+.statLabel {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--quaternary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.statValue {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--cat-purple);
+}
+
+.gameTitle {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--cat-purple);
+    margin: 0;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+    animation: float 3s ease-in-out infinite;
 }
 
 .gameBoard {

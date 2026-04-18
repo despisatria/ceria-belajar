@@ -239,27 +239,35 @@ const SusunSukuKata: React.FC = () => {
 
     return (
         <div className={styles.gameContainer}>
-            <header className={styles.gameHeader}>
-                <Link to="/membaca" className="btn" style={{
-                    backgroundColor: 'var(--cat-purple)',
-                    textTransform: 'none',
-                    fontSize: '1rem',
-                    padding: '8px 16px',
-                    flexShrink: 0,
-                }}>
-                    ⬅️ Kembali
-                </Link>
-                <div className={styles.statsContainer}>
-                    <div className={styles.statBox}>
-                        Nyawa: <LivesDisplay lives={lives} />
-                    </div>
-                    <div className={styles.statBox}>
-                        Ronde <span style={{ color: 'var(--cat-purple)' }}>{Math.min(round, TOTAL_ROUNDS)}</span>/{TOTAL_ROUNDS}
-                    </div>
-                    <div className={styles.statBox}>
-                        Skor: <span style={{ color: 'var(--cat-purple)' }}>{score}</span>
+            <header className={styles.gameHeader} style={{ borderBottomColor: 'var(--cat-purple)' }}>
+                <div className={styles.headerTop}>
+                    <Link to="/membaca" className="btn" style={{
+                        backgroundColor: 'var(--cat-purple)',
+                        textTransform: 'none',
+                        fontSize: '1rem',
+                        padding: '8px 16px'
+                    }}>
+                        ⬅️ Kembali
+                    </Link>
+                    <div className={styles.statsPanel}>
+                        <div className={styles.statBox}>
+                            <span className={styles.statLabel}>Nyawa</span>
+                            <LivesDisplay lives={lives} />
+                        </div>
+                        <div className={styles.statBox}>
+                            <span className={styles.statLabel}>Nilai</span>
+                            <span className={styles.statValue} style={{ color: 'var(--cat-purple)' }}>{score}</span>
+                        </div>
+                        <div className={styles.statBox}>
+                            <span className={styles.statLabel}>Putaran</span>
+                            <span className={styles.statValue} style={{ color: 'var(--cat-purple)' }}>{Math.min(round, TOTAL_ROUNDS)}/5</span>
+                        </div>
                     </div>
                 </div>
+                <h2 className={styles.gameTitle} style={{ color: 'var(--cat-purple)' }}>Susun Suku Kata! 🧩</h2>
+                <p style={{ textAlign: 'center', color: 'var(--quaternary)', marginTop: '10px', fontWeight: 'bold' }}>
+                    Susun suku kata yang acak menjadi kata yang sesuai gambar
+                </p>
             </header>
 
             <main className={styles.gameBoard}>
