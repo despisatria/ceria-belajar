@@ -121,10 +121,19 @@
     width: 100%;
     max-width: 500px;
     aspect-ratio: 1 / 1;
+}
+
+.treeContainer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
     background-image: url('/images/pohon_kata_tree.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+    mix-blend-mode: multiply;
+    z-index: 0;
+    pointer-events: none;
 }
 
 /* Apples */
