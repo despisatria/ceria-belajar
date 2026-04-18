@@ -10,22 +10,50 @@ interface WordEntry {
     emoji: string;
 }
 
-// Flat list for categorization based on starting letters
-const ALL_WORDS: WordEntry[] = [
+// === WORD POOLS BY DIFFICULTY (matching materi Membaca Kata) ===
+
+// Pool 1: 2 suku kata KV+KV (4 huruf - paling mudah)
+const POOL_1: WordEntry[] = [
     { word: 'baju', emoji: '👕' }, { word: 'bola', emoji: '⚽' }, { word: 'buku', emoji: '📚' },
     { word: 'kuda', emoji: '🐴' }, { word: 'nasi', emoji: '🍚' }, { word: 'roti', emoji: '🍞' },
     { word: 'sapi', emoji: '🐮' }, { word: 'susu', emoji: '🥛' }, { word: 'topi', emoji: '🧢' },
+];
+
+// Pool 2: 2 suku kata 4-5 huruf (Level 2)
+const POOL_2: WordEntry[] = [
     { word: 'ayam', emoji: '🐔' }, { word: 'balon', emoji: '🎈' }, { word: 'ikan', emoji: '🐟' },
     { word: 'kapal', emoji: '🚢' }, { word: 'rumah', emoji: '🏠' }, { word: 'telur', emoji: '🥚' },
+];
+
+// Pool 3: 2 suku kata NG/NY (Level 3)
+const POOL_3: WordEntry[] = [
     { word: 'bunga', emoji: '🌸' }, { word: 'singa', emoji: '🦁' }, { word: 'payung', emoji: '☂️' },
+];
+
+// Pool 4: 3 suku kata terbuka (KV+KV+KV)
+const POOL_4: WordEntry[] = [
     { word: 'sepatu', emoji: '👟' }, { word: 'celana', emoji: '👖' }, { word: 'boneka', emoji: '🧸' },
     { word: 'gurita', emoji: '🐙' }, { word: 'sepeda', emoji: '🚲' }, { word: 'kelapa', emoji: '🥥' },
     { word: 'kamera', emoji: '📷' }, { word: 'kereta', emoji: '🚂' },
+];
+
+// Pool 5: 3 suku kata campuran (paling sulit)
+const POOL_5: WordEntry[] = [
     { word: 'jerapah', emoji: '🦒' }, { word: 'kelinci', emoji: '🐰' }, { word: 'pesawat', emoji: '✈️' },
     { word: 'harimau', emoji: '🐯' }, { word: 'semangka', emoji: '🍉' },
 ];
 
-const TOTAL_ROUNDS = 10;
+// 5 rounds, progressively harder
+const ROUND_POOL_MAP: WordEntry[][] = [
+    POOL_1,                    // Round 1: 4 huruf sederhana
+    POOL_2,                    // Round 2: 4-5 huruf
+    POOL_3,                    // Round 3: 5-6 huruf NG/NY
+    POOL_4,                    // Round 4: 6 huruf (3 suku kata)
+    POOL_5,                    // Round 5: 7-8 huruf (paling sulit)
+];
+
+const TOTAL_ROUNDS = 5;
+const DISTRACTOR_COUNT = 2; // jumlah huruf pengecoh
 
 function shuffleArray<T>(arr: T[]): T[] {
     const shuffled = [...arr];
@@ -36,13 +64,33 @@ function shuffleArray<T>(arr: T[]): T[] {
     return shuffled;
 }
 
+// Generate random distractor letters not in the word
+function getDistractors(word: string, count: number): string[] {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    const wordLetters = new Set(word.toLowerCase().split(''));
+    const available = alphabet.split('').filter(l => !wordLetters.has(l));
+    return shuffleArray(available).slice(0, count);
+}
+
+// Predefined apple positions on the tree crown (percentage-based)
+const APPLE_POSITIONS = [
+    { top: 8,  left: 35 },
+    { top: 8,  left: 58 },
+    { top: 25, left: 18 },
+    { top: 25, left: 48 },
+    { top: 25, left: 72 },
+    { top: 42, left: 28 },
+    { top: 42, left: 58 },
+    { top: 42, left: 82 },
+    { top: 55, left: 15 },
+    { top: 55, left: 70 },
+];
+
 interface AppleData {
     id: string;
-    word: string;
-    emoji: string;
     letter: string;
-    top: number; // percentage
-    left: number; // percentage
+    top: number;
+    left: number;
     status: 'onTree' | 'falling' | 'harvested';
 }
 
@@ -52,56 +100,38 @@ const PohonKata: React.FC = () => {
     const [lives, setLives] = useState(5);
     const [gameOver, setGameOver] = useState(false);
     const [apples, setApples] = useState<AppleData[]>([]);
-    const [baskets, setBaskets] = useState<string[]>([]);
-    const [selectedAppleId, setSelectedAppleId] = useState<string | null>(null);
-    const [errorBasket, setErrorBasket] = useState<string | null>(null);
+    const [currentWord, setCurrentWord] = useState('');
+    const [currentEmoji, setCurrentEmoji] = useState('');
+    const [filledLetters, setFilledLetters] = useState<string[]>([]);
+    const [errorAppleId, setErrorAppleId] = useState<string | null>(null);
 
     const generateRound = useCallback(() => {
-        // Group words by first letter
-        const wordMap: Record<string, WordEntry[]> = {};
-        ALL_WORDS.forEach(w => {
-            const letter = w.word.charAt(0).toUpperCase();
-            if (!wordMap[letter]) wordMap[letter] = [];
-            wordMap[letter].push(w);
-        });
+        const pool = ROUND_POOL_MAP[Math.min(round - 1, ROUND_POOL_MAP.length - 1)];
+        const wordEntry = shuffleArray(pool)[0];
+        const word = wordEntry.word.toLowerCase();
 
-        // Filter letters with at least 2 items
-        const validLetters = Object.keys(wordMap).filter(l => wordMap[l].length >= 2);
-        
-        // Pick 2 target letters
-        const chosenLetters = shuffleArray(validLetters).slice(0, 2);
-        setBaskets(chosenLetters);
+        setCurrentWord(word);
+        setCurrentEmoji(wordEntry.emoji);
+        setFilledLetters([]);
 
-        // Pick 2 words per letter
-        let roundWords: WordEntry[] = [];
-        chosenLetters.forEach(letter => {
-            const wordsForLetter = shuffleArray(wordMap[letter]).slice(0, 2);
-            roundWords = roundWords.concat(wordsForLetter);
-        });
+        // Create apple letters: actual word letters + distractors
+        const wordLetters = word.split('');
+        const distractors = getDistractors(word, DISTRACTOR_COUNT);
+        const allLetters = shuffleArray([...wordLetters, ...distractors]);
 
-        // Shuffle round words
-        roundWords = shuffleArray(roundWords);
+        // Assign positions
+        const positions = shuffleArray(APPLE_POSITIONS.slice(0, allLetters.length));
 
-        // Predefined positions so apples look naturally placed on the tree crown
-        const positions = shuffleArray([
-            { top: 10, left: 30 },
-            { top: 15, left: 60 },
-            { top: 40, left: 20 },
-            { top: 45, left: 70 }
-        ]);
-
-        const newApples: AppleData[] = roundWords.map((wordData, idx) => ({
+        const newApples: AppleData[] = allLetters.map((letter, idx) => ({
             id: `apple-${round}-${idx}`,
-            word: wordData.word,
-            emoji: '🍎', // The apple icon itself
-            letter: wordData.word.charAt(0).toUpperCase(),
+            letter: letter.toUpperCase(),
             top: positions[idx].top,
             left: positions[idx].left,
-            status: 'onTree'
+            status: 'onTree',
         }));
 
         setApples(newApples);
-        setSelectedAppleId(null);
+        setErrorAppleId(null);
     }, [round]);
 
     useEffect(() => {
@@ -110,9 +140,17 @@ const PohonKata: React.FC = () => {
         }
     }, [round, gameOver, generateRound]);
 
-    // Proceed to next round if all apples are harvested
+    // Check if word is complete
     useEffect(() => {
-        if (apples.length > 0 && apples.every(a => a.status === 'harvested')) {
+        if (currentWord && filledLetters.length === currentWord.length) {
+            // Word complete!
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#EF4444', '#10B981', '#F59E0B', '#3B82F6'],
+            });
+
             setTimeout(() => {
                 const nextRound = round + 1;
                 if (nextRound > TOTAL_ROUNDS) {
@@ -121,56 +159,39 @@ const PohonKata: React.FC = () => {
                 } else {
                     setRound(nextRound);
                 }
-            }, 1000);
+            }, 1500);
         }
-    }, [apples, round]);
+    }, [filledLetters, currentWord, round]);
 
-    const handleAppleTap = (id: string) => {
-        // Find if any is falling, prevent interactions while animation runs
-        const isAnimActive = apples.some(a => a.status === 'falling');
-        if (isAnimActive) return;
+    const handleAppleTap = (apple: AppleData) => {
+        if (apple.status !== 'onTree') return;
+        if (errorAppleId) return; // prevent rapid taps during error animation
 
-        // Toggle selection
-        setSelectedAppleId(prev => (prev === id ? null : id));
-    };
+        const nextIndex = filledLetters.length;
+        const expectedLetter = currentWord[nextIndex]?.toUpperCase();
 
-    const handleBasketTap = (basketLetter: string) => {
-        if (!selectedAppleId) return;
-
-        const targetApple = apples.find(a => a.id === selectedAppleId);
-        if (!targetApple || targetApple.status !== 'onTree') return;
-
-        const isCorrect = targetApple.letter === basketLetter;
-
-        if (isCorrect) {
+        if (apple.letter === expectedLetter) {
+            // Correct!
             playCorrectSound();
             setScore(prev => prev + 10);
-            
-            // Mark as falling
-            setApples(prev => prev.map(a => 
-                a.id === selectedAppleId ? { ...a, status: 'falling' } : a
+            setFilledLetters(prev => [...prev, apple.letter]);
+
+            // Mark apple as falling
+            setApples(prev => prev.map(a =>
+                a.id === apple.id ? { ...a, status: 'falling' } : a
             ));
-            setSelectedAppleId(null);
 
-            // Confetti for single harvest
-            confetti({
-                particleCount: 30,
-                spread: 30,
-                origin: { y: 0.8 },
-                colors: ['#EF4444', '#FFFFFF']
-            });
-
-            // Remove it from view after some time
+            // Then mark as harvested
             setTimeout(() => {
-                setApples(prev => prev.map(a => 
-                    a.id === targetApple.id ? { ...a, status: 'harvested' } : a
+                setApples(prev => prev.map(a =>
+                    a.id === apple.id ? { ...a, status: 'harvested' } : a
                 ));
-            }, 600); // 0.6s falling animation
+            }, 500);
 
         } else {
+            // Wrong!
             playWrongSound();
-            setErrorBasket(basketLetter);
-            setSelectedAppleId(null); // Deselect on error
+            setErrorAppleId(apple.id);
 
             setLives(prev => {
                 const newLives = prev - 1;
@@ -181,7 +202,7 @@ const PohonKata: React.FC = () => {
             });
 
             setTimeout(() => {
-                setErrorBasket(null);
+                setErrorAppleId(null);
             }, 500);
         }
     };
@@ -223,13 +244,13 @@ const PohonKata: React.FC = () => {
                     <div className={styles.gameOverCard}>
                         {lives > 0 ? (
                             <>
-                                <h2>🎉 Pekerja Keras! 🎉</h2>
-                                <p>Kamu berhasil memanen dan memilah semua apel!</p>
+                                <h2>🎉 Luar Biasa! 🎉</h2>
+                                <p>Kamu berhasil mengeja semua kata!</p>
                             </>
                         ) : (
                             <>
-                                <h2>💔 Keranjang Kosong! 💔</h2>
-                                <p>Jangan menyerah, ayo panen buah lagi!</p>
+                                <h2>😢 Kesempatan Habis!</h2>
+                                <p>Jangan menyerah, ayo coba lagi!</p>
                             </>
                         )}
                         <div className={styles.finalScore}>Skor Akhir: {score}</div>
@@ -244,42 +265,39 @@ const PohonKata: React.FC = () => {
                     </div>
                 ) : (
                     <>
+                        {/* Target Emoji + Instruction */}
                         <div className={styles.instructionArea}>
-                            <h2 className={styles.instructionText}>
-                                {selectedAppleId 
-                                    ? "Apel siap! Pilih keranjangnya!" 
-                                    : "Pilih apel, lalu masukkan ke keranjang!"}
-                            </h2>
+                            <h2 className={styles.instructionText}>Petik huruf untuk mengeja:</h2>
+                            <span className={styles.targetEmoji}>{currentEmoji}</span>
                         </div>
 
+                        {/* Word Boxes */}
+                        <div className={styles.wordBoxContainer}>
+                            {currentWord.split('').map((_letter, idx) => (
+                                <div
+                                    key={idx}
+                                    className={`${styles.letterBox} ${idx < filledLetters.length ? styles.letterBoxFilled : ''} ${idx === filledLetters.length ? styles.letterBoxNext : ''}`}
+                                >
+                                    {idx < filledLetters.length ? filledLetters[idx] : ''}
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Play Area with Tree */}
                         <div className={styles.playArea}>
                             <div className={styles.treeContainer}>
                                 {apples.map(apple => (
                                     apple.status !== 'harvested' && (
                                         <button
                                             key={apple.id}
-                                            className={`${styles.appleBtn} ${selectedAppleId === apple.id ? styles.selected : ''} ${apple.status === 'falling' ? styles.falling : ''}`}
+                                            className={`${styles.appleBtn} ${apple.status === 'falling' ? styles.falling : ''} ${errorAppleId === apple.id ? styles.errorShake : ''}`}
                                             style={{ left: `${apple.left}%`, top: `${apple.top}%` }}
-                                            onClick={() => handleAppleTap(apple.id)}
+                                            onClick={() => handleAppleTap(apple)}
                                         >
-                                            <span className={styles.appleIcon}>{apple.emoji}</span>
-                                            <span className={styles.appleLabel}>{apple.word}</span>
+                                            <span className={styles.appleIcon}>🍎</span>
+                                            <span className={styles.appleLabel}>{apple.letter}</span>
                                         </button>
                                     )
-                                ))}
-                            </div>
-
-                            <div className={styles.basketArea}>
-                                {baskets.map(basket => (
-                                    <button
-                                        key={basket}
-                                        className={`${styles.basketBtn} ${errorBasket === basket ? styles.shake : ''}`}
-                                        onClick={() => handleBasketTap(basket)}
-                                        disabled={!selectedAppleId}
-                                    >
-                                        <span className={styles.basketIcon}>🧺</span>
-                                        <span className={styles.basketLabel}>Awalan {basket}</span>
-                                    </button>
                                 ))}
                             </div>
                         </div>
