@@ -73,17 +73,18 @@ function getDistractors(word: string, count: number): string[] {
 }
 
 // Predefined apple positions on the tree crown (percentage-based)
+// The tree crown is roughly oval: narrow at top, widest at ~30%, narrowing again at ~55%
 const APPLE_POSITIONS = [
-    { top: 8,  left: 35 },
-    { top: 8,  left: 58 },
-    { top: 25, left: 18 },
-    { top: 25, left: 48 },
-    { top: 25, left: 72 },
-    { top: 42, left: 28 },
-    { top: 42, left: 58 },
-    { top: 42, left: 82 },
-    { top: 55, left: 15 },
-    { top: 55, left: 70 },
+    { top: 10, left: 40 },
+    { top: 10, left: 55 },
+    { top: 22, left: 28 },
+    { top: 22, left: 48 },
+    { top: 22, left: 65 },
+    { top: 36, left: 25 },
+    { top: 36, left: 45 },
+    { top: 36, left: 62 },
+    { top: 48, left: 32 },
+    { top: 48, left: 55 },
 ];
 
 interface AppleData {
