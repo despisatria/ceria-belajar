@@ -162,6 +162,12 @@
     box-shadow: 0px 0px 0px var(--text-color);
 }
 
+.syllableCardActive {
+    transform: translateY(-6px);
+    border-color: var(--cat-blue);
+    box-shadow: 6px 6px 0px var(--cat-blue);
+}
+
 .syllableCard::before {
     content: '';
     position: absolute;
@@ -386,6 +392,138 @@
     }
 }
 
+/* === Vokal Card Active State === */
+.vokalCardActive {
+    transform: translateY(-4px);
+    position: relative;
+}
+
+.vokalCardActive::after {
+    content: '▼';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+/* === Word Section (below vokal grid) === */
+.wordSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-top: 10px;
+    animation: fadeIn 0.3s ease;
+}
+
+.wordSectionTitle {
+    font-size: 1.4rem;
+    font-weight: 900;
+    margin: 0;
+    text-align: center;
+}
+
+.wordSectionLetter {
+    font-size: 1.8rem;
+    font-weight: 900;
+}
+
+.wordGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    width: 100%;
+}
+
+.wordCard {
+    background: white;
+    border-radius: 30px;
+    border: 5px solid var(--text-color);
+    box-shadow: 8px 8px 0px var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 28px 16px 22px;
+    gap: 14px;
+    transition: all 0.1s;
+    min-height: 220px;
+    position: relative;
+    animation: wordBounceIn 0.4s ease both;
+}
+
+.wordCard:active {
+    transform: translate(8px, 8px);
+    box-shadow: 0px 0px 0px var(--text-color);
+}
+
+.wordCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 10px 12px 0px var(--text-color);
+}
+
+.wordCardIconWrap {
+    width: 110px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f0f4ff 0%, #fff5f5 50%, #f0fff4 100%);
+    flex-shrink: 0;
+}
+
+.wordCardEmoji {
+    font-size: 4.5rem;
+    line-height: 1;
+}
+
+.wordCardImage {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.wordCardText {
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+@keyframes wordBounceIn {
+    0% {
+        transform: scale(0.3) translateY(40px);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.08) translateY(-5px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
 /* === Responsive === */
 @media (max-width: 700px) {
     .gameBoard {
@@ -433,5 +571,35 @@
 
     .gameTitle {
         font-size: 1.6rem;
+    }
+
+    .wordGrid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .wordCard {
+        flex-direction: row;
+        min-height: auto;
+        padding: 16px 20px;
+        gap: 16px;
+    }
+
+    .wordCardIconWrap {
+        width: 80px;
+        height: 80px;
+    }
+
+    .wordCardEmoji {
+        font-size: 3rem;
+    }
+
+    .wordCardImage {
+        width: 70px;
+        height: 70px;
+    }
+
+    .wordCardText {
+        font-size: 2rem;
     }
 }
