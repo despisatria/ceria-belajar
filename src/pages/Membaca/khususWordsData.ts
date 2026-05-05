@@ -1,4 +1,4 @@
-import { WordItem } from './kvWordsData';
+import type { WordItem } from './kvWordsData';
 
 export const KHUSUS_WORDS: Record<string, WordItem[]> = {
     // === NG ===

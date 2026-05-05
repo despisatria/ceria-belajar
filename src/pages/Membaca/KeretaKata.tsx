@@ -128,7 +128,6 @@ const KeretaKata: React.FC = () => {
 
     const [wrongSlots, setWrongSlots] = useState<number[]>([]);
     const [isDeparting, setIsDeparting] = useState(false);
-    const [dragId, setDragId] = useState<string | null>(null);
     const transitionRef = useRef(false);
 
     // ── Generate a round ──
@@ -236,12 +235,10 @@ const KeretaKata: React.FC = () => {
     const handleDragStart = (e: React.DragEvent, wagonId: string) => {
         e.dataTransfer.setData('wagonId', wagonId);
         e.dataTransfer.effectAllowed = 'move';
-        setDragId(wagonId);
         setWagons(prev => prev.map(w => w.id === wagonId ? { ...w, dragging: true } : w));
     };
 
     const handleDragEnd = () => {
-        setDragId(null);
         setWagons(prev => prev.map(w => ({ ...w, dragging: false })));
     };
 
