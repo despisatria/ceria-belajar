@@ -146,9 +146,7 @@ const MenaraBalok: React.FC = () => {
     };
 
     // Calculate dynamic tower height bounds
-    // Matching exact dimensions of source block
     const blockHeight = 50;
-    const blockWidth = 350;
 
     return (
         <div className={styles.gameContainer}>

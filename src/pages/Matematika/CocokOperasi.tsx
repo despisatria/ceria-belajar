@@ -184,7 +184,7 @@ const CocokOperasi: React.FC<CocokOperasiProps> = ({ operator }) => {
     }, [round, gameOver, generateRound]);
 
     // Redraw lines on window resize (e.g. device rotation)
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [, setWindowWidth] = useState(window.innerWidth);
     useEffect(() => {
         const handleResize = () => setWindowWidth(window.innerWidth);
         window.addEventListener('resize', handleResize);
