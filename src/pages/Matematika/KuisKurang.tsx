@@ -157,10 +157,10 @@ const KuisKurang: React.FC = () => {
                             {Array.from({ length: num1 }).map((_, i) => {
                                 const isEaten = i >= num1 - num2;
                                 return (
-                                    <div key={`cookie-${i}`} style={{ position: 'relative', fontSize: '3.5rem' }}>
+                                    <div key={`cookie-${i}`} className="math-visual-item" style={{ position: 'relative', fontSize: '3.5rem' }}>
                                         <span style={{ opacity: isEaten ? 0.3 : 1, transition: 'all 0.3s ease' }}>🍪</span>
                                         {isEaten && (
-                                            <span style={{ 
+                                            <span className="math-visual-item" style={{ 
                                                 position: 'absolute', 
                                                 top: '50%', 
                                                 left: '50%', 
@@ -178,7 +178,7 @@ const KuisKurang: React.FC = () => {
                         </div>
 
                         {/* Equation display */}
-                        <div style={{
+                        <div className="math-equation" style={{
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -208,7 +208,7 @@ const KuisKurang: React.FC = () => {
                                 return (
                                     <button
                                         key={`opt-${idx}`}
-                                        className={btnClass}
+                                        className={`${btnClass} math-option-btn`}
                                         onClick={() => handleOptionClick(ans)}
                                         disabled={selectedCorrect !== null}
                                         style={{ fontSize: '2.5rem', padding: '15px' }} 

@@ -161,7 +161,7 @@ const TebakLompatMundur: React.FC = () => {
                 ) : (
                     <>
                         {/* Number Line Area */}
-                        <div style={{
+                        <div className="math-number-line" style={{
                             margin: '40px 0 30px',
                             padding: '20px',
                             position: 'relative',
@@ -202,7 +202,7 @@ const TebakLompatMundur: React.FC = () => {
                                         width: '8%'
                                     }}>
                                         {/* Frog */}
-                                        <div style={{
+                                        <div className="math-frog" style={{
                                             fontSize: '3rem',
                                             height: '50px',
                                             transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
@@ -215,7 +215,7 @@ const TebakLompatMundur: React.FC = () => {
                                         </div>
                                         
                                         {/* Rock/Point */}
-                                        <div style={{
+                                        <div className="math-point" style={{
                                             width: '24px',
                                             height: '24px',
                                             borderRadius: '50%',
@@ -227,7 +227,7 @@ const TebakLompatMundur: React.FC = () => {
                                         }}></div>
                                         
                                         {/* Number */}
-                                        <div style={{
+                                        <div className="math-number" style={{
                                             fontSize: '1.2rem',
                                             fontWeight: isFrogHere || isTarget ? 'bold' : 'normal',
                                             color: isFrogHere || isTarget ? 'var(--cat-red)' : '#666'
@@ -240,7 +240,7 @@ const TebakLompatMundur: React.FC = () => {
                         </div>
 
                         {/* Equation display */}
-                        <div style={{
+                        <div className="math-equation" style={{
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -270,7 +270,7 @@ const TebakLompatMundur: React.FC = () => {
                                 return (
                                     <button
                                         key={`opt-${idx}`}
-                                        className={btnClass}
+                                        className={`${btnClass} math-option-btn`}
                                         onClick={() => handleOptionClick(ans)}
                                         disabled={selectedCorrect !== null || isAnimatingJump}
                                         style={{ fontSize: '2.5rem', padding: '15px' }} 

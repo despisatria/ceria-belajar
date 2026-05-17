@@ -737,29 +737,12 @@
 
 /* ── Responsive ── */
 @media (max-width: 600px) {
-    .locomotive {
-        width: 90px;
-        height: 76px;
+    .trainWrapper {
+        zoom: 0.55;
     }
 
-    .slot {
-        width: 80px;
-        height: 66px;
-    }
-
-    .slotText {
-        font-size: 1.3rem;
-        padding-bottom: 12px;
-    }
-
-    .wagon {
-        width: 80px;
-        height: 66px;
-    }
-
-    .wagonText {
-        font-size: 1.3rem;
-        padding-bottom: 12px;
+    .wagonPool {
+        zoom: 0.65;
     }
 
     .targetEmojiBox {
@@ -778,5 +761,10 @@
 
     .gameTitle {
         font-size: 1.5rem;
+    }
+
+    .sun {
+        font-size: 3.5rem;
+        right: 10px;
     }
 }

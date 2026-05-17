@@ -47,8 +47,8 @@ const GameHeader: React.FC<GameHeaderProps> = ({
     const headerStyle = borderColor ? { borderBottomColor: borderColor } : undefined;
 
     return (
-        <header className={styles.gameHeader} style={headerStyle}>
-            <div className={styles.headerTop}>
+        <header className={`global-game-header ${styles.gameHeader || ''}`} style={headerStyle}>
+            <div className={`global-header-top ${styles.headerTop || ''}`}>
                 <Link to={menuLink} className="btn" style={{
                     backgroundColor: themeColor,
                     textTransform: 'none',
@@ -57,18 +57,18 @@ const GameHeader: React.FC<GameHeaderProps> = ({
                 }}>
                     ⬅️ Kembali
                 </Link>
-                <div className={styles.statsPanel}>
-                    <div className={styles.statBox}>
+                <div className={`global-stats-panel ${styles.statsPanel || ''}`}>
+                    <div className={`global-stat-box ${styles.statBox || ''}`}>
                         <span className={styles.statLabel}>Kesempatan</span>
                         <LivesDisplay lives={lives} />
                     </div>
-                    <div className={styles.statBox}>
+                    <div className={`global-stat-box ${styles.statBox || ''}`}>
                         <span className={styles.statLabel}>Nilai</span>
-                        <span className={styles.statValue} style={{ color: themeColor }}>{score}</span>
+                        <span className={`global-stat-value ${styles.statValue || ''}`} style={{ color: themeColor }}>{score}</span>
                     </div>
-                    <div className={styles.statBox}>
+                    <div className={`global-stat-box ${styles.statBox || ''}`}>
                         <span className={styles.statLabel}>{roundLabel}</span>
-                        <span className={styles.statValue} style={{ color: themeColor }}>
+                        <span className={`global-stat-value ${styles.statValue || ''}`} style={{ color: themeColor }}>
                             {Math.min(round, totalRounds)}/{totalRounds}
                         </span>
                     </div>

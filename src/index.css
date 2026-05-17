@@ -214,4 +214,65 @@ h6 {
     padding: 8px 20px !important;
     margin: 10px 0 20px 0 !important;
   }
+
+  /* Global Game Header Responsive Styles */
+  .global-header-top {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 15px !important;
+  }
+  
+  .global-stats-panel {
+    flex-direction: row !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+  }
+
+  .global-stat-box {
+    min-width: 80px !important;
+    padding: 5px 10px !important;
+  }
+
+  .global-stat-value {
+    font-size: 1.3rem !important;
+  }
+
+  /* Global Math Quiz Responsive Overrides */
+  .math-visual-container {
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+  }
+  .math-visual-item {
+    font-size: 2rem !important;
+  }
+  .math-visual-box {
+    padding: 10px !important;
+    min-width: 60px !important;
+    max-width: 35vw !important; /* Force apples to wrap inside the box to maintain side-by-side layout */
+  }
+  .math-equation {
+    font-size: 2.2rem !important;
+    gap: 10px !important;
+    padding: 8px 15px !important;
+  }
+  .math-option-btn {
+    font-size: 1.8rem !important;
+    padding: 10px !important;
+  }
+  .math-number-line {
+    padding: 15px 5px !important;
+  }
+  .math-frog {
+    font-size: 2.2rem !important;
+    bottom: 35px !important;
+  }
+  .math-point {
+    width: 18px !important;
+    height: 18px !important;
+    border-width: 3px !important;
+  }
+  .math-number {
+    font-size: 0.9rem !important;
+  }
 }

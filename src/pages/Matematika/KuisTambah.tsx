@@ -146,7 +146,7 @@ const KuisTambah: React.FC = () => {
                 ) : (
                     <>
                         {/* Visual representation of addition */}
-                        <div style={{
+                        <div className="math-visual-container" style={{
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -156,7 +156,7 @@ const KuisTambah: React.FC = () => {
                             flexWrap: 'wrap'
                         }}>
                             {/* Kotak Apel 1 */}
-                            <div style={{
+                            <div className="math-visual-box" style={{
                                 background: 'rgba(59, 130, 246, 0.1)',
                                 padding: '15px',
                                 borderRadius: '15px',
@@ -168,14 +168,14 @@ const KuisTambah: React.FC = () => {
                                 border: '2px solid rgba(59, 130, 246, 0.3)'
                             }}>
                                 {Array.from({ length: num1 }).map((_, i) => (
-                                    <span key={`n1-${i}`} style={{ fontSize: '3rem' }}>🍎</span>
+                                    <span key={`n1-${i}`} className="math-visual-item" style={{ fontSize: '3rem' }}>🍎</span>
                                 ))}
                             </div>
 
-                            <div style={{ fontSize: '3rem', color: '#ccc', fontWeight: 'bold' }}>+</div>
+                            <div className="math-visual-item" style={{ fontSize: '3rem', color: '#ccc', fontWeight: 'bold' }}>+</div>
 
                             {/* Kotak Apel 2 */}
-                            <div style={{
+                            <div className="math-visual-box" style={{
                                 background: 'rgba(59, 130, 246, 0.1)',
                                 padding: '15px',
                                 borderRadius: '15px',
@@ -187,13 +187,13 @@ const KuisTambah: React.FC = () => {
                                 border: '2px solid rgba(59, 130, 246, 0.3)'
                             }}>
                                 {Array.from({ length: num2 }).map((_, i) => (
-                                    <span key={`n2-${i}`} style={{ fontSize: '3rem' }}>🍎</span>
+                                    <span key={`n2-${i}`} className="math-visual-item" style={{ fontSize: '3rem' }}>🍎</span>
                                 ))}
                             </div>
                         </div>
 
                         {/* Equation display */}
-                        <div style={{
+                        <div className="math-equation" style={{
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -223,7 +223,7 @@ const KuisTambah: React.FC = () => {
                                 return (
                                     <button
                                         key={`opt-${idx}`}
-                                        className={btnClass}
+                                        className={`${btnClass} math-option-btn`}
                                         onClick={() => handleOptionClick(ans)}
                                         disabled={selectedCorrect !== null}
                                         style={{ fontSize: '2.5rem', padding: '15px' }} // Make text bigger for numbers

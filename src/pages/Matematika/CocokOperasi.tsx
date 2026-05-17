@@ -274,7 +274,7 @@ const CocokOperasi: React.FC<CocokOperasiProps> = ({ operator }) => {
     // Shared card style
     const getCardStyle = (isMatched: boolean, isSelected: boolean, isWrong: boolean, isCorrectFlash: boolean, isReady: boolean): React.CSSProperties => ({
         height: '90px',
-        borderRadius: '14px',
+        borderRadius: '20px', // Bubbly corners
         border: isWrong
             ? '3px solid #EF4444'
             : isCorrectFlash
@@ -292,12 +292,12 @@ const CocokOperasi: React.FC<CocokOperasiProps> = ({ operator }) => {
                     ? theme.selectedBg
                     : isMatched
                         ? theme.matchedBg
-                        : 'white',
+                        : '#F8FAFC', // Slightly colored instead of pure white
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         fontFamily: 'inherit',
-        fontSize: 'clamp(1.4rem, 5vw, 2rem)',
+        fontSize: 'clamp(1.4rem, 4vw, 2rem)',
         fontWeight: 900,
         color: isWrong
             ? '#DC2626'
@@ -307,14 +307,19 @@ const CocokOperasi: React.FC<CocokOperasiProps> = ({ operator }) => {
                     ? theme.selectedText
                     : isMatched
                         ? theme.matchedText
-                        : '#1E293B',
+                        : '#334155',
         cursor: isMatched ? 'default' : 'pointer',
-        transition: 'all 0.15s ease',
-        transform: isSelected ? 'scale(1.04)' : 'scale(1)',
+        transition: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+        transform: isSelected ? 'scale(1.05) translateY(-2px)' : isMatched ? 'scale(0.95)' : 'scale(1)',
         opacity: isMatched ? 0.55 : 1,
         position: 'relative' as const,
         animation: isWrong ? 'cocok-shake 0.4s ease-in-out' : isReady ? 'cocok-pulse 2s ease-in-out infinite' : 'none',
-        boxShadow: isSelected ? `0 0 0 3px ${theme.boxShadowColor}` : 'none',
+        boxShadow: isSelected 
+            ? `0 0 0 4px ${theme.boxShadowColor}, 0 6px 0 ${theme.selectedBorder}` 
+            : isMatched 
+                ? 'none' 
+                : '0 6px 0 #CBD5E1', // Chunky 3D button effect
+        marginBottom: isMatched ? '6px' : '0', // Compensate for missing shadow when matched
         letterSpacing: '1px',
     });
 
@@ -404,10 +409,12 @@ const CocokOperasi: React.FC<CocokOperasiProps> = ({ operator }) => {
                             background: 'white',
                             borderRadius: '24px',
                             border: '4px solid #1E293B',
+                            boxShadow: '0 8px 0 #1E293B', // Chunky container
                             padding: '20px 16px',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '28px',
+                            marginBottom: '8px' // Space for shadow
                         }}>
                             <div style={{
                                 textAlign: 'center',
@@ -443,10 +450,12 @@ const CocokOperasi: React.FC<CocokOperasiProps> = ({ operator }) => {
                             background: 'white',
                             borderRadius: '24px',
                             border: '4px solid #1E293B',
+                            boxShadow: '0 8px 0 #1E293B', // Chunky container
                             padding: '20px 16px',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '28px',
+                            marginBottom: '8px' // Space for shadow
                         }}>
                             <div style={{
                                 textAlign: 'center',
