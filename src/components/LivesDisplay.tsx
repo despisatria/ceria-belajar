@@ -29,8 +29,8 @@ const LivesDisplay: React.FC<LivesDisplayProps> = ({ lives }) => {
                 }
                 @media (max-width: 600px) {
                     .lives-display {
-                        font-size: 1.2rem;
-                        letter-spacing: 3px;
+                        font-size: 0.9rem;
+                        letter-spacing: 1px;
                     }
                 }
                 @keyframes emptyHeartShake {
