@@ -291,10 +291,6 @@
         padding-bottom: 15px;
     }
 
-    .gameBoard {
-        justify-content: flex-start;
-        padding-top: 20px;
-    }
 
     .gameTitle {
         font-size: 1.5rem;

@@ -208,7 +208,11 @@ const PasangkanKata: React.FC = () => {
                         <div
                             className={styles.cardsGrid}
                             style={{
-                                gridTemplateColumns: `repeat(${cards.length <= 12 ? 4 : cards.length <= 16 ? 4 : cards.length <= 20 ? 5 : 6}, 1fr)`
+                                gridTemplateColumns: `repeat(${
+                                    window.innerWidth <= 600
+                                        ? Math.min(4, cards.length <= 8 ? 4 : 4)
+                                        : (cards.length <= 12 ? 4 : cards.length <= 16 ? 4 : cards.length <= 20 ? 5 : 6)
+                                }, 1fr)`
                             }}
                         >
                             {cards.map((card, index) => (
