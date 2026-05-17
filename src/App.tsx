@@ -36,6 +36,17 @@ const SusunSukuKata = lazy(() => import('./pages/Membaca/SusunSukuKata'));
 const PancingKata = lazy(() => import('./pages/Membaca/PancingKata'));
 const PohonKata = lazy(() => import('./pages/Membaca/PohonKata'));
 const KeretaKata = lazy(() => import('./pages/Membaca/KeretaKata'));
+const MatematikaMenu = lazy(() => import('./pages/Matematika/MatematikaMenu'));
+const BelajarPenjumlahan = lazy(() => import('./pages/Matematika/BelajarPenjumlahan'));
+const BelajarPengurangan = lazy(() => import('./pages/Matematika/BelajarPengurangan'));
+const PenjumlahanGaris = lazy(() => import('./pages/Matematika/PenjumlahanGaris'));
+const PenguranganGaris = lazy(() => import('./pages/Matematika/PenguranganGaris'));
+const KuisTambah = lazy(() => import('./pages/Matematika/KuisTambah'));
+const KuisKurang = lazy(() => import('./pages/Matematika/KuisKurang'));
+const TebakLompatMaju = lazy(() => import('./pages/Matematika/TebakLompatMaju'));
+const TebakLompatMundur = lazy(() => import('./pages/Matematika/TebakLompatMundur'));
+const CocokPenjumlahan = lazy(() => import('./pages/Matematika/CocokPenjumlahan'));
+const CocokPengurangan = lazy(() => import('./pages/Matematika/CocokPengurangan'));
 
 const LoadingFallback = () => (
   <div style={{
@@ -118,7 +129,17 @@ function App() {
             <Route path="/membaca/pancing-kata" element={<PancingKata />} />
             <Route path="/membaca/pohon-kata" element={<PohonKata />} />
             <Route path="/membaca/kereta-kata" element={<KeretaKata />} />
-            <Route path="/matematika" element={<Placeholder title="Matematika" />} />
+            <Route path="/matematika" element={<MatematikaMenu />} />
+            <Route path="/matematika/penjumlahan" element={<BelajarPenjumlahan />} />
+            <Route path="/matematika/pengurangan" element={<BelajarPengurangan />} />
+            <Route path="/matematika/penjumlahan-garis" element={<PenjumlahanGaris />} />
+            <Route path="/matematika/pengurangan-garis" element={<PenguranganGaris />} />
+            <Route path="/matematika/kuis-tambah" element={<KuisTambah />} />
+            <Route path="/matematika/kuis-kurang" element={<KuisKurang />} />
+            <Route path="/matematika/tebak-lompat-maju" element={<TebakLompatMaju />} />
+            <Route path="/matematika/tebak-lompat-mundur" element={<TebakLompatMundur />} />
+            <Route path="/matematika/cocok-tambah" element={<CocokPenjumlahan />} />
+            <Route path="/matematika/cocok-kurang" element={<CocokPengurangan />} />
             <Route path="/sains" element={<Placeholder title="Sains & IPA" />} />
             <Route path="/english" element={<Placeholder title="English" />} />
           </Routes>

@@ -111,3 +111,28 @@ export function playWinSound(): void {
         console.warn('Could not play win sound:', e);
     }
 }
+
+// Play a short "pop" or "click" sound for interacting with objects
+export function playPopSound(): void {
+    try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        
+        // Start low, pitch up quickly for a "pop"
+        osc.frequency.setValueAtTime(300, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.1);
+        
+        // Short decay
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.1);
+    } catch (e) {
+        console.warn('Could not play pop sound:', e);
+    }
+}
