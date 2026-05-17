@@ -42,7 +42,7 @@ const Card: React.FC<CardProps> = ({ content, isWord, isSelected, isMatched, onC
         >
             <div
                 className={styles.cardInnerFaceUp}
-                style={isWord ? { fontWeight: 900, fontSize: '1.6rem', color: 'var(--cat-blue)', letterSpacing: '1px', textTransform: 'uppercase' } : {}}
+                style={isWord ? { fontWeight: 900, fontSize: 'clamp(0.9rem, 3.5vw, 1.6rem)', color: 'var(--cat-blue)', textTransform: 'uppercase' } : {}}
             >
                 {content}
             </div>
