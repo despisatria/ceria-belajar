@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import Header from '../../components/Header';
 import { playWinSound, playPopSound } from '../../utils/soundEffects';
+import { useSpeakOnMount } from '../../hooks/useSpeakOnMount';
 
 const BelajarPenjumlahan: React.FC = () => {
     const [num1, setNum1] = useState(0);
@@ -27,16 +28,7 @@ const BelajarPenjumlahan: React.FC = () => {
         generateQuestion();
     }, []);
 
-    // Speak instruction on mount
-    useEffect(() => {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance("Pindahkan semua buah apel ke dalam keranjang besar!");
-            utterance.lang = 'id-ID';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
-        }
-    }, []);
+    useSpeakOnMount("Pindahkan semua buah apel ke dalam keranjang besar!");
 
     useEffect(() => {
         if (num1 > 0 && applesMoved === num1 + num2) {

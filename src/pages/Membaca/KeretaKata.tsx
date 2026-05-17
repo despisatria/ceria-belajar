@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import styles from './KeretaKata.module.css';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
-import LivesDisplay from '../../components/LivesDisplay';
+import GameOverScreen from '../../components/GameOverScreen';
+import GameHeader from '../../components/GameHeader';
+import { shuffleArray } from '../../utils/helpers';
 import confetti from 'canvas-confetti';
 
 // ─── Types ───────────────────────────────────────────────
-interface WordEntry {
-    word: string;
-    syllables: string[];
-    emoji: string;
-}
+import { type WordEntry, POOL_1, POOL_2, POOL_3, POOL_4, POOL_5 } from '../../data/membacaWordPools';
 
 interface WagonData {
     id: string;
@@ -18,54 +15,6 @@ interface WagonData {
     placed: boolean;   // hidden from pool once dropped into slot
     dragging: boolean;
 }
-
-// ─── Word Pools (same as SusunSukuKata for consistency) ──
-const POOL_1: WordEntry[] = [
-    { word: 'baju', syllables: ['ba', 'ju'], emoji: '👕' },
-    { word: 'bola', syllables: ['bo', 'la'], emoji: '⚽' },
-    { word: 'buku', syllables: ['bu', 'ku'], emoji: '📚' },
-    { word: 'kuda', syllables: ['ku', 'da'], emoji: '🐴' },
-    { word: 'nasi', syllables: ['na', 'si'], emoji: '🍚' },
-    { word: 'roti', syllables: ['ro', 'ti'], emoji: '🍞' },
-    { word: 'sapi', syllables: ['sa', 'pi'], emoji: '🐮' },
-    { word: 'susu', syllables: ['su', 'su'], emoji: '🥛' },
-    { word: 'topi', syllables: ['to', 'pi'], emoji: '🧢' },
-];
-
-const POOL_2: WordEntry[] = [
-    { word: 'ayam', syllables: ['a', 'yam'], emoji: '🐔' },
-    { word: 'balon', syllables: ['ba', 'lon'], emoji: '🎈' },
-    { word: 'ikan', syllables: ['i', 'kan'], emoji: '🐟' },
-    { word: 'kapal', syllables: ['ka', 'pal'], emoji: '🚢' },
-    { word: 'rumah', syllables: ['ru', 'mah'], emoji: '🏠' },
-    { word: 'telur', syllables: ['te', 'lur'], emoji: '🥚' },
-];
-
-const POOL_3: WordEntry[] = [
-    { word: 'bunga', syllables: ['bu', 'nga'], emoji: '🌸' },
-    { word: 'singa', syllables: ['si', 'nga'], emoji: '🦁' },
-    { word: 'payung', syllables: ['pa', 'yung'], emoji: '☂️' },
-    { word: 'nyanyi', syllables: ['nya', 'nyi'], emoji: '🎤' },
-    { word: 'pisang', syllables: ['pi', 'sang'], emoji: '🍌' },
-];
-
-const POOL_4: WordEntry[] = [
-    { word: 'sepatu', syllables: ['se', 'pa', 'tu'], emoji: '👟' },
-    { word: 'celana', syllables: ['ce', 'la', 'na'], emoji: '👖' },
-    { word: 'boneka', syllables: ['bo', 'ne', 'ka'], emoji: '🧸' },
-    { word: 'gurita', syllables: ['gu', 'ri', 'ta'], emoji: '🐙' },
-    { word: 'sepeda', syllables: ['se', 'pe', 'da'], emoji: '🚲' },
-    { word: 'kelapa', syllables: ['ke', 'la', 'pa'], emoji: '🥥' },
-    { word: 'kamera', syllables: ['ka', 'me', 'ra'], emoji: '📷' },
-];
-
-const POOL_5: WordEntry[] = [
-    { word: 'jerapah', syllables: ['je', 'ra', 'pah'], emoji: '🦒' },
-    { word: 'kelinci', syllables: ['ke', 'lin', 'ci'], emoji: '🐰' },
-    { word: 'pesawat', syllables: ['pe', 'sa', 'wat'], emoji: '✈️' },
-    { word: 'harimau', syllables: ['ha', 'ri', 'mau'], emoji: '🐯' },
-    { word: 'semangka', syllables: ['se', 'mang', 'ka'], emoji: '🍉' },
-];
 
 const ROUND_POOL_MAP: WordEntry[][] = [
     POOL_1, POOL_1, // Round 1-2
@@ -89,15 +38,7 @@ const ALL_SYLLABLES = ['ma', 'ri', 'lo', 'pe', 'tu', 'si', 'ga', 'na', 'ki', 'wo
 
 const TOTAL_ROUNDS = 10;
 
-// ─── Helpers ─────────────────────────────────────────────
-function shuffleArray<T>(arr: T[]): T[] {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-}
+
 
 function pickRandom<T>(arr: T[]): T {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -304,36 +245,20 @@ const KeretaKata: React.FC = () => {
     return (
         <div className={styles.gameContainer}>
             {/* ── Header ── */}
-            <header className={styles.gameHeader}>
-                <div className={styles.headerTop}>
-                    <Link to="/membaca" className="btn" style={{
-                        backgroundColor: 'var(--cat-green)',
-                        textTransform: 'none',
-                        fontSize: '1rem',
-                        padding: '8px 16px',
-                    }}>
-                        ⬅️ Kembali
-                    </Link>
-                    <div className={styles.statsPanel}>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nyawa</span>
-                            <LivesDisplay lives={lives} />
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nilai</span>
-                            <span className={styles.statValue}>{score}</span>
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Putaran</span>
-                            <span className={styles.statValue}>{Math.min(round, TOTAL_ROUNDS)}/10</span>
-                        </div>
-                    </div>
-                </div>
+            <GameHeader
+                menuLink="/membaca"
+                themeColor="var(--cat-green)"
+                styles={styles}
+                lives={lives}
+                score={score}
+                round={round}
+                totalRounds={TOTAL_ROUNDS}
+            >
                 <h2 className={styles.gameTitle}>Kereta Kata! 🚂</h2>
                 <p style={{ textAlign: 'center', color: 'var(--quaternary)', marginTop: '10px', fontWeight: 'bold' }}>
                     Susun gerbong suku kata agar membentuk kata yang benar!
                 </p>
-            </header>
+            </GameHeader>
 
             {/* ── Main ── */}
             <main className={styles.playArea}>
@@ -351,28 +276,15 @@ const KeretaKata: React.FC = () => {
                 </div>
 
                 {gameOver ? (
-                    <div className={styles.gameOverCard}>
-                        {lives > 0 ? (
-                            <>
-                                <h2>🎉 Luar Biasa! 🎉</h2>
-                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
-                            </>
-                        ) : (
-                            <>
-                                <h2 style={{ color: 'var(--cat-red)' }}>💔 Kesempatan Habis!</h2>
-                                <p>Jangan menyerah, ayo coba lagi!</p>
-                            </>
-                        )}
-                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
-                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-green)' }}>
-                                🔄 Main Lagi
-                            </button>
-                            <Link to="/membaca" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
-                                ⬅️ Menu Utama
-                            </Link>
-                        </div>
-                    </div>
+                    <GameOverScreen
+                        isWin={lives > 0}
+                        score={score}
+                        onRestart={handleRestart}
+                        menuLink="/membaca"
+                        themeColor="var(--cat-green)"
+                        className={styles.gameOverCard}
+                        scoreClassName={styles.finalScore}
+                    />
                 ) : (
                     <>
                         {/* Target emoji */}

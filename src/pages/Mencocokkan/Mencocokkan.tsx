@@ -9,7 +9,7 @@ const MENCOCOKKAN_GAMES = [
     { id: 'cocokkan-warna', title: 'Warna & Gambar', icon: '🎨', colorClass: 'orange', link: '/mencocokkan/cocokkan-warna', description: 'Cocokkan warna dengan gambar yang sesuai' },
     { id: 'cocokkan-bayangan', title: 'Tebak Bayangan', icon: '👤🧑🏻‍💼', colorClass: 'purple', link: '/mencocokkan/cocokkan-bayangan', description: 'Cocokkan benda dengan siluet hitamnya' },
     { id: 'cocokkan-bentuk', title: 'Tebak Bentuk', icon: '🟠🍊', colorClass: 'green', link: '/mencocokkan/cocokkan-bentuk', description: 'Pasangkan benda dengan bentuk dasarnya' },
-    { id: 'cocokkan-induk-anak', title: 'Hewan yang Mirip', icon: '🐣🐓', colorClass: 'cyan', link: '/mencocokkan/cocokkan-induk-anak', description: 'Pasangkan hewan dengan hewan lain yang mirip' },
+    { id: 'cocokkan-hewan-mirip', title: 'Hewan yang Mirip', icon: '🐣🐓', colorClass: 'cyan', link: '/mencocokkan/cocokkan-hewan-mirip', description: 'Pasangkan hewan dengan hewan lain yang mirip' },
 ];
 
 const MencocokkanMenu: React.FC = () => {
@@ -32,7 +32,7 @@ const MencocokkanMenu: React.FC = () => {
                     Game Tebak & Cocok
                 </h2>
 
-                <div className="category-grid" style={{ justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
+                <div className="category-grid">
                     {MENCOCOKKAN_GAMES.map((game) => (
                         <CategoryCard
                             key={game.id}

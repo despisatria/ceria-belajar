@@ -28,7 +28,7 @@ const AngkaMenu: React.FC = () => {
                     Belajar Angka 🔢
                 </h2>
 
-                <div className="category-grid" style={{ justifyContent: 'center', display: 'flex', gap: '30px', flexWrap: 'wrap', marginBottom: '50px' }}>
+                <div className="category-grid" style={{ marginBottom: '50px' }}>
                     {ANGKA_GAMES.map((game) => (
                         <CategoryCard
                             key={game.id}
@@ -46,7 +46,7 @@ const AngkaMenu: React.FC = () => {
                         Game Dunia Angka 🎮
                     </h2>
 
-                    <div className="category-grid" style={{ justifyContent: 'center', display: 'flex', gap: '30px', flexWrap: 'wrap' }}>
+                    <div className="category-grid">
                         <CategoryCard
                             title="Hitung Benda"
                             icon="🍎"

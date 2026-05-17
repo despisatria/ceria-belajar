@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import styles from '../Mencocokkan/GambarSama.module.css';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
-import LivesDisplay from '../../components/LivesDisplay';
+import GameHeader from '../../components/GameHeader';
+import GameOverScreen from '../../components/GameOverScreen';
 
 // All alphabet pairs: letter -> word + icon
 const ALPHABET_PAIRS = [
@@ -27,7 +27,7 @@ const ALPHABET_PAIRS = [
     { id: 19, letter: 'S', word: 'Sapi', icon: '🐄' },
     { id: 20, letter: 'T', word: 'Topi', icon: '🧢' },
     { id: 21, letter: 'U', word: 'Ular', icon: '🐍' },
-    { id: 22, letter: 'V', word: 'Vila', icon: '🏡' },
+    { id: 22, letter: 'V', word: 'Virus', icon: '🦠' },
     { id: 23, letter: 'W', word: 'Wortel', icon: '🥕' },
     { id: 24, letter: 'X', word: 'Xilofon', icon: '🎹' },
     { id: 25, letter: 'Y', word: 'Yoyo', icon: '🪀' },
@@ -58,7 +58,7 @@ const Card: React.FC<CardProps> = ({ content, isSelected, isMatched, isLetter, o
             className={`${styles.card} ${isSelected ? styles.selected : ''} ${isMatched ? styles.matched : ''}`}
             onClick={!isSelected && !isMatched ? onClick : undefined}
         >
-            <div className={styles.cardInnerFaceUp} style={isLetter ? { fontWeight: 900, fontSize: '5rem', color: 'var(--cat-blue)' } : {}}>
+            <div className={styles.cardInnerFaceUp} style={isLetter ? { fontWeight: 900, color: 'var(--cat-blue)' } : {}}>
                 {content}
             </div>
         </div>
@@ -191,62 +191,33 @@ const AlfabetCocokkan: React.FC<AlfabetCocokkanProps> = ({ isLowercase = false }
     };
 
     return (
-        <div className={styles.gameContainer}>
-            <header className={styles.gameHeader} style={{ borderBottomColor: 'var(--cat-blue)' }}>
-                <div className={styles.headerTop}>
-                    <Link to="/alfabet" className="btn" style={{
-                        backgroundColor: 'var(--cat-blue)',
-                        textTransform: 'none',
-                        fontSize: '1rem',
-                        padding: '8px 16px'
-                    }}>
-                        ⬅️ Kembali
-                    </Link>
-                    <div className={styles.statsPanel}>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nyawa</span>
-                            <LivesDisplay lives={lives} />
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nilai</span>
-                            <span className={styles.statValue} style={{ color: 'var(--cat-blue)' }}>{score}</span>
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Putaran</span>
-                            <span className={styles.statValue} style={{ color: 'var(--cat-blue)' }}>{round}/5</span>
-                        </div>
-                    </div>
-                </div>
-                <h2 className={styles.gameTitle} style={{ color: 'var(--cat-blue)' }}>Cocokkan Huruf {isLowercase ? 'Kecil' : 'Besar'} dengan Gambar! 🔤</h2>
-                <p style={{ textAlign: 'center', color: 'var(--quaternary)', marginTop: '10px', fontWeight: 'bold' }}>
-                    Contoh: Huruf {isLowercase ? 'a' : 'A'} dipasangkan dengan 🍎
-                </p>
-            </header>
+        <div className={styles.gameContainer}>             <GameHeader
+            menuLink="/alfabet"
+            themeColor="var(--cat-blue)"
+            styles={styles}
+            lives={lives}
+            score={score}
+            round={round}
+            totalRounds={5}
+            borderColor="var(--cat-blue)"
+        >
+            <h2 className={styles.gameTitle} style={{ color: 'var(--cat-blue)' }}>Cocokkan Huruf {isLowercase ? 'Kecil' : 'Besar'} dengan Gambar! 🔤</h2>
+            <p style={{ textAlign: 'center', color: 'var(--quaternary)', marginTop: '10px', fontWeight: 'bold' }}>
+                Contoh: Huruf {isLowercase ? 'a' : 'A'} dipasangkan dengan 🍎
+            </p>
+        </GameHeader>
 
             <main className={styles.gameBoard}>
                 {gameOver ? (
-                    <div className={styles.gameOverPanel}>
-                        {lives > 0 ? (
-                            <>
-                                <h2>🎉 Luar Biasa! 🎉</h2>
-                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
-                            </>
-                        ) : (
-                            <>
-                                <h2>💔 Kesempatan Habis! 💔</h2>
-                                <p>Jangan menyerah, ayo coba lagi!</p>
-                            </>
-                        )}
-                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
-                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-blue)' }}>
-                                🔄 Main Lagi
-                            </button>
-                            <Link to="/alfabet" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
-                                ⬅️ Menu Utama
-                            </Link>
-                        </div>
-                    </div>
+                    <GameOverScreen
+                        isWin={lives > 0}
+                        score={score}
+                        onRestart={handleRestart}
+                        menuLink="/alfabet"
+                        themeColor="var(--cat-blue)"
+                        className={styles.gameOverPanel}
+                        scoreClassName={styles.finalScore}
+                    />
                 ) : (
                     <>
                         {roundWinner && (

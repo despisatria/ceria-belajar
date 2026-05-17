@@ -59,7 +59,7 @@ const MembacaMenu: React.FC = () => {
 
                 <div style={{ padding: '10px 0' }}>
 
-                    <div className="category-grid" style={{ justifyContent: 'center', display: 'flex', gap: '30px', flexWrap: 'wrap' }}>
+                    <div className="category-grid">
                         {MEMBACA_LEARNING.map((item) => (
                             <CategoryCard
                                 key={item.id}
@@ -78,7 +78,7 @@ const MembacaMenu: React.FC = () => {
                         Game Membaca 📖
                     </h2>
 
-                    <div className="category-grid" style={{ justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
+                    <div className="category-grid">
                         <CategoryCard
                             title="Tebak Kata dari Gambar"
                             icon="🖼️"

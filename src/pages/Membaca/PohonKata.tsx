@@ -1,47 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import styles from './PohonKata.module.css';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
-import LivesDisplay from '../../components/LivesDisplay';
+import GameOverScreen from '../../components/GameOverScreen';
+import GameHeader from '../../components/GameHeader';
+import { shuffleArray } from '../../utils/helpers';
+import { useSpeakOnMount } from '../../hooks/useSpeakOnMount';
 import confetti from 'canvas-confetti';
 
-interface WordEntry {
-    word: string;
-    emoji: string;
-}
-
-// === WORD POOLS BY DIFFICULTY (matching materi Membaca Kata) ===
-
-// Pool 1: 2 suku kata KV+KV (4 huruf - paling mudah)
-const POOL_1: WordEntry[] = [
-    { word: 'baju', emoji: '👕' }, { word: 'bola', emoji: '⚽' }, { word: 'buku', emoji: '📚' },
-    { word: 'kuda', emoji: '🐴' }, { word: 'nasi', emoji: '🍚' }, { word: 'roti', emoji: '🍞' },
-    { word: 'sapi', emoji: '🐮' }, { word: 'susu', emoji: '🥛' }, { word: 'topi', emoji: '🧢' },
-];
-
-// Pool 2: 2 suku kata 4-5 huruf (Level 2)
-const POOL_2: WordEntry[] = [
-    { word: 'ayam', emoji: '🐔' }, { word: 'balon', emoji: '🎈' }, { word: 'ikan', emoji: '🐟' },
-    { word: 'kapal', emoji: '🚢' }, { word: 'rumah', emoji: '🏠' }, { word: 'telur', emoji: '🥚' },
-];
-
-// Pool 3: 2 suku kata NG/NY (Level 3)
-const POOL_3: WordEntry[] = [
-    { word: 'bunga', emoji: '🌸' }, { word: 'singa', emoji: '🦁' }, { word: 'payung', emoji: '☂️' },
-];
-
-// Pool 4: 3 suku kata terbuka (KV+KV+KV)
-const POOL_4: WordEntry[] = [
-    { word: 'sepatu', emoji: '👟' }, { word: 'celana', emoji: '👖' }, { word: 'boneka', emoji: '🧸' },
-    { word: 'gurita', emoji: '🐙' }, { word: 'sepeda', emoji: '🚲' }, { word: 'kelapa', emoji: '🥥' },
-    { word: 'kamera', emoji: '📷' }, { word: 'kereta', emoji: '🚂' },
-];
-
-// Pool 5: 3 suku kata campuran (paling sulit)
-const POOL_5: WordEntry[] = [
-    { word: 'jerapah', emoji: '🦒' }, { word: 'kelinci', emoji: '🐰' }, { word: 'pesawat', emoji: '✈️' },
-    { word: 'harimau', emoji: '🐯' }, { word: 'semangka', emoji: '🍉' },
-];
+import { type WordEntry, POOL_1, POOL_2, POOL_3, POOL_4, POOL_5 } from '../../data/membacaWordPools';
 
 // 5 rounds, progressively harder
 const ROUND_POOL_MAP: WordEntry[][] = [
@@ -55,14 +21,7 @@ const ROUND_POOL_MAP: WordEntry[][] = [
 const TOTAL_ROUNDS = 5;
 const DISTRACTOR_COUNT = 2; // jumlah huruf pengecoh
 
-function shuffleArray<T>(arr: T[]): T[] {
-    const shuffled = [...arr];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-}
+
 
 // Generate random distractor letters not in the word
 function getDistractors(word: string, count: number): string[] {
@@ -219,16 +178,7 @@ const PohonKata: React.FC = () => {
         }
     };
 
-    // Speak instruction on mount
-    useEffect(() => {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance("Petik buah apel secara berurutan untuk mengeja kata!");
-            utterance.lang = 'id-ID';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
-        }
-    }, []);
+    useSpeakOnMount("Petik buah apel secara berurutan untuk mengeja kata!");
 
     const handleRestart = () => {
         setRound(1);
@@ -239,61 +189,34 @@ const PohonKata: React.FC = () => {
 
     return (
         <div className={styles.gameContainer}>
-            <header className={styles.gameHeader} style={{ borderBottomColor: 'var(--cat-red)' }}>
-                <div className={styles.headerTop}>
-                    <Link to="/membaca" className="btn" style={{
-                        backgroundColor: 'var(--cat-red)',
-                        textTransform: 'none',
-                        fontSize: '1rem',
-                        padding: '8px 16px'
-                    }}>
-                        ⬅️ Kembali
-                    </Link>
-                    <div className={styles.statsPanel}>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nyawa</span>
-                            <LivesDisplay lives={lives} />
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nilai</span>
-                            <span className={styles.statValue} style={{ color: 'var(--cat-red)' }}>{score}</span>
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Putaran</span>
-                            <span className={styles.statValue} style={{ color: 'var(--cat-red)' }}>{Math.min(round, TOTAL_ROUNDS)}/5</span>
-                        </div>
-                    </div>
-                </div>
+            <GameHeader
+                menuLink="/membaca"
+                themeColor="var(--cat-red)"
+                styles={styles}
+                lives={lives}
+                score={score}
+                round={round}
+                totalRounds={TOTAL_ROUNDS}
+                borderColor="var(--cat-red)"
+            >
                 <h2 className={styles.gameTitle} style={{ color: 'var(--cat-red)' }}>Petik Huruf! 🍎</h2>
                 <p style={{ textAlign: 'center', color: 'var(--quaternary)', marginTop: '10px', fontWeight: 'bold' }}>
                     Petik buah apel berhuruf secara berurutan untuk mengeja kata!
                 </p>
-            </header>
+            </GameHeader>
 
             <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 {gameOver ? (
-                    <div className={styles.gameOverCard}>
-                        {lives > 0 ? (
-                            <>
-                                <h2>🎉 Luar Biasa! 🎉</h2>
-                                <p>Kamu berhasil mengeja semua kata!</p>
-                            </>
-                        ) : (
-                            <>
-                                <h2>😢 Kesempatan Habis!</h2>
-                                <p>Jangan menyerah, ayo coba lagi!</p>
-                            </>
-                        )}
-                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
-                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-red)' }}>
-                                🔄 Main Lagi
-                            </button>
-                            <Link to="/membaca" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
-                                ⬅️ Menu Utama
-                            </Link>
-                        </div>
-                    </div>
+                    <GameOverScreen
+                        isWin={lives > 0}
+                        score={score}
+                        onRestart={handleRestart}
+                        menuLink="/membaca"
+                        themeColor="var(--cat-red)"
+                        className={styles.gameOverCard}
+                        scoreClassName={styles.finalScore}
+                        winMessage="Kamu berhasil mengeja semua kata!"
+                    />
                 ) : (
                     <>
                         {/* Target Emoji + Instruction */}

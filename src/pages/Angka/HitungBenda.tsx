@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import styles from './HitungBenda.module.css';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
-import LivesDisplay from '../../components/LivesDisplay';
+import GameOverScreen from '../../components/GameOverScreen';
+import GameHeader from '../../components/GameHeader';
 import confetti from 'canvas-confetti';
 
 interface EmojiItem {
@@ -146,57 +146,35 @@ const HitungBenda: React.FC = () => {
 
     return (
         <div className={styles.gameContainer}>
-            <header className={styles.gameHeader}>
-                <Link to="/angka" className="btn" style={{
-                    textTransform: 'none',
-                    fontSize: '1rem',
-                    padding: '8px 16px',
-                    backgroundColor: 'var(--cat-blue)'
-                }}>
-                    ⬅️ Kembali
-                </Link>
-                <div className={styles.statsContainer}>
-                    <div className={styles.statBox}>
-                        Nyawa: <LivesDisplay lives={lives} />
-                    </div>
-                    <div className={styles.statBox}>
-                        Ronde <span style={{ color: 'var(--primary)' }}>{Math.min(round, TOTAL_ROUNDS)}</span>/{TOTAL_ROUNDS}
-                    </div>
-                    <div className={styles.statBox}>
-                        Skor: <span style={{ color: 'var(--cat-orange)' }}>{score}</span>
-                    </div>
-                </div>
-            </header>
+            <GameHeader
+                menuLink="/angka"
+                themeColor="var(--cat-blue)"
+                styles={styles}
+                lives={lives}
+                score={score}
+                round={round}
+                totalRounds={TOTAL_ROUNDS}
+            >
+                {!gameOver && (
+                    <h2 className={styles.gameTitle} onClick={playQuestionAudio} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginTop: '10px' }}>
+                        Ada berapa {currentEmoji.icon} di bawah ini?
+                    </h2>
+                )}
+            </GameHeader>
 
             <main className={styles.gameBoard}>
                 {gameOver ? (
-                    <div className={styles.gameOverCard}>
-                        {lives > 0 ? (
-                            <>
-                                <h2>🎉 Luar Biasa! 🎉</h2>
-                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
-                            </>
-                        ) : (
-                            <>
-                                <h2>💔 Kesempatan Habis! 💔</h2>
-                                <p>Jangan menyerah, ayo coba lagi!</p>
-                            </>
-                        )}
-                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
-                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <button className="btn" onClick={restartGame} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-orange)' }}>
-                                🔄 Main Lagi
-                            </button>
-                            <Link to="/angka" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
-                                ⬅️ Menu Utama
-                            </Link>
-                        </div>
-                    </div>
+                    <GameOverScreen
+                        isWin={lives > 0}
+                        score={score}
+                        onRestart={restartGame}
+                        menuLink="/angka"
+                        themeColor="var(--cat-orange)"
+                        className={styles.gameOverCard}
+                        scoreClassName={styles.finalScore}
+                    />
                 ) : (
                     <>
-                        <h2 className={styles.gameTitle} onClick={playQuestionAudio} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
-                            Ada berapa {currentEmoji.icon} di bawah ini?
-                        </h2>
 
                         <div className={styles.objectsContainer}>
                             {Array.from({ length: targetNumber }).map((_, index) => (

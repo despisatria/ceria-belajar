@@ -24,7 +24,7 @@ const MatematikaMenu: React.FC = () => {
 
                 <div style={{ padding: '10px 0' }}>
 
-                    <div className="category-grid" style={{ display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
+                    <div className="category-grid">
                         <CategoryCard
                             title="Belajar Penjumlahan"
                             icon="➕"
@@ -61,7 +61,7 @@ const MatematikaMenu: React.FC = () => {
                         Game Matematika 🎮
                     </h2>
 
-                    <div className="category-grid" style={{ justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
+                    <div className="category-grid">
                         <CategoryCard
                             title="Kuis Tambah Apel"
                             icon="🍎"

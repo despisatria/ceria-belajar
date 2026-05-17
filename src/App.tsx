@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import MusicToggle from './components/MusicToggle';
 import { Link } from 'react-router-dom';
+import ScrollManager from './components/ScrollManager';
 
 // Lazy load pages for better performance (Code Splitting)
 const Alfabet = lazy(() => import('./pages/Alfabet/Alfabet'));
@@ -88,6 +89,7 @@ const Placeholder = ({ title }: { title: string }) => (
 function App() {
   return (
     <Router>
+      <ScrollManager />
       <div className="app-container">
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
@@ -113,7 +115,7 @@ function App() {
             <Route path="/mencocokkan/cocokkan-warna" element={<CocokkanWarna />} />
             <Route path="/mencocokkan/cocokkan-bayangan" element={<CocokkanBayangan />} />
             <Route path="/mencocokkan/cocokkan-bentuk" element={<CocokkanBentuk />} />
-            <Route path="/mencocokkan/cocokkan-induk-anak" element={<CocokkanIndukAnak />} />
+            <Route path="/mencocokkan/cocokkan-hewan-mirip" element={<CocokkanIndukAnak />} />
             <Route path="/hijaiyah" element={<HijaiyahMenu />} />
             <Route path="/hijaiyah/mengenal" element={<MengenalHijaiyah />} />
             <Route path="/hijaiyah/angka" element={<AngkaHijaiyah />} />

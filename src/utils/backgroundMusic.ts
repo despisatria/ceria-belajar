@@ -24,7 +24,6 @@ export function startBackgroundMusic() {
         // Browser blocked autoplay, will retry on next user gesture
         isPlaying = false;
     });
-    isPlaying = true;
 }
 
 export function stopBackgroundMusic() {

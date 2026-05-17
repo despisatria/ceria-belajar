@@ -41,7 +41,7 @@ const HijaiyahMenu: React.FC = () => {
                     Dunia Hijaiyah 🕋
                 </h2>
 
-                <div className="category-grid" style={{ justifyContent: 'center', display: 'flex', gap: '30px', flexWrap: 'wrap', marginBottom: '50px' }}>
+                <div className="category-grid" style={{ marginBottom: '50px' }}>
                     {HIJAIYAH_GAMES.map((game) => (
                         <CategoryCard
                             key={game.id}

@@ -19,14 +19,20 @@ const LivesDisplay: React.FC<LivesDisplayProps> = ({ lives }) => {
     return (
         <span
             key={animationKey}
-            className={animationKey > 0 ? 'lives-shake-anim' : ''}
-            style={{
-                letterSpacing: '5px',
-                fontSize: '2rem',
-                display: 'inline-block',
-            }}
+            className={`lives-display ${animationKey > 0 ? 'lives-shake-anim' : ''}`}
         >
             <style>{`
+                .lives-display {
+                    letter-spacing: 5px;
+                    font-size: 2rem;
+                    display: inline-block;
+                }
+                @media (max-width: 600px) {
+                    .lives-display {
+                        font-size: 1.2rem;
+                        letter-spacing: 3px;
+                    }
+                }
                 @keyframes emptyHeartShake {
                     0% { transform: translateX(0) scale(1.2); filter: drop-shadow(0 0 8px red); }
                     20% { transform: translateX(-5px) scale(1.2) rotate(-10deg); filter: drop-shadow(0 0 12px red); }

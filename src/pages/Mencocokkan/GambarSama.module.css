@@ -310,13 +310,16 @@
         font-size: 1.5rem;
     }
 
-    .statsPanel {
+    .headerTop {
         flex-direction: column;
-        gap: 10px;
+        align-items: flex-start;
+        gap: 15px;
     }
 
-    .headerTop {
-        align-items: flex-start;
+    .statsPanel {
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
     }
 
     .statBox {

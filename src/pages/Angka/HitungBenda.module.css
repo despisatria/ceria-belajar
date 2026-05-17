@@ -8,28 +8,48 @@
 }
 
 .gameHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     padding-bottom: 20px;
-    border-bottom: 3px solid rgba(16, 185, 129, 0.2);
+    border-bottom: 4px dashed var(--cat-blue);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.statsContainer {
+.headerTop {
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.statsPanel {
+    display: flex;
+    gap: 15px;
 }
 
 .statBox {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 10px 20px;
-    border-radius: 16px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--text-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    border: 2px solid rgba(255, 255, 255, 1);
+    background-color: white;
+    padding: 8px 15px;
+    border-radius: 15px;
+    border: 3px solid var(--text-color);
+    box-shadow: 3px 3px 0px var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 90px;
+}
+
+.statLabel {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--quaternary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.statValue {
+    font-size: 1.5rem;
+    font-weight: 900;
 }
 
 .gameBoard {
@@ -185,5 +205,43 @@
 
     100% {
         transform: scale(1);
+    }
+}
+
+/* Responsiveness */
+@media (max-width: 600px) {
+    .headerTop {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .statsPanel {
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .statBox {
+        min-width: 80px;
+        padding: 5px 10px;
+    }
+    
+    .statValue {
+        font-size: 1.3rem;
+    }
+    
+    .gameTitle {
+        font-size: 1.5rem;
+    }
+    
+    .objectEmoji {
+        font-size: 3.5rem;
+    }
+    
+    .optionBtn {
+        width: 80px;
+        height: 80px;
+        font-size: 2.5rem;
     }
 }

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import styles from './GambarSama.module.css';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
-import LivesDisplay from '../../components/LivesDisplay';
+import GameHeader from '../../components/GameHeader';
+import GameOverScreen from '../../components/GameOverScreen';
+import { useSpeakOnMount } from '../../hooks/useSpeakOnMount';
 
 // Base sets of emojis for different rounds
 const EMOJI_SETS = [
@@ -66,16 +67,7 @@ const GambarSama: React.FC = () => {
         initRound(round);
     }, [round]);
 
-    // Speak title on mount
-    useEffect(() => {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance("Pilih dua gambar yang sama!");
-            utterance.lang = 'id-ID';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
-        }
-    }, []);
+    useSpeakOnMount("Pilih dua gambar yang sama!");
 
     const handleCardClick = (index: number) => {
         if (isLocked) return;
@@ -143,62 +135,32 @@ const GambarSama: React.FC = () => {
     };
 
     return (
-        <div className={styles.gameContainer}>
-            <header className={styles.gameHeader}>
-                <div className={styles.headerTop}>
-                    <Link to="/mencocokkan" className="btn" style={{
-                        backgroundColor: 'var(--cat-red)',
-                        textTransform: 'none',
-                        fontSize: '1rem',
-                        padding: '8px 16px'
-                    }}>
-                        ⬅️ Kembali
-                    </Link>
-                    <div className={styles.statsPanel}>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nyawa</span>
-                            <LivesDisplay lives={lives} />
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nilai</span>
-                            <span className={styles.statValue}>{score}</span>
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Putaran</span>
-                            <span className={styles.statValue}>{round}/5</span>
-                        </div>
-                    </div>
-                </div>
+        <div className={styles.gameContainer}>             <GameHeader
+                 menuLink="/mencocokkan"
+                 themeColor="var(--cat-green)"
+                 styles={styles}
+                 lives={lives}
+                 score={score}
+                 round={round}
+                 totalRounds={EMOJI_SETS.length}
+             >
                 <h2 className={styles.gameTitle}>Pilih dua gambar yang sama!</h2>
                 <p style={{ textAlign: 'center', color: 'var(--quaternary)', marginTop: '10px', fontWeight: 'bold' }}>
                     Contoh: Anggur (🍇) dan Anggur (🍇)
                 </p>
-            </header>
+            </GameHeader>
 
             <main className={styles.gameBoard}>
                 {gameOver ? (
-                    <div className={styles.gameOverPanel}>
-                        {lives > 0 ? (
-                            <>
-                                <h2>🎉 Luar Biasa! 🎉</h2>
-                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
-                            </>
-                        ) : (
-                            <>
-                                <h2>💔 Kesempatan Habis! 💔</h2>
-                                <p>Jangan menyerah, ayo coba lagi!</p>
-                            </>
-                        )}
-                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
-                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-green)' }}>
-                                🔄 Main Lagi
-                            </button>
-                            <Link to="/mencocokkan" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
-                                ⬅️ Menu Utama
-                            </Link>
-                        </div>
-                    </div>
+                    <GameOverScreen
+                        isWin={lives > 0}
+                        score={score}
+                        onRestart={handleRestart}
+                        menuLink="/mencocokkan"
+                        themeColor="var(--cat-green)"
+                        className={styles.gameOverPanel}
+                        scoreClassName={styles.finalScore}
+                    />
                 ) : (
                     <>
                         {roundWinner && (

@@ -1,20 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import styles from '../Membaca/TebakKata.module.css'; 
+import styles from '../Membaca/TebakKata.module.css';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
-import LivesDisplay from '../../components/LivesDisplay';
+import GameHeader from '../../components/GameHeader';
+import GameOverScreen from '../../components/GameOverScreen';
+import { shuffleArray } from '../../utils/helpers';
+import { useSpeakOnMount } from '../../hooks/useSpeakOnMount';
 import confetti from 'canvas-confetti';
 
 const TOTAL_ROUNDS = 10;
-
-function shuffleArray<T>(arr: T[]): T[] {
-    const shuffled = [...arr];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-}
 
 const KuisKurang: React.FC = () => {
     const [round, setRound] = useState(1);
@@ -71,16 +64,7 @@ const KuisKurang: React.FC = () => {
         }
     }, [round, gameOver, generateRound]);
 
-    // Speak instruction on mount
-    useEffect(() => {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance("Berapa sisa kuenya? Pilih angka yang benar!");
-            utterance.lang = 'id-ID';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
-        }
-    }, []);
+    useSpeakOnMount("Berapa sisa kuenya? Pilih angka yang benar!");
 
     const handleOptionClick = (ans: number) => {
         if (selectedCorrect !== null || selectedWrong !== null) return;
@@ -131,62 +115,33 @@ const KuisKurang: React.FC = () => {
     };
 
     return (
-        <div className={styles.gameContainer}>
-            <header className={styles.gameHeader} style={{ borderBottomColor: 'var(--cat-orange)' }}>
-                <div className={styles.headerTop}>
-                    <Link to="/matematika" className="btn" style={{
-                        backgroundColor: 'var(--cat-orange)',
-                        textTransform: 'none',
-                        fontSize: '1rem',
-                        padding: '8px 16px'
-                    }}>
-                        ⬅️ Kembali
-                    </Link>
-                    <div className={styles.statsPanel}>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nyawa</span>
-                            <LivesDisplay lives={lives} />
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nilai</span>
-                            <span className={styles.statValue} style={{ color: 'var(--cat-orange)' }}>{score}</span>
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Putaran</span>
-                            <span className={styles.statValue} style={{ color: 'var(--cat-orange)' }}>{Math.min(round, TOTAL_ROUNDS)}/10</span>
-                        </div>
-                    </div>
-                </div>
+        <div className={styles.gameContainer}>             <GameHeader
+                 menuLink="/matematika"
+                 themeColor="var(--cat-orange)"
+                 styles={styles}
+                 lives={lives}
+                 score={score}
+                 round={round}
+                 totalRounds={TOTAL_ROUNDS}
+                 borderColor="var(--cat-orange)"
+             >
                 <h2 className={styles.gameTitle} style={{ color: 'var(--cat-orange)' }}>Kuis Kurang Kue 🍪</h2>
                 <p style={{ textAlign: 'center', color: '#666', marginTop: '10px', fontWeight: 'bold' }}>
                     Hitung sisa kuenya dan pilih jawaban yang benar!
                 </p>
-            </header>
+            </GameHeader>
 
             <main className={styles.gameBoard}>
                 {gameOver ? (
-                    <div className={styles.gameOverCard}>
-                        {lives > 0 ? (
-                            <>
-                                <h2>🎉 Luar Biasa! 🎉</h2>
-                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
-                            </>
-                        ) : (
-                            <>
-                                <h2>💔 Kesempatan Habis! 💔</h2>
-                                <p>Jangan menyerah, ayo coba lagi!</p>
-                            </>
-                        )}
-                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
-                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-orange)' }}>
-                                🔄 Main Lagi
-                            </button>
-                            <Link to="/matematika" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
-                                ⬅️ Menu Utama
-                            </Link>
-                        </div>
-                    </div>
+                    <GameOverScreen
+                        isWin={lives > 0}
+                        score={score}
+                        onRestart={handleRestart}
+                        menuLink="/matematika"
+                        themeColor="var(--cat-orange)"
+                        className={styles.gameOverCard}
+                        scoreClassName={styles.finalScore}
+                    />
                 ) : (
                     <>
                         {/* Visual representation of subtraction */}

@@ -1,70 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import styles from './SusunSukuKata.module.css';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
-import LivesDisplay from '../../components/LivesDisplay';
+import GameOverScreen from '../../components/GameOverScreen';
+import GameHeader from '../../components/GameHeader';
+import { shuffleArray } from '../../utils/helpers';
+import { useSpeakOnMount } from '../../hooks/useSpeakOnMount';
 import confetti from 'canvas-confetti';
 
-interface WordEntry {
-    word: string;
-    syllables: string[];
-    emoji: string;
-}
-
-// === WORD POOLS WITH SYLLABLE DATA (from MembacaKata + MembacaKata3) ===
-
-// Pool 1: 2 suku kata KV+KV
-const POOL_1: WordEntry[] = [
-    { word: 'baju', syllables: ['ba', 'ju'], emoji: '👕' },
-    { word: 'bola', syllables: ['bo', 'la'], emoji: '⚽' },
-    { word: 'buku', syllables: ['bu', 'ku'], emoji: '📚' },
-    { word: 'kuda', syllables: ['ku', 'da'], emoji: '🐴' },
-    { word: 'nasi', syllables: ['na', 'si'], emoji: '🍚' },
-    { word: 'roti', syllables: ['ro', 'ti'], emoji: '🍞' },
-    { word: 'sapi', syllables: ['sa', 'pi'], emoji: '🐮' },
-    { word: 'susu', syllables: ['su', 'su'], emoji: '🥛' },
-    { word: 'topi', syllables: ['to', 'pi'], emoji: '🧢' },
-];
-
-// Pool 2: 2 suku kata 5 huruf
-const POOL_2: WordEntry[] = [
-    { word: 'ayam', syllables: ['a', 'yam'], emoji: '🐔' },
-    { word: 'balon', syllables: ['ba', 'lon'], emoji: '🎈' },
-    { word: 'ikan', syllables: ['i', 'kan'], emoji: '🐟' },
-    { word: 'kapal', syllables: ['ka', 'pal'], emoji: '🚢' },
-    { word: 'rumah', syllables: ['ru', 'mah'], emoji: '🏠' },
-    { word: 'telur', syllables: ['te', 'lur'], emoji: '🥚' },
-];
-
-// Pool 3: 2 suku kata NG/NY
-const POOL_3: WordEntry[] = [
-    { word: 'bunga', syllables: ['bu', 'nga'], emoji: '🌸' },
-    { word: 'singa', syllables: ['si', 'nga'], emoji: '🦁' },
-    { word: 'payung', syllables: ['pa', 'yung'], emoji: '☂️' },
-    { word: 'nyanyi', syllables: ['nya', 'nyi'], emoji: '🎤' },
-    { word: 'pisang', syllables: ['pi', 'sang'], emoji: '🍌' },
-];
-
-// Pool 4: 3 suku kata terbuka (KV+KV+KV)
-const POOL_4: WordEntry[] = [
-    { word: 'sepatu', syllables: ['se', 'pa', 'tu'], emoji: '👟' },
-    { word: 'celana', syllables: ['ce', 'la', 'na'], emoji: '👖' },
-    { word: 'boneka', syllables: ['bo', 'ne', 'ka'], emoji: '🧸' },
-    { word: 'gurita', syllables: ['gu', 'ri', 'ta'], emoji: '🐙' },
-    { word: 'sepeda', syllables: ['se', 'pe', 'da'], emoji: '🚲' },
-    { word: 'kelapa', syllables: ['ke', 'la', 'pa'], emoji: '🥥' },
-    { word: 'kamera', syllables: ['ka', 'me', 'ra'], emoji: '📷' },
-    { word: 'kereta', syllables: ['ke', 're', 'ta'], emoji: '🚂' },
-];
-
-// Pool 5: 3 suku kata campuran
-const POOL_5: WordEntry[] = [
-    { word: 'jerapah', syllables: ['je', 'ra', 'pah'], emoji: '🦒' },
-    { word: 'kelinci', syllables: ['ke', 'lin', 'ci'], emoji: '🐰' },
-    { word: 'pesawat', syllables: ['pe', 'sa', 'wat'], emoji: '✈️' },
-    { word: 'harimau', syllables: ['ha', 'ri', 'mau'], emoji: '🐯' },
-    { word: 'semangka', syllables: ['se', 'mang', 'ka'], emoji: '🍉' },
-];
+import { type WordEntry, POOL_1, POOL_2, POOL_3, POOL_4, POOL_5 } from '../../data/membacaWordPools';
 
 // Round → pool mapping (10 rounds, progressively harder)
 const ROUND_POOL_MAP: WordEntry[][] = [
@@ -83,14 +26,7 @@ const ROUND_POOL_MAP: WordEntry[][] = [
 const TOTAL_ROUNDS = 10;
 const SYLLABLE_COLORS = ['', styles.syllableBtnColor2, styles.syllableBtnColor3, styles.syllableBtnColor4];
 
-function shuffleArray<T>(arr: T[]): T[] {
-    const shuffled = [...arr];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-}
+
 
 const SusunSukuKata: React.FC = () => {
     const [round, setRound] = useState(1);
@@ -150,16 +86,7 @@ const SusunSukuKata: React.FC = () => {
         }
     }, [round, gameOver]);
 
-    // Speak instruction on mount
-    useEffect(() => {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance("Susun suku kata menjadi kata yang benar!");
-            utterance.lang = 'id-ID';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
-        }
-    }, []);
+    useSpeakOnMount("Susun suku kata menjadi kata yang benar!");
 
     const handleSyllableTap = (shuffledIndex: number) => {
         if (resultState !== 'none') return;
@@ -239,61 +166,33 @@ const SusunSukuKata: React.FC = () => {
 
     return (
         <div className={styles.gameContainer}>
-            <header className={styles.gameHeader} style={{ borderBottomColor: 'var(--cat-purple)' }}>
-                <div className={styles.headerTop}>
-                    <Link to="/membaca" className="btn" style={{
-                        backgroundColor: 'var(--cat-purple)',
-                        textTransform: 'none',
-                        fontSize: '1rem',
-                        padding: '8px 16px'
-                    }}>
-                        ⬅️ Kembali
-                    </Link>
-                    <div className={styles.statsPanel}>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nyawa</span>
-                            <LivesDisplay lives={lives} />
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nilai</span>
-                            <span className={styles.statValue} style={{ color: 'var(--cat-purple)' }}>{score}</span>
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Putaran</span>
-                            <span className={styles.statValue} style={{ color: 'var(--cat-purple)' }}>{Math.min(round, TOTAL_ROUNDS)}/5</span>
-                        </div>
-                    </div>
-                </div>
+            <GameHeader
+                menuLink="/membaca"
+                themeColor="var(--cat-purple)"
+                styles={styles}
+                lives={lives}
+                score={score}
+                round={round}
+                totalRounds={TOTAL_ROUNDS}
+                borderColor="var(--cat-purple)"
+            >
                 <h2 className={styles.gameTitle} style={{ color: 'var(--cat-purple)' }}>Susun Suku Kata! 🧩</h2>
                 <p style={{ textAlign: 'center', color: 'var(--quaternary)', marginTop: '10px', fontWeight: 'bold' }}>
                     Susun suku kata yang acak menjadi kata yang sesuai gambar
                 </p>
-            </header>
+            </GameHeader>
 
             <main className={styles.gameBoard}>
                 {gameOver ? (
-                    <div className={styles.gameOverCard}>
-                        {lives > 0 ? (
-                            <>
-                                <h2>🎉 Luar Biasa! 🎉</h2>
-                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
-                            </>
-                        ) : (
-                            <>
-                                <h2>💔 Kesempatan Habis! 💔</h2>
-                                <p>Jangan menyerah, ayo coba lagi!</p>
-                            </>
-                        )}
-                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
-                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-purple)' }}>
-                                🔄 Main Lagi
-                            </button>
-                            <Link to="/membaca" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
-                                ⬅️ Menu Utama
-                            </Link>
-                        </div>
-                    </div>
+                    <GameOverScreen
+                        isWin={lives > 0}
+                        score={score}
+                        onRestart={handleRestart}
+                        menuLink="/membaca"
+                        themeColor="var(--cat-purple)"
+                        className={styles.gameOverCard}
+                        scoreClassName={styles.finalScore}
+                    />
                 ) : (
                     <>
                         <h2 className={styles.questionText}>Susun kata untuk: </h2>

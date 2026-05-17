@@ -42,7 +42,7 @@ ALPHABET_DATA = [
     ("S", "es", "Sapi"),
     ("T", "te", "Topi"),
     ("U", "u", "Ular"),
-    ("V", "ve", "Vila"),
+    ("V", "ve", "Virus"),
     ("W", "we", "Wortel"),
     ("X", "eks", "Xilofon"),
     ("Y", "ye", "Yoyo"),

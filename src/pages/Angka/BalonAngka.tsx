@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import styles from './BalonAngka.module.css';
 import { audioPlayer } from '../../utils/audioPlayer';
 import { playCorrectSound, playWrongSound, playWinSound } from '../../utils/soundEffects';
-import LivesDisplay from '../../components/LivesDisplay';
+import GameOverScreen from '../../components/GameOverScreen';
+import GameHeader from '../../components/GameHeader';
 import confetti from 'canvas-confetti';
 
 interface Balloon {
@@ -165,31 +165,15 @@ const BalonAngka: React.FC = () => {
 
     return (
         <div className={styles.gameContainer}>
-            <header className={styles.gameHeader}>
-                <div className={styles.headerTop}>
-                    <Link to="/angka" className="btn" style={{
-                        backgroundColor: 'var(--cat-blue)',
-                        textTransform: 'none',
-                        fontSize: '1rem',
-                        padding: '8px 16px'
-                    }}>
-                        ⬅️ Kembali
-                    </Link>
-                    <div className={styles.statsPanel}>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nyawa</span>
-                            <LivesDisplay lives={lives} />
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Nilai</span>
-                            <span className={styles.statValue} style={{ color: 'var(--cat-blue)' }}>{score}</span>
-                        </div>
-                        <div className={styles.statBox}>
-                            <span className={styles.statLabel}>Ronde</span>
-                            <span className={styles.statValue} style={{ color: 'var(--cat-blue)' }}>{round}/{TOTAL_ROUNDS}</span>
-                        </div>
-                    </div>
-                </div>
+            <GameHeader
+                menuLink="/angka"
+                themeColor="var(--cat-blue)"
+                styles={styles}
+                lives={lives}
+                score={score}
+                round={round}
+                totalRounds={TOTAL_ROUNDS}
+            >
 
                 {!gameOver && (
                     <div className={styles.instructionPanel}>
@@ -203,32 +187,19 @@ const BalonAngka: React.FC = () => {
                         </button>
                     </div>
                 )}
-            </header>
+            </GameHeader>
 
             <main className={styles.gameBoard}>
                 {gameOver ? (
-                    <div className={styles.gameOverPanel}>
-                        {lives > 0 ? (
-                            <>
-                                <h2>🎉 Luar Biasa! 🎉</h2>
-                                <p>Kamu berhasil menyelesaikan permainan ini!</p>
-                            </>
-                        ) : (
-                            <>
-                                <h2>💔 Kesempatan Habis! 💔</h2>
-                                <p>Jangan menyerah, ayo coba lagi!</p>
-                            </>
-                        )}
-                        <div className={styles.finalScore}>Skor Akhir: {score}</div>
-                        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                            <button className="btn" onClick={handleRestart} style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--cat-blue)' }}>
-                                🔄 Main Lagi
-                            </button>
-                            <Link to="/angka" className="btn" style={{ fontSize: '1.2rem', padding: '10px 20px', backgroundColor: 'var(--quaternary)' }}>
-                                ⬅️ Menu Utama
-                            </Link>
-                        </div>
-                    </div>
+                    <GameOverScreen
+                        isWin={lives > 0}
+                        score={score}
+                        onRestart={handleRestart}
+                        menuLink="/angka"
+                        themeColor="var(--cat-blue)"
+                        className={styles.gameOverPanel}
+                        scoreClassName={styles.finalScore}
+                    />
                 ) : (
                     <div className={styles.skyArea}>
                         {balloons.map(balloon => (

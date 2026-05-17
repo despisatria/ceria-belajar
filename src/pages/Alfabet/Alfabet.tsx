@@ -25,7 +25,7 @@ const ALPHABETS = [
     { letter: 'S', word: 'Sapi', icon: '🐄' },
     { letter: 'T', word: 'Topi', icon: '🧢' },
     { letter: 'U', word: 'Ular', icon: '🐍' },
-    { letter: 'V', word: 'Vila', icon: '🏡' },
+    { letter: 'V', word: 'Virus', icon: '🦠' },
     { letter: 'W', word: 'Wortel', icon: '🥕' },
     { letter: 'X', word: 'Xilofon', icon: '🎹' },
     { letter: 'Y', word: 'Yoyo', icon: '🪀' },
