@@ -233,12 +233,16 @@ h6 {
   .global-stat-box {
     min-width: 0 !important;
     flex: 1 1 0 !important;
-    padding: 5px 8px !important;
-    font-size: 0.75rem !important;
+    padding: 5px 6px !important;
+  }
+
+  .global-stat-label {
+    font-size: 0.6rem !important;
+    letter-spacing: 0px !important;
   }
 
   .global-stat-value {
-    font-size: 1.2rem !important;
+    font-size: 1.1rem !important;
   }
 
   /* Global Math Quiz Responsive Overrides */

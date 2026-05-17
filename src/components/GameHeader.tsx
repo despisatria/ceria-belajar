@@ -59,15 +59,15 @@ const GameHeader: React.FC<GameHeaderProps> = ({
                 </Link>
                 <div className={`global-stats-panel ${styles.statsPanel || ''}`}>
                     <div className={`global-stat-box ${styles.statBox || ''}`}>
-                        <span className={styles.statLabel}>Kesempatan</span>
+                        <span className={`global-stat-label ${styles.statLabel}`}>Kesempatan</span>
                         <LivesDisplay lives={lives} />
                     </div>
                     <div className={`global-stat-box ${styles.statBox || ''}`}>
-                        <span className={styles.statLabel}>Nilai</span>
+                        <span className={`global-stat-label ${styles.statLabel}`}>Nilai</span>
                         <span className={`global-stat-value ${styles.statValue || ''}`} style={{ color: themeColor }}>{score}</span>
                     </div>
                     <div className={`global-stat-box ${styles.statBox || ''}`}>
-                        <span className={styles.statLabel}>{roundLabel}</span>
+                        <span className={`global-stat-label ${styles.statLabel}`}>{roundLabel}</span>
                         <span className={`global-stat-value ${styles.statValue || ''}`} style={{ color: themeColor }}>
                             {Math.min(round, totalRounds)}/{totalRounds}
                         </span>
