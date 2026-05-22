@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
 
 :root {
   /* Fresh Pastel Color Palette for Ceria Belajar */
@@ -179,6 +180,42 @@ h6 {
     padding: 10px 20px;
     font-size: 1rem;
   }
+}
+
+/* Base Game Over Styles */
+.game-over-container {
+  background-color: white;
+  padding: 50px;
+  border-radius: 30px;
+  border: 6px solid var(--text-color);
+  box-shadow: 15px 15px 0px var(--cat-yellow);
+  text-align: center;
+  max-width: 700px;
+  margin: 20px auto;
+  animation: bounceIn 0.8s;
+}
+
+.game-over-title {
+  font-size: 3rem;
+  color: var(--cat-green);
+  margin-bottom: 20px;
+}
+
+.game-over-desc {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.game-over-score {
+  font-size: 2.5rem;
+  color: white;
+  background: var(--tertiary);
+  padding: 10px 30px;
+  border-radius: 20px;
+  border: 3px solid var(--text-color);
+  display: inline-block;
+  transform: rotate(-2deg);
 }
 
 @media (max-width: 600px) {

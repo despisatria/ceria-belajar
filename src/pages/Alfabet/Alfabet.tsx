@@ -108,6 +108,15 @@ const Alfabet: React.FC<AlfabetProps> = ({ isLowercase = false }) => {
                     {currentIndex + 1} / {ALPHABETS.length}
                 </div>
 
+                <div className={styles.controls}>
+                    <button className={`${styles.controlBtn} ${styles.prevBtn}`} onClick={handlePrev}>
+                        ◀️ Sebelumnya
+                    </button>
+                    <button className={`${styles.controlBtn} ${styles.nextBtn}`} onClick={handleNext}>
+                        Selanjutnya ▶️
+                    </button>
+                </div>
+
                 <div className={styles.letterSelector}>
                     {ALPHABETS.map((item, index) => {
                         const letterDisplay = isLowercase ? item.letter.toLowerCase() : item.letter;
@@ -137,15 +146,6 @@ const Alfabet: React.FC<AlfabetProps> = ({ isLowercase = false }) => {
                             </button>
                         );
                     })}
-                </div>
-
-                <div className={styles.controls}>
-                    <button className={`${styles.controlBtn} ${styles.prevBtn}`} onClick={handlePrev}>
-                        ◀️ Sebelumnya
-                    </button>
-                    <button className={`${styles.controlBtn} ${styles.nextBtn}`} onClick={handleNext}>
-                        Selanjutnya ▶️
-                    </button>
                 </div>
             </main>
         </div>

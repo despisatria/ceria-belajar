@@ -17,17 +17,19 @@ interface GameHeaderProps {
     /** CSS Module styles object from the parent game page */
     styles: Record<string, string>;
     /** Current lives count */
-    lives: number;
+    lives?: number;
     /** Current score */
-    score: number;
+    score?: number;
     /** Current round number */
-    round: number;
+    round?: number;
     /** Total rounds in the game */
-    totalRounds: number;
+    totalRounds?: number;
     /** Label for the round counter. Default: "Babak" */
     roundLabel?: string;
     /** Optional border bottom color override */
     borderColor?: string;
+    /** Hide the stats panel (lives, score, round) completely */
+    hideStats?: boolean;
     /** Optional content below the stats bar (title, subtitle, instructions) */
     children?: React.ReactNode;
 }
@@ -36,12 +38,13 @@ const GameHeader: React.FC<GameHeaderProps> = ({
     menuLink,
     themeColor,
     styles,
-    lives,
-    score,
-    round,
-    totalRounds,
+    lives = 0,
+    score = 0,
+    round = 0,
+    totalRounds = 0,
     roundLabel = 'Babak',
     borderColor,
+    hideStats = false,
     children,
 }) => {
     const headerStyle = borderColor ? { borderBottomColor: borderColor } : undefined;
@@ -57,22 +60,24 @@ const GameHeader: React.FC<GameHeaderProps> = ({
                 }}>
                     ⬅️ Kembali
                 </Link>
-                <div className={`global-stats-panel ${styles.statsPanel || ''}`}>
-                    <div className={`global-stat-box ${styles.statBox || ''}`}>
-                        <span className={`global-stat-label ${styles.statLabel}`}>Kesempatan</span>
-                        <LivesDisplay lives={lives} />
+                {!hideStats && (
+                    <div className={`global-stats-panel ${styles.statsPanel || ''}`}>
+                        <div className={`global-stat-box ${styles.statBox || ''}`}>
+                            <span className={`global-stat-label ${styles.statLabel}`}>Kesempatan</span>
+                            <LivesDisplay lives={lives} />
+                        </div>
+                        <div className={`global-stat-box ${styles.statBox || ''}`}>
+                            <span className={`global-stat-label ${styles.statLabel}`}>Nilai</span>
+                            <span className={`global-stat-value ${styles.statValue || ''}`} style={{ color: themeColor }}>{score}</span>
+                        </div>
+                        <div className={`global-stat-box ${styles.statBox || ''}`}>
+                            <span className={`global-stat-label ${styles.statLabel}`}>{roundLabel}</span>
+                            <span className={`global-stat-value ${styles.statValue || ''}`} style={{ color: themeColor }}>
+                                {Math.min(round, totalRounds)}/{totalRounds}
+                            </span>
+                        </div>
                     </div>
-                    <div className={`global-stat-box ${styles.statBox || ''}`}>
-                        <span className={`global-stat-label ${styles.statLabel}`}>Nilai</span>
-                        <span className={`global-stat-value ${styles.statValue || ''}`} style={{ color: themeColor }}>{score}</span>
-                    </div>
-                    <div className={`global-stat-box ${styles.statBox || ''}`}>
-                        <span className={`global-stat-label ${styles.statLabel}`}>{roundLabel}</span>
-                        <span className={`global-stat-value ${styles.statValue || ''}`} style={{ color: themeColor }}>
-                            {Math.min(round, totalRounds)}/{totalRounds}
-                        </span>
-                    </div>
-                </div>
+                )}
             </div>
             {children}
         </header>

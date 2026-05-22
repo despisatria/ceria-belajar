@@ -36,6 +36,14 @@ const MEMBACA_LEARNING = [
         link: '/membaca/kata3',
         description: 'Gabungkan 3 suku kata: SE + PA + TU = SEPATU'
     },
+    {
+        id: 'ketik-kata',
+        title: 'Ketik Kata',
+        icon: '📖',
+        colorClass: 'orange',
+        link: '/membaca/ketik-kata',
+        description: 'Ayo belajar mengetik Kata tertentu pada keyboard'
+    },
 ];
 const MembacaMenu: React.FC = () => {
     return (
@@ -79,6 +87,13 @@ const MembacaMenu: React.FC = () => {
                     </h2>
 
                     <div className="category-grid">
+                        <CategoryCard
+                            title="Game Ketik Kata"
+                            icon="🚀"
+                            colorClass="green"
+                            link="/membaca/game-ketik-kata"
+                            description="Tantangan seru mengetikan kata berdasarkan gambar"
+                        />
                         <CategoryCard
                             title="Tebak Kata dari Gambar"
                             icon="🖼️"

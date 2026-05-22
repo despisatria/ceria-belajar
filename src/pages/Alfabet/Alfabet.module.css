@@ -289,14 +289,36 @@
         font-size: 2rem;
     }
 
-    .controlBtn {
-        padding: 12px 20px;
-        font-size: 1.2rem;
+    .letterSelector {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 15px;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        width: 100%;
+        gap: 8px;
     }
 
     .selectorBtn {
+        flex: 0 0 auto;
+        scroll-snap-align: center;
         width: 40px;
         height: 40px;
         font-size: 1.2rem;
+    }
+
+    .controls {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .controlBtn {
+        width: 48%;
+        padding: 12px 5px;
+        font-size: 1.1rem;
     }
 }

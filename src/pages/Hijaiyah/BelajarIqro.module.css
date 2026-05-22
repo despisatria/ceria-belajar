@@ -1,0 +1,337 @@
+.gameContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.gameHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 4px dashed var(--cat-purple);
+}
+
+.gameTitle {
+    flex: 1;
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--cat-purple);
+    margin: 0;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+/* ─── Book Layout ─── */
+.bookBoard {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    gap: 15px;
+}
+
+.bookPage {
+    background-color: #fffdf5;
+    /* Warm paper color */
+    width: 100%;
+    border-radius: 20px;
+    border: 4px solid var(--text-color);
+    box-shadow: 12px 12px 0px var(--text-color);
+    padding: 20px 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative book binding effect */
+.bookPage::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    background: repeating-linear-gradient(0deg,
+            rgba(0, 0, 0, 0.05) 0px,
+            rgba(0, 0, 0, 0.05) 10px,
+            transparent 10px,
+            transparent 20px);
+    border-right: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+/* ─── Header inside page ─── */
+.pageHeader {
+    text-align: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 3px double var(--cat-purple);
+}
+
+.pageHeader h3 {
+    margin: 0 0 10px 0;
+    color: var(--cat-purple);
+    font-size: 1.8rem;
+}
+
+.pageDesc {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.newLettersGrid {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    direction: rtl;
+    /* Right to left */
+}
+
+.newLetterBox {
+    background: var(--cat-purple);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.8rem;
+    font-weight: 700;
+    font-family: 'Noto Naskh Arabic', serif;
+    border: 3px solid var(--text-color);
+    box-shadow: 4px 4px 0px var(--text-color);
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.newLetterBox:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px var(--text-color);
+}
+
+/* ─── Reading Grid ─── */
+.readingArea {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.readingLine {
+    display: flex;
+    direction: rtl;
+    /* Crucial: renders array [A, B, C] as C B A from right to left */
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(139, 92, 246, 0.05);
+    /* very light purple */
+    border-radius: 15px;
+    padding: 10px;
+    border: 2px dashed rgba(139, 92, 246, 0.3);
+}
+
+.letterBox {
+    width: 65px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 700;
+    font-family: 'Noto Naskh Arabic', serif;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.2s;
+    user-select: none;
+    line-height: 1;
+}
+
+.letterBox:hover {
+    background: rgba(139, 92, 246, 0.15);
+    transform: scale(1.1);
+}
+
+.letterBox:active {
+    background: rgba(139, 92, 246, 0.3);
+    transform: scale(0.95);
+}
+
+.letterBox.playing {
+    color: var(--cat-purple);
+    animation: pulse 1s infinite;
+}
+
+/* ─── Controls ─── */
+.controls {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.controlBtn {
+    flex: 1;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    font-family: inherit;
+    background-color: var(--tertiary);
+    color: #fff;
+    border: 4px solid var(--text-color);
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 6px 6px 0px var(--text-color);
+    transition: all 0.1s;
+    text-align: center;
+}
+
+.controlBtn:active {
+    transform: translate(6px, 6px);
+    box-shadow: 0px 0px 0px var(--text-color);
+}
+
+.controlBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 6px 6px 0px var(--text-color);
+}
+
+.prevBtn {
+    background-color: var(--cat-blue);
+}
+
+.nextBtn {
+    background-color: var(--cat-orange);
+}
+
+.progress {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--cat-purple);
+    background: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 3px solid var(--cat-purple);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+        text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+    .gameContainer {
+        padding: 10px;
+    }
+
+    .gameHeader {
+        flex-direction: row;
+        gap: 10px;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+
+    .gameTitle {
+        font-size: 1.2rem;
+        text-align: right;
+    }
+
+    .bookBoard {
+        gap: 10px;
+    }
+
+    .bookPage {
+        padding: 15px 10px 15px 25px;
+        /* Leave room for binding */
+        border-width: 3px;
+        box-shadow: 6px 6px 0px var(--text-color);
+        border-radius: 12px;
+    }
+
+    .pageHeader {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+
+    .pageHeader h3 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+
+    .pageDesc {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+
+    .newLetterBox {
+        width: 45px;
+        height: 45px;
+        font-size: 2rem;
+        border-width: 2px;
+        box-shadow: 2px 2px 0px var(--text-color);
+    }
+
+    .newLetterBox:active {
+        transform: translate(2px, 2px);
+        box-shadow: 0px 0px 0px var(--text-color);
+    }
+
+    .readingArea {
+        gap: 8px;
+    }
+
+    .readingLine {
+        padding: 5px;
+        border-width: 1px;
+    }
+
+    .letterBox {
+        width: 45px;
+        height: 45px;
+        font-size: 2.2rem;
+        padding-bottom: 5px;
+    }
+
+    .controls {
+        flex-direction: row;
+        gap: 10px;
+        margin-top: 5px;
+    }
+
+    .controlBtn {
+        font-size: 1rem;
+        padding: 8px 5px;
+        border-width: 2px;
+        box-shadow: 3px 3px 0px var(--text-color);
+    }
+
+    .controlBtn:active {
+        transform: translate(3px, 3px);
+        box-shadow: 0px 0px 0px var(--text-color);
+    }
+
+    .progress {
+        font-size: 1rem;
+        padding: 5px 15px;
+        border-width: 2px;
+    }
+}

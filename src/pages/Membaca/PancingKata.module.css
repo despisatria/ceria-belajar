@@ -70,7 +70,6 @@
     background: white;
     padding: 15px 30px;
     border-radius: 20px;
-    border: 4px solid var(--cat-cyan);
     box-shadow: 4px 4px 0px rgba(6, 182, 212, 0.3);
     margin-bottom: 10px;
 }

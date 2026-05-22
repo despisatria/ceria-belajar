@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import CategoryCard from '../../components/CategoryCard';
 
-const HIJAIYAH_GAMES = [
+const HIJAIYAH_LEARNING = [
     {
         id: 'mengenal',
         title: 'Huruf Hijaiyah',
-        icon: '🕋',
+        icon: '☪️',
         colorClass: 'green',
         link: '/hijaiyah/mengenal',
         description: 'Mengenal huruf Alif sampai Ya'
@@ -19,6 +19,14 @@ const HIJAIYAH_GAMES = [
         colorClass: 'blue',
         link: '/hijaiyah/angka',
         description: 'Mengenal angka 1 sampai 20 dalam tulisan Arab'
+    },
+    {
+        id: 'iqro',
+        title: 'Belajar Iqro 1',
+        icon: '📖',
+        colorClass: 'purple',
+        link: '/hijaiyah/iqro',
+        description: 'Belajar membaca huruf berharokat Fathah (A, Ba, Ta)'
     }
 ];
 
@@ -29,20 +37,21 @@ const HijaiyahMenu: React.FC = () => {
             <main className="app-container" style={{ textAlign: 'center' }}>
                 <div style={{ marginBottom: '30px', textAlign: 'left', padding: '0 20px' }}>
                     <Link to="/" className="btn" style={{
+                        backgroundColor: 'var(--text-color)',
                         textTransform: 'none',
-                        fontSize: '1.1rem',
+                        fontSize: '1.2rem',
                         padding: '12px 24px'
                     }}>
                         ⬅️ Kembali ke Beranda
                     </Link>
                 </div>
 
-                <h2 style={{ fontSize: '2.5rem', color: 'var(--cat-green)', marginBottom: '30px' }}>
-                    Dunia Hijaiyah 🕋
+                <h2 style={{ fontSize: '2.5rem', color: 'var(--cat-green)', marginBottom: '30px', textShadow: '2px 2px 0px rgba(0,0,0,0.1)' }}>
+                    Belajar Hijaiyah ☪️
                 </h2>
 
-                <div className="category-grid" style={{ marginBottom: '50px' }}>
-                    {HIJAIYAH_GAMES.map((game) => (
+                <div className="category-grid" style={{ justifyContent: 'center', display: 'flex', gap: '30px', flexWrap: 'wrap', marginBottom: '50px' }}>
+                    {HIJAIYAH_LEARNING.map((game) => (
                         <CategoryCard
                             key={game.id}
                             title={game.title}
@@ -52,6 +61,7 @@ const HijaiyahMenu: React.FC = () => {
                             description={game.description}
                         />
                     ))}
+
                 </div>
             </main>
         </>

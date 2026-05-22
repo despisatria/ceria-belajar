@@ -20,13 +20,23 @@ const BalonAngka = lazy(() => import('./pages/Angka/BalonAngka'));
 const MencocokkanMenu = lazy(() => import('./pages/Mencocokkan/Mencocokkan'));
 const GambarSama = lazy(() => import('./pages/Mencocokkan/GambarSama'));
 const GambarBerpasangan = lazy(() => import('./pages/Mencocokkan/GambarBerpasangan'));
-const CocokkanWarna = lazy(() => import('./pages/Mencocokkan/CocokkanWarna'));
 const CocokkanBayangan = lazy(() => import('./pages/Mencocokkan/CocokkanBayangan'));
+const WarnaMenu = lazy(() => import('./pages/Warna/WarnaMenu'));
+const MengenalWarna = lazy(() => import('./pages/Warna/MengenalWarna'));
+const CocokkanWarna = lazy(() => import('./pages/Warna/CocokkanWarna'));
+const Mewarnai = lazy(() => import('./pages/Warna/Mewarnai'));
+const BelajarCampurWarna = lazy(() => import('./pages/Warna/BelajarCampurWarna'));
+const CampurWarna = lazy(() => import('./pages/Warna/CampurWarna'));
+const KelompokkanWarna = lazy(() => import('./pages/Warna/KelompokkanWarna'));
+const BalonWarna = lazy(() => import('./pages/Warna/BalonWarna'));
+const PancingWarna = lazy(() => import('./pages/Warna/PancingWarna'));
+const BukuMewarnai = lazy(() => import('./pages/Warna/BukuMewarnai'));
 const CocokkanBentuk = lazy(() => import('./pages/Mencocokkan/CocokkanBentuk'));
 const CocokkanIndukAnak = lazy(() => import('./pages/Mencocokkan/CocokkanIndukAnak'));
 const HijaiyahMenu = lazy(() => import('./pages/Hijaiyah/HijaiyahMenu'));
 const MengenalHijaiyah = lazy(() => import('./pages/Hijaiyah/MengenalHijaiyah'));
 const AngkaHijaiyah = lazy(() => import('./pages/Hijaiyah/AngkaHijaiyah'));
+const BelajarIqro = lazy(() => import('./pages/Hijaiyah/BelajarIqro'));
 const MembacaMenu = lazy(() => import('./pages/Membaca/MembacaMenu'));
 const SukuKata = lazy(() => import('./pages/Membaca/SukuKata'));
 const MembacaKata = lazy(() => import('./pages/Membaca/MembacaKata'));
@@ -48,6 +58,16 @@ const TebakLompatMaju = lazy(() => import('./pages/Matematika/TebakLompatMaju'))
 const TebakLompatMundur = lazy(() => import('./pages/Matematika/TebakLompatMundur'));
 const CocokPenjumlahan = lazy(() => import('./pages/Matematika/CocokPenjumlahan'));
 const CocokPengurangan = lazy(() => import('./pages/Matematika/CocokPengurangan'));
+const SainsMenu = lazy(() => import('./pages/Sains/SainsMenu'));
+const MengenalHewan = lazy(() => import('./pages/Sains/MengenalHewan'));
+const BagianTumbuhan = lazy(() => import('./pages/Sains/BagianTumbuhan'));
+const MengenalCuaca = lazy(() => import('./pages/Sains/MengenalCuaca'));
+const TataSurya = lazy(() => import('./pages/Sains/TataSurya'));
+const BendaHidupMati = lazy(() => import('./pages/Sains/BendaHidupMati'));
+const MateriHuruf = lazy(() => import('./pages/Mengetik/MateriHuruf'));
+const GameHuruf = lazy(() => import('./pages/Mengetik/GameHuruf'));
+const MateriKata = lazy(() => import('./pages/Mengetik/MateriKata'));
+const GameKata = lazy(() => import('./pages/Mengetik/GameKata'));
 
 const LoadingFallback = () => (
   <div style={{
@@ -112,13 +132,23 @@ function App() {
             <Route path="/mencocokkan" element={<MencocokkanMenu />} />
             <Route path="/mencocokkan/gambar-sama" element={<GambarSama />} />
             <Route path="/mencocokkan/gambar-berpasangan" element={<GambarBerpasangan />} />
-            <Route path="/mencocokkan/cocokkan-warna" element={<CocokkanWarna />} />
             <Route path="/mencocokkan/cocokkan-bayangan" element={<CocokkanBayangan />} />
+            <Route path="/warna" element={<WarnaMenu />} />
+            <Route path="/warna/mengenal" element={<MengenalWarna />} />
+            <Route path="/warna/cocokkan-warna" element={<CocokkanWarna />} />
+            <Route path="/warna/mewarnai" element={<Mewarnai />} />
+            <Route path="/warna/belajar-campur" element={<BelajarCampurWarna />} />
+            <Route path="/warna/campur-warna" element={<CampurWarna />} />
+            <Route path="/warna/kelompokkan-warna" element={<KelompokkanWarna />} />
+            <Route path="/warna/balon-warna" element={<BalonWarna />} />
+            <Route path="/warna/pancing-warna" element={<PancingWarna />} />
+            <Route path="/warna/buku-mewarnai" element={<BukuMewarnai />} />
             <Route path="/mencocokkan/cocokkan-bentuk" element={<CocokkanBentuk />} />
             <Route path="/mencocokkan/cocokkan-hewan-mirip" element={<CocokkanIndukAnak />} />
             <Route path="/hijaiyah" element={<HijaiyahMenu />} />
             <Route path="/hijaiyah/mengenal" element={<MengenalHijaiyah />} />
             <Route path="/hijaiyah/angka" element={<AngkaHijaiyah />} />
+            <Route path="/hijaiyah/iqro" element={<BelajarIqro />} />
             <Route path="/nama" element={<Placeholder title="Nama-nama" />} />
             <Route path="/membaca" element={<MembacaMenu />} />
             <Route path="/membaca/dasar" element={<SukuKata type="dasar" />} />
@@ -142,7 +172,16 @@ function App() {
             <Route path="/matematika/tebak-lompat-mundur" element={<TebakLompatMundur />} />
             <Route path="/matematika/cocok-tambah" element={<CocokPenjumlahan />} />
             <Route path="/matematika/cocok-kurang" element={<CocokPengurangan />} />
-            <Route path="/sains" element={<Placeholder title="Sains & IPA" />} />
+            <Route path="/sains" element={<SainsMenu />} />
+            <Route path="/sains/hewan" element={<MengenalHewan />} />
+            <Route path="/sains/tumbuhan" element={<BagianTumbuhan />} />
+            <Route path="/sains/cuaca" element={<MengenalCuaca />} />
+            <Route path="/sains/tata-surya" element={<TataSurya />} />
+            <Route path="/sains/hidup-mati" element={<BendaHidupMati />} />
+            <Route path="/alfabet/ketik-huruf" element={<MateriHuruf />} />
+            <Route path="/alfabet/game-ketik-huruf" element={<GameHuruf />} />
+            <Route path="/membaca/ketik-kata" element={<MateriKata />} />
+            <Route path="/membaca/game-ketik-kata" element={<GameKata />} />
             <Route path="/english" element={<Placeholder title="English" />} />
           </Routes>
         </Suspense>

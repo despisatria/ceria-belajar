@@ -6,12 +6,14 @@ import CategoryCard from '../../components/CategoryCard';
 const ALFABET_LEARNING = [
     { id: 'huruf-besar', title: 'Huruf Besar', icon: '🔠', colorClass: 'blue', link: '/alfabet/besar', description: 'Belajar mengenal huruf besar A-Z' },
     { id: 'huruf-kecil', title: 'Huruf Kecil', icon: '🔡', colorClass: 'green', link: '/alfabet/kecil', description: 'Belajar mengenal huruf kecil a-z' },
+    { id: 'ketik-huruf', title: 'Ketik Huruf', icon: '🔤', colorClass: 'blue', link: '/alfabet/ketik-huruf', description: 'Ayo belajar mengetik Huruf pada keyboard' },
 ];
 
 const ALFABET_GAMES = [
     { id: 'besar-kecil', title: 'Huruf Besar & Kecil', icon: '🔠 🔡', colorClass: 'orange', link: '/alfabet/besar-kecil', description: 'Cocokkan huruf besar dengan huruf kecil' },
     { id: 'cocokkan', title: 'Huruf Besar & Gambar', icon: '🔠 🧩', colorClass: 'purple', link: '/alfabet/cocokkan', description: 'Cocokkan huruf besar dengan gambar' },
     { id: 'cocokkan-kecil', title: 'Huruf Kecil & Gambar', icon: '🔡 🧩', colorClass: 'red', link: '/alfabet/cocokkan-kecil', description: 'Cocokkan huruf kecil dengan gambar' },
+    { id: 'game-ketik-huruf', title: 'Game Ketik Huruf', icon: '🎯', colorClass: 'pink', link: '/alfabet/game-ketik-huruf', description: 'Tantangan seru mengetikan huruf yang diminta' },
 ];
 
 const AlfabetMenu: React.FC = () => {

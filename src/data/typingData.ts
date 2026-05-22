@@ -1,0 +1,22 @@
+export const TYPING_WORDS = [
+    "BUKU",
+    "PENA",
+    "MEJA",
+    "KURSI",
+    "GURU",
+    "AYAH",
+    "IBU",
+    "KAKAK",
+    "ADIK",
+    "MAIN",
+    "BACA",
+    "TULIS",
+    "KUCING",
+    "ANJING",
+    "BURUNG",
+    "IKAN",
+    "MERAH",
+    "BIRU",
+    "HIJAU",
+    "KUNING"
+];

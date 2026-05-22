@@ -1,5 +1,5 @@
 import React from 'react';
-import PairMatchingGame, { type DeckCard, type MatchingGameConfig } from './PairMatchingGame';
+import PairMatchingGame, { type DeckCard, type MatchingGameConfig } from '../Mencocokkan/PairMatchingGame';
 
 // Color pairs: colored circle -> emoji representing that color
 const COLOR_PAIRS = [
@@ -17,11 +17,11 @@ const COLOR_PAIRS = [
 ];
 
 const config: MatchingGameConfig = {
-    title: 'Cocokkan Nama Warna! 🎨',
+    title: 'Cocokkan Warna dengan Gambarnya! 🎨',
     subtitle: 'Pasangkan warna dengan gambar yang sesuai',
-    speechText: 'Cocokkan Nama Warna!',
+    speechText: 'Cocokkan Warna dengan Gambarnya!',
     themeColor: 'var(--cat-orange)',
-    menuLink: '/mencocokkan',
+    menuLink: '/warna',
     roundWinTitle: 'Hebat! 🌟',
     roundWinMessage: 'Semua warna cocok!',
     roundConfigs: [4, 6, 8, 10, 11],
